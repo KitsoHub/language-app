@@ -1,4 +1,6 @@
+import EmptyState from '@/components/shared/EmptyState'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
+
 
 
 export default function ProfilePage() {
@@ -9,6 +11,12 @@ export default function ProfilePage() {
 <Text>Test User</Text>
 <Text>user@example.com</Text>
         {/* TODO: log out, profile details, profile setting, */}
+              <EmptyState
+                title={"No Data..."}
+                description={"App State has not been set try again later."}
+                icon="home"
+
+              />
 
 
 
