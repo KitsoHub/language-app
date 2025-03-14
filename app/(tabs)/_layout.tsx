@@ -2,7 +2,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Tabs } from 'expo-router'
 import Feather from '@expo/vector-icons/build/Feather'
-import { COLORS } from '../../utils/theme'
+import { COLORS } from '@/utils/constants/colors'
+
 
 export default function MainLayout() {
   return (
