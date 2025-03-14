@@ -10,16 +10,39 @@ import EmptyState from '@/components/shared/EmptyState';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@/utils/constants/colors';
 import { DailyGoal } from '@/components/shared/DailyGoal';
-import { BookOpen, ChevronRight, Flame, Trophy } from 'lucide-react-native';
+import { BookOpen, ChevronRight, Flame, Trophy, HandCoins, Heart } from 'lucide-react-native';
 import { useAuthStore } from '@/store/auth-store';
 import { useRouter } from 'expo-router';
 import { useLanguageStore } from '@/store/language-store';
+import { useProgressStore } from '@/store/progress-store';
+import CourseCard from '@/components/shared/CourseCard';
+import { useEffect } from 'react';
+import { ROUTES } from '@/utils/constants/routes';
 
 export default function App() {
   const { user } = useAuthStore();
   const router = useRouter();
   const { selectedLanguage, appLanguages, selectLanguage } = useLanguageStore();
+  const {
+    courses,
+    dailyGoal,
+    dailyProgress,
+    // resetDailyProgressIfNeeded,
+    getCoursesByLanguage,
+  } = useProgressStore();
+  useEffect(() => {
+    //resetDailyProgressIfNeeded();
 
+    // Set selected language from user if not already set
+    if (user && user.currentLanguage && !selectedLanguage) {
+      selectLanguage(user.currentLanguage);
+    }
+  }, []);
+  const languageCourses = getCoursesByLanguage(selectedLanguage?.id);
+  const availableCourses = languageCourses.filter(course => course.lessons.some(lesson => !lesson.locked))
+  const handleCoursePress = (course: any) => {
+    router.push(`/course/${course.id}`);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -32,10 +55,26 @@ export default function App() {
             <Text style={styles.greeting}>
               Hello, {user?.name.split(' ')[0]}!
             </Text>
-            <View style={styles.streakContainer}>
-              <Flame size={16} color={COLORS.secondary} />
-              <Text style={styles.streakText}>{user?.streak} day streak</Text>
+
+            <View style={{ flex: 1, flexDirection: 'row', gap: 20, justifyContent: 'center' }}>
+              {/* <Text style={styles.streakText}>Language: Setswana</Text> */}
+              <View style={styles.streakContainer}>
+                <Flame size={24} color={COLORS.secondary} />
+                <Text style={styles.streakText}>{user?.streak} day streak</Text>
+              </View>
+              <View style={styles.streakContainer}>
+                {/*coins , points */}
+                <HandCoins size={24} color={COLORS.green} />
+                <Text style={styles.streakText}>{user?.streak} </Text>
+              </View>
+
+              <View style={styles.streakContainer}>
+
+                <Heart size={24} color={COLORS.primary} />
+
+              </View>
             </View>
+
           </View>
           <TouchableOpacity>{/* <Avatar/> */}</TouchableOpacity>
         </View>
@@ -74,13 +113,28 @@ export default function App() {
           </TouchableOpacity>
         </View>
         {/* courses */}
+        {availableCourses.length > 0 ? (
+          availableCourses.slice(0, 2).map((course) => (
+            <CourseCard
+              key={course.id}
+              course={course}
+              onPress={handleCoursePress}
+            />
+          ))
+        ) : (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyStateText}>
+              No courses available. Please select a different language.
+            </Text>
+          </View>
+        )}
 
         {/* language select */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Your Language</Text>
           <TouchableOpacity
             style={styles.seeAllButton}
-            onPress={() => router.push('/language-selection')}
+            onPress={() => router.push(ROUTES.LANGUAGESELECT)}
           >
             <Text style={styles.seeAllText}>Change</Text>
             <ChevronRight size={16} color={COLORS.primary} />
@@ -91,15 +145,14 @@ export default function App() {
         <View style={styles.languageCard}>
           <View style={styles.languageFlag}>
             <Text style={styles.languageEmoji}>
-              {/* {selectedLanguage.flag ? '🌍' : '🌍'} */}
-              {user?.currentLanguage ? '🌍' : '🌍'}
+              {selectedLanguage?.flag ? '🌍' : '🌍'}
+
             </Text>
           </View>
           <View style={styles.languageInfo}>
-            {/* <Text style={styles.languageName}>{selectedLanguage.name}</Text>
-            <Text style={styles.languageNative}>{selectedLanguage.nativeName}</Text> */}
-                        <Text style={styles.languageName}>{user?.currentLanguage}</Text>
-                        <Text style={styles.languageNative}>{user?.currentLanguage}</Text>
+            <Text style={styles.languageName}>{selectedLanguage?.name}</Text>
+            <Text style={styles.languageNative}>{selectedLanguage?.nativeName}</Text>
+
           </View>
         </View>
       </ScrollView>
@@ -162,7 +215,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: COLORS.primaryLight,
+    backgroundColor: COLORS.gray200,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -213,7 +266,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: COLORS.primaryLight,
+    backgroundColor: COLORS.gray200,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -233,5 +286,18 @@ const styles = StyleSheet.create({
   languageNative: {
     fontSize: 14,
     color: COLORS.textLight,
+  },
+  emptyState: {
+    backgroundColor: COLORS.white,
+    borderRadius: 16,
+    padding: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 24,
+  },
+  emptyStateText: {
+    fontSize: 14,
+    color: COLORS.textLight,
+    textAlign: 'center',
   },
 });

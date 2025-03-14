@@ -38,12 +38,12 @@ export const useAuthStore = create(
                         //set mock
                         const mockUser: User = {
                             id: "1",
-                            name: 'Jane Doe',
+                            name: 'Paul Doe',
                             email,
                             currentLanguage: 'st',
                             streak: 0,
                             xp: 0,
-                            level: 0,
+                            level: 1,
                             joinedAt: new Date().toISOString()
                         }
 

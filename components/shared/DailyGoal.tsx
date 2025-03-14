@@ -22,7 +22,7 @@ export const DailyGoal: React.FC<DailyGoalProps> = ({ current, goal }) => {
     ]}>
       <View style={styles.header}>
         <View style={styles.iconContainer}>
-          <Target size={20} color={COLORS.primary} />
+          <Target size={20} color={COLORS.error} />
         </View>
         <Text style={styles.title}>Daily Goal</Text>
       </View>
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.gray200,
   },
   completedContainer: {
-    borderColor: COLORS.primary,
-    backgroundColor: COLORS.primaryLight,
+    borderColor: COLORS.primaryLight,
+    backgroundColor: COLORS.white,
   },
   header: {
     flexDirection: 'row',
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: COLORS.primaryLight,
+    backgroundColor: COLORS.gray200,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,

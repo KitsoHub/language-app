@@ -15,4 +15,51 @@ export interface Language{
     name:string;
     nativeName:string;
     difficulty: 'easy'| 'medium' |'hard';
+    flag:string;
+}
+
+export interface Course{
+id: string;
+languageId:string;
+title:string;
+description: string;
+level: number;
+lessons: Lesson[];
+icon: string;
+}
+
+export interface Lesson{
+    id:string;
+    courseId: string;
+    title:string;
+    description: string;
+    exercises: Exercise[];
+    xpReward: number;
+    completed: boolean;
+    locked: boolean;
+}
+
+export interface Exercise{
+    id: string;
+    type: 'multipleChoice' | 'translation' | 'matching' | 'listening' | 'speaking';
+    question:string;
+    options?: string[]
+    correctAnswer: string;
+    hint?: string;
+}
+
+export interface Achievement{
+    id:string;
+    title: string;
+    description: string;
+    icon: string;
+    unlocked:boolean;
+    progress: number;
+    total: number;
+}
+
+export interface Skill{
+    id: string;
+    name: 'vocabulary' | 'listening' | 'speaking' | 'reading' | 'writing'| 'grammar';
+    progress: number;
 }
