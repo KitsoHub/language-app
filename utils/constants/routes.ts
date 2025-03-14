@@ -4,5 +4,6 @@ export const ROUTES = {
     PROFILE: "/profile",
     TABS:"/(tabs)",
     HOME:"/",
+    LEARN:"/learn",
 
   }

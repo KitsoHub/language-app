@@ -1,7 +1,8 @@
 import { Button, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import React from 'react'
 import Feather from '@expo/vector-icons/build/Feather';
-import { COLORS } from '@/utils/theme';
+import { COLORS } from '@/utils/constants/colors';
+
 
 interface EmptyStateProps
 {

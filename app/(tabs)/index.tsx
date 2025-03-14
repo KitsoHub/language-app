@@ -79,7 +79,7 @@ export default function App() {
           <TouchableOpacity>{/* <Avatar/> */}</TouchableOpacity>
         </View>
 
-        {/* Daily progress */}
+       {/* to use daily progress and goal */}
         <DailyGoal current={0} goal={0} />
         <View style={styles.statsContainer}>
           <View style={styles.statCard}>
@@ -106,7 +106,7 @@ export default function App() {
           <Text style={styles.sectionTitle}>Continue Learning</Text>
           <TouchableOpacity
             style={styles.seeAllButton}
-            onPress={() => router.push('/learn')}
+            onPress={() => router.push(ROUTES.LEARN)}
           >
             <Text style={styles.seeAllText}>See All</Text>
             <ChevronRight size={16} color={COLORS.primary} />

@@ -1,17 +1,17 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import LanguageCard from '@/components/shared/LanguageCard';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { useLanguageStore } from '@/store/language-store';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@/utils/constants/colors';
-import { appLanguages } from '@/mocks/languages';
+// import { appLanguages } from '@/mocks/languages';
 import { Button } from '@/components/ui/Button';
 import { ROUTES } from '@/utils/constants/routes';
 
 export default function LanguageSelectionPage() {
   const router = useRouter();
-  const { selectLanguage } = useLanguageStore();
+  const {appLanguages, selectLanguage } = useLanguageStore();
 
   const [selectedLanguageId, setSelectedLanguageId] = useState<string | null>(
     null,
@@ -37,6 +37,7 @@ export default function LanguageSelectionPage() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Stack.Screen options={{headerShown:true, title: "Select Language"}}/>
       <View style={styles.header}>
         <Text style={styles.title}>
           Which language would you like to learn?
