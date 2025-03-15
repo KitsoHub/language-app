@@ -5,5 +5,5 @@ export const ROUTES = {
     TABS:"/(tabs)",
     HOME:"/",
     LEARN:"/learn",
-
+    COURSE:"/course/",
   }

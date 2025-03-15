@@ -35,3 +35,14 @@
    - Progress tracking
    - Achievements and rewards
    - Profile customization
+
+Courses [id] => dynamic routes
+    useEffect(()=>{
+        const url = `${pathName}?${searchParams}`
+        console.log(url)
+    },[,pathName, searchParams])
+    <Text>Course ID: {searchParams.get('id')}</Text>
+
+
+### TODO
+- re-evaluate the state {progress-storage}
