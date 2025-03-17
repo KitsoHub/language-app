@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 import { useProgressStore } from '@/store/progress-store';
@@ -40,6 +40,53 @@ const currentExercise = currentLesson.exercises[currentExerciseIndex];
 const isLastExercise = currentExerciseIndex === currentLesson.exercises.length -1;
 const progress = (currentExerciseIndex + 1 / currentLesson.exercises.length)
 
+
+const renderExercise =() =>{
+    switch (currentExercise.type) {
+        case 'multipleChoice':
+            return(
+
+                // show hint
+                // show options
+                //show hint button
+                <View style={styles.exerciseContainer}>
+  <Text style={styles.question}>{currentExercise.question}</Text>
+
+  {showHint && currentExercise.hint && (
+              <View style={styles.hintContainer}>
+                <Text style={styles.hintText}>{currentExercise.hint}</Text>
+              </View>
+            )}
+
+            {/* show options */}
+
+
+            {!showHint && currentExercise.hint && selectedOption === null && (
+              <TouchableOpacity
+                style={styles.hintButton}
+                onPress={handleShowHint}
+              >
+                <Text style={styles.hintButtonText}>Show Hint</Text>
+              </TouchableOpacity>
+            )}
+
+
+                </View>
+
+            )
+        case 'translation':
+            break;
+        default:
+            // break;
+            return(
+                <View style={styles.exerciseContainer}>
+                    <Text style={styles.question}>
+                        This exercise type is not implemented
+                    </Text>
+                </View>
+            )
+    }
+}
   return (
     <>
 <Stack.Screen
@@ -60,7 +107,7 @@ options={{
     {/* content */}
 
     <View style={styles.content}>
-
+    {renderExercise()}
     </View>
 
     {/* footer */}
@@ -89,6 +136,26 @@ const styles = StyleSheet.create({
         padding: 24,
         justifyContent: 'center',
       },
+      hintContainer: {
+        backgroundColor: COLORS.secondaryLight,
+        borderRadius: 12,
+        padding: 16,
+        marginBottom: 24,
+        width: '100%',
+      },
+      hintText: {
+        fontSize: 14,
+        color: COLORS.textLight,
+        fontStyle: 'italic',
+      },
+      hintButton: {
+        marginTop: 16,
+      },
+      hintButtonText: {
+        fontSize: 14,
+        color: COLORS.primary,
+        fontWeight: '500',
+      },
     footer: {
         padding: 16,
         backgroundColor: COLORS.white,
@@ -107,5 +174,15 @@ const styles = StyleSheet.create({
       progressBar: {
         height: '100%',
         backgroundColor: COLORS.primary,
+      },
+      exerciseContainer: {
+        alignItems: 'center',
+      },
+      question: {
+        fontSize: 24,
+        fontWeight: '600',
+        color: COLORS.text,
+        marginBottom: 32,
+        textAlign: 'center',
       },
 })
