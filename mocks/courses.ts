@@ -28,6 +28,7 @@ export const courses: Course[] = [
             correctAnswer: 'Dumela',
             hint: 'It starts with D',
           },
+
         ],
       },
       {
@@ -42,10 +43,18 @@ export const courses: Course[] = [
           {
             id: 'st-basics-2-2',
             type: 'multipleChoice',
-            question: 'How do you say "hello" in Setswana?',
-            options: ['Dumela', 'Motsadi', 'Mamuka', "Rumela"],
-            correctAnswer: 'Dumela',
-            hint: 'It starts with D',
+            question: 'How do you say "A" in Setswana?',
+            options: ['B', 'C', 'A', "E"],
+            correctAnswer: 'A',
+            hint: 'It starts with A',
+          },
+          {
+            id: 'st-basics-1-2',
+            type: 'multipleChoice',
+            question: 'How do you say "B" in Setswana?',
+            options: ['A', 'D', 'B', "W"],
+            correctAnswer: 'B',
+            hint: 'It starts with B',
           },
         ],
       },

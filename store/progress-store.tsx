@@ -21,8 +21,9 @@ isLoading: boolean | null;
 //actions
 selectCourse:(courseId: string)=> void;
 selectLesson:(lessonId:string)=>void;
-// completeLesson:(lessonId:string)=>void;
+completeLesson:(lessonId:string)=>void;
 getCoursesByLanguage:(languageId:string | undefined)=> Course[];
+// updateSkill: (skillId: string, progress: number)=>void;
 
 }
 
@@ -65,12 +66,39 @@ export const useProgressStore = create(
         }
       },
 
+      completeLesson:(lessonId)=>{
+        const authStore = useAuthStore.getState();
+        const courses = [...get().courses];
+        let xpGained = 0;
+        //update lesson
+        for(const course of courses){
+          const lessonIndex = course.lessons.findIndex((l) => l.id === lessonId);
+          //check last lesson
+          if(lessonIndex !== -1){
+            // mark as completed
+            course.lessons[lessonIndex].completed = true;
+            xpGained = course.lessons[lessonIndex].xpReward;
+
+            //unlock next level
+            if(lessonIndex + 1 < course.lessons.length){
+              course.lessons[lessonIndex+1].locked = false
+            }
+            break;
+          }
+        }
+
+        // TODO: update user XP
+        // check level up
+        //  update skill
+
+      },
+
       getCoursesByLanguage: (languageId) => {
         return get().courses.filter(course => course.languageId === languageId);
       },
 
 
 
-        }),{name:'progress-storage', storage: createJSONStorage(()=> AsyncStorage)}
+        }),{name:'', storage: createJSONStorage(()=> AsyncStorage)}
     )
 )

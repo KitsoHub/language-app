@@ -7,6 +7,7 @@ import { COLORS } from '@/utils/constants/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ProgressBar from '@/components/shared/ProgressBar';
 import LessonCard from '@/components/shared/LessonCard';
+import { ROUTES } from '@/utils/constants/routes';
 // import { courses } from '@/mocks/courses';
 export default function CourserPage() {
     // const searchParams = useSearchParams(); // id, expo router
@@ -28,7 +29,7 @@ export default function CourserPage() {
     const totalLessons = currentCourse.lessons.length;
     const progressPercentage = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
     const handleLessonPress = (lesson: any) => {
-        console.log(">>>>>LESSON>>>", lesson)
+        router.push(`${ROUTES.LESSON}${lesson.id}`);
     }
 
     return (
