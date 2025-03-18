@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import React from 'react'
 import { Lesson } from '@/types';
-import { COLORS } from '@/utils/constants/colors';
+import { colors, COLORS } from '@/utils/constants/colors';
 import { Check, Lock } from 'lucide-react-native';
 
 interface LessonCardProps{
@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
         borderColor: COLORS.gray200,
       },
       completedContainer: {
-        borderColor: COLORS.primary,
-        backgroundColor: COLORS.primaryLight,
+        borderColor: colors.primary,
+        backgroundColor: colors.primaryLight,
       },
       lockedContainer: {
         opacity: 0.7,
@@ -105,7 +105,7 @@ alignItems:'center'
         width: 28,
         height: 28,
         borderRadius: 14,
-        backgroundColor: COLORS.primary,
+        backgroundColor: colors.primary,
         justifyContent: 'center',
         alignItems: 'center',
       },
@@ -113,7 +113,7 @@ alignItems:'center'
         width: 28,
         height: 28,
         borderRadius: 14,
-        backgroundColor: COLORS.gray600,
+        backgroundColor: colors.gray600,
         justifyContent: 'center',
         alignItems: 'center',
       },
