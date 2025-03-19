@@ -1,5 +1,13 @@
 import { Course } from "@/types";
+import { Audio } from "expo-av";
 
+const Vowels = [
+  { vowel: 'A', audio: require('././assets/audio/Schwa-What.mp3') },
+  { vowel: 'E', audio: require('././assets/audio/Schwa-What.mp3') },
+  { vowel: 'I', audio: require('././assets/audio/Schwa-What.mp3') },
+  { vowel: 'O', audio: require('././assets/audio/Schwa-What.mp3') },
+  { vowel: 'U', audio: require('././assets/audio/Schwa-What.mp3')},
+]
 
 export const courses: Course[] = [
 
@@ -11,28 +19,9 @@ export const courses: Course[] = [
     level: 1,
     icon: '🏠',
     lessons: [
+     
       {
         id: 'st-basics-1',
-        courseId: 'st-basics',
-        title: 'Greetings',
-        description: 'Learn how to greet people in Setswana',
-        xpReward: 10,
-        completed: false,
-        locked: true,
-        exercises: [
-          {
-            id: 'st-basics-1-1',
-            type: 'multipleChoice',
-            question: 'How do you say "hello" in Setswana?',
-            options: ['Dumela', 'Motsadi', 'Mamuka', "Rumela"],
-            correctAnswer: 'Dumela',
-            hint: 'It starts with D',
-          },
-
-        ],
-      },
-      {
-        id: 'st-basics-2',
         courseId: 'st-basics',
         title: 'Vowels',
         description: 'Learn how to greet people in Setswana',
@@ -41,21 +30,40 @@ export const courses: Course[] = [
         locked: false,
         exercises: [
           {
-            id: 'st-basics-2-2',
-            type: 'multipleChoice',
-            question: 'How do you say "A" in Setswana?',
-            options: ['B', 'C', 'A', "E"],
-            correctAnswer: 'A',
-            hint: 'It starts with A',
+            id: 'st-basics-1-1',
+            type: 'listening',
+            question: 'listen to setswana vowels?',
+            options: Vowels,
+        
           },
           {
             id: 'st-basics-1-2',
-            type: 'multipleChoice',
+            type: 'listening',
             question: 'How do you say "B" in Setswana?',
             options: ['A', 'D', 'B', "W"],
             correctAnswer: 'B',
             hint: 'It starts with B',
           },
+        ],
+      },
+      {
+        id: 'st-basics-2',
+        courseId: 'st-basics',
+        title: 'Greetings',
+        description: 'Learn how to greet people in Setswana',
+        xpReward: 10,
+        completed: false,
+        locked: true,
+        exercises: [
+          {
+            id: 'st-basics-2-1',
+            type: 'multipleChoice',
+            question: 'How do you say "hello" in Setswana?',
+            options: ['Dumela', 'Motsadi', 'Mamuka', "Rumela"],
+            correctAnswer: 'Dumela',
+            hint: 'It starts with D',
+          },
+
         ],
       },
 
@@ -115,6 +123,44 @@ export const courses: Course[] = [
             // options: ['Dumela', 'Mamuka', 'Rumela', 'Wena'],
             correctAnswer: 'Mamuka',
             hint: 'Mamuka Chine',
+          },
+        ],
+      },
+    ],
+  },
+  // shekhalagadi
+  {
+    id: 'kr-basics',
+    languageId: 'kr',
+    title: 'Basics',
+    description: 'Learn essential Shekgalagari vocabulary and phrases',
+    level: 1,
+    icon: '🏠',
+    lessons: [
+      {
+        id: 'kr-basics-1',
+        courseId: 'kr-basics',
+        title: 'Greetings',
+        description: 'Learn how to greet people in Kalanga',
+        xpReward: 10,
+        completed: false,
+        locked: false,
+        exercises: [
+          {
+            id: 'kr-basics-1-1',
+            type: 'multipleChoice',
+            question: 'How do you say "hello" in Shekgalagari?',
+            options: ['Dumela', 'Mamuka', 'Rumela', 'Wena'],
+            correctAnswer: 'Rumela',
+            hint: 'It starts with M',
+          },
+          {
+            id: 'kr-basics-1-2',
+            type: 'translation',
+            question: 'Translate: Good morning',
+             options: ['Dumela', 'Mamuka', 'Rumela', 'Wena'],
+            correctAnswer: 'Rumela',
+            hint: 'Rumela Mma',
           },
         ],
       },

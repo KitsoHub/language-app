@@ -16,6 +16,7 @@ export interface Language{
     nativeName:string;
     difficulty: 'easy'| 'medium' |'hard';
     flag:string;
+    favorites:boolean;
 }
 
 export interface Course{
@@ -39,15 +40,22 @@ export interface Lesson{
     locked: boolean;
 }
 
-export interface Exercise{
+export interface Exercise {
     id: string;
     type: 'multipleChoice' | 'translation' | 'matching' | 'listening' | 'speaking';
-    question:string;
-    options?: string[]
-    correctAnswer: string;
+    question: string;
+    // For listening exercises, options will be an array of ListeningOption objects
+    options?: (string | ListeningOption)[];
+    correctAnswer?: string; 
     hint?: string;
+    audio?: string; 
+    vowel?: string;
 }
 
+export interface ListeningOption {
+    vowel: string;
+    audio: string;
+}
 export interface Achievement{
     id:string;
     title: string;

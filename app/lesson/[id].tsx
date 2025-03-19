@@ -6,9 +6,40 @@ import { useProgressStore } from '@/store/progress-store';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@/utils/constants/colors';
 import { Button } from '@/components/ui/Button';
-import { Check, X } from 'lucide-react-native';
+import { Check, Icon, X } from 'lucide-react-native';
+import { Audio } from "expo-av";
+import Feather from '@expo/vector-icons/Feather';
+import { Exercise, ListeningOption } from '@/types';
+
+
 
 export default function LessonPage() {
+ 
+  const [sound, setSound] = useState<Audio.Sound | undefined>();
+  
+  //audio function
+  async function playSound(audioAsset: any) {
+    console.log('Loading Sound, Asset:', audioAsset); // Log the actual asset
+    try {
+      const { sound } = await Audio.Sound.createAsync(audioAsset);
+      setSound(sound);
+      console.log('Playing Sound');
+      await sound.playAsync();
+    } catch (error) {
+      console.log('Error playing sound:', error);
+    }
+  }
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log('Unloading Sound');
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+
   const router = useRouter();
   const { id } = useLocalSearchParams();
   const { courses, currentCourse, currentLesson, selectLesson, completeLesson } = useProgressStore();
@@ -17,6 +48,7 @@ export default function LessonPage() {
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+
   const [completedExercises, setIsCompleteExercises] = useState<string[]>([]);
   const [showHint, setShowHint] = useState(false);
 
@@ -43,7 +75,6 @@ export default function LessonPage() {
   const isLastExercise = currentExerciseIndex === currentLesson.exercises.length - 1;
   const progress = (currentExerciseIndex + 1 / currentLesson.exercises.length)
 
-
   //option select
   const handleOptionSelect = (option: string) => {
     console.log(">>>>> Selected choice >>>>>>>>", option);
@@ -55,6 +86,7 @@ export default function LessonPage() {
     console.log(">>>>>>>>>>>>>>> Is correct >>>>>", isCorrect);
 
   }
+ 
 
   // handle next
   // handle next to when the answer is wrong // update to keep track of each exercise reward
@@ -158,6 +190,28 @@ export default function LessonPage() {
             )}
 
 
+          </View>
+
+        )
+        case 'listening':
+        return (
+          <View style={styles.exerciseContainer}>
+            <Text style={styles.question}>{currentExercise.question}</Text>
+            <View>
+              {currentExercise.options?.map((option, index) => {
+                const listeningOption = option as ListeningOption; // Type assertion
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.optionButton}
+                    onPress={() => playSound(listeningOption.audio)}
+                  >
+                    <Feather name="volume-2" size={24} color="black" />
+                    <Text style={styles.optionText}>{listeningOption.vowel}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
           </View>
 
         )
@@ -292,10 +346,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    width: '100%',
   },
   selectedOption: {
     borderColor: COLORS.primary,
     backgroundColor: COLORS.primaryLight,
+    
   },
   correctOption: {
     borderColor: COLORS.success,
