@@ -9,6 +9,7 @@ import { useProgressStore } from '@/store/progress-store';
 import { useLanguageStore } from '@/store/language-store';
 import CourseCard from '@/components/shared/CourseCard';
 import { DailyGoal } from '@/components/shared/DailyGoal';
+import { ROUTES } from '@/utils/constants/routes';
 
 export default function LearnPage() {
     const { user } = useAuthStore();
@@ -33,7 +34,7 @@ export default function LearnPage() {
     const availableCourses = languageCourses.filter(course => course.lessons.some(lesson => !lesson.locked))
 
     const handleCoursePress = (course: any) => {
-        router.push(`/course/${course.id}`);
+        router.push(`${ROUTES.COURSE}${course.id}`);
     };
 
     return (
