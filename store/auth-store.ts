@@ -38,7 +38,7 @@ export const useAuthStore = create(
                         //set mock
                         const mockUser: User = {
                             id: "1",
-                            name: 'Paul Doe',
+                            name: "Test User",
                             email,
                             currentLanguage: 'st',
                             streak: 0,

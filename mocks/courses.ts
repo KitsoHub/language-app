@@ -1,11 +1,11 @@
 import { Course } from "@/types";
 
 const Vowels = [
-  { vowel: 'A', audio: require('@/assets/audio/kalanga/kalanga_dumilani.aac') },
-  { vowel: 'E', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'I', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'O', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'U', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'A', audio: '././assets/audio/Schwa-What.mp3' },
+  { vowel: 'E', audio: '././assets/audio/Schwa-What.mp3' },
+  { vowel: 'I', audio: '././assets/audio/Schwa-What.mp3' },
+  { vowel: 'O', audio: '././assets/audio/Schwa-What.mp3' },
+  { vowel: 'U', audio: '././assets/audio/Schwa-What.mp3'},
 ]
 
 export const courses: Course[] = [
@@ -18,7 +18,7 @@ export const courses: Course[] = [
     level: 1,
     icon: '🏠',
     lessons: [
-
+     
       {
         id: 'st-basics-1',
         courseId: 'st-basics',
@@ -28,7 +28,13 @@ export const courses: Course[] = [
         completed: false,
         locked: false,
         exercises: [
-
+          {
+            id: 'st-basics-1-1',
+            type: 'listening',
+            question: 'listen to setswana vowels?',
+            options: Vowels,
+        
+          },
           {
             id: 'st-basics-1-2',
             type: 'listening',
@@ -37,29 +43,10 @@ export const courses: Course[] = [
             correctAnswer: 'B',
             hint: 'It starts with B',
           },
-
         ],
       },
       {
         id: 'st-basics-2',
-        courseId: 'st-basics',
-        title: 'Conversation',
-        description: "Learn how to pronounce words",
-        xpReward: 10,
-        completed:false,
-        locked: false,
-        exercises:[
-                    {
-            id: 'st-basics-2-1',
-            type: 'listening',
-            question: 'listen to setswana vowels?',
-            options: Vowels,
-            correctAnswer: Vowels[0].vowel,
-          },
-        ]
-      },
-      {
-        id: 'st-basics-3',
         courseId: 'st-basics',
         title: 'Greetings',
         description: 'Learn how to greet people in Setswana',
@@ -68,7 +55,7 @@ export const courses: Course[] = [
         locked: true,
         exercises: [
           {
-            id: 'st-basics-3-1',
+            id: 'st-basics-2-1',
             type: 'multipleChoice',
             question: 'How do you say "hello" in Setswana?',
             options: ['Dumela', 'Motsadi', 'Mamuka', "Rumela"],
