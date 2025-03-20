@@ -1,36 +1,31 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import AchievementCard from '@/components/shared/AchievementCard'
-// import { achievements } from '@/mocks/achievements'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { colors } from '@/utils/constants/colors'
-import { useProgressStore } from '@/store/progress-store'
-import { useAuthStore } from '@/store/auth-store'
-
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import AchievementCard from '@/components/shared/AchievementCard';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '@/utils/constants/colors';
+import { useProgressStore } from '@/store/progress-store';
+import { useAuthStore } from '@/store/auth-store';
+import SkillProgressContainer from '@/components/shared/SkillProgressContainer';
 
 export default function AchievementsPage() {
-
   //get skill, acchievements and checkAchievements states
+  // track checkachievements with useEffect
   const { user } = useAuthStore();
   const { achievements, skills } = useProgressStore();
   if (!user) {
-    return null
+    return null;
   }
 
   //filter achievement -> unlocked & locked
-  const unlockedAchievements = achievements.filter(item => item.unlocked);
-  const lockedAchievements = achievements.filter(item => !item.unlocked)
-
-  //
-
+  const unlockedAchievements = achievements.filter((item) => item.unlocked);
+  const lockedAchievements = achievements.filter((item) => !item.unlocked);
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
         style={styles.scrollView}
       >
-
-        {/* TODO: add stats */}
         <View style={styles.statsContainer}>
           <View style={styles.statCard}>
             <Text style={styles.statValue}>{user.level}</Text>
@@ -44,7 +39,6 @@ export default function AchievementsPage() {
             <Text style={styles.statValue}>{user.streak}</Text>
             <Text style={styles.statLabel}>Day Streak</Text>
           </View>
-
         </View>
 
         {/* Skills */}
@@ -52,7 +46,7 @@ export default function AchievementsPage() {
 
         <View style={styles.skillsContainer}>
           {skills.map((skill) => (
-            <Text key={skill.id}>{skill.name}</Text>
+            <SkillProgressContainer key={skill.id} skill={skill} />
           ))}
         </View>
 
@@ -63,11 +57,13 @@ export default function AchievementsPage() {
         {unlockedAchievements && (
           <>
             <Text style={styles.subsectionTitle}>Unlocked</Text>
-            <ScrollView showsHorizontalScrollIndicator={true} horizontal
-              style={styles.horizontalScroll}>
+            <ScrollView
+              showsHorizontalScrollIndicator={true}
+              horizontal
+              style={styles.horizontalScroll}
+            >
               {unlockedAchievements.map((item) => (
                 <AchievementCard key={item.id} achievement={item} />
-
               ))}
             </ScrollView>
           </>
@@ -76,28 +72,30 @@ export default function AchievementsPage() {
         {lockedAchievements && (
           <>
             <Text style={styles.subsectionTitle}>Locked</Text>
-            <ScrollView showsHorizontalScrollIndicator={true} horizontal
-              style={styles.horizontalScroll}>
+            <ScrollView
+              showsHorizontalScrollIndicator={true}
+              horizontal
+              style={styles.horizontalScroll}
+            >
               {lockedAchievements.map((item) => (
                 <AchievementCard key={item.id} achievement={item} />
-
               ))}
             </ScrollView>
           </>
         )}
       </ScrollView>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.backgroundLight
+    backgroundColor: colors.backgroundLight,
   },
 
   statsContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   statCard: {
     flex: 1,
@@ -135,21 +133,21 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    padding: 16
+    padding: 16,
   },
   sectionTitle: {
     fontSize: 18,
     color: colors.text,
     fontWeight: 600,
-    marginBottom: 16
+    marginBottom: 16,
   },
   subsectionTitle: {
     fontSize: 15,
     color: colors.textLight,
     fontWeight: 500,
-    marginBottom: 16
+    marginBottom: 16,
   },
   horizontalScroll: {
-    marginBottom: 24
-  }
-})
+    marginBottom: 24,
+  },
+});

@@ -34,12 +34,12 @@ export const useProgressStore = create(
             currentCourse: null,
             currentLesson: null,
             skills: [
-                { id: 'vocabulary', name: 'vocabulary', progress: 0 },
-                { id: 'listening', name: 'listening', progress: 0 },
-                { id: 'speaking', name: 'speaking', progress: 0 },
+                { id: 'vocabulary', name: 'vocabulary', progress: 1 },
+                { id: 'listening', name: 'listening', progress: 50 },
+                { id: 'speaking', name: 'speaking', progress: 30 },
                 { id: 'reading', name: 'reading', progress: 0 },
                 { id: 'writing', name: 'writing', progress: 0 },
-                { id: 'grammar', name: 'grammar', progress: 0 },
+                { id: 'grammar', name: 'grammar', progress: 10 },
               ],
 
             achievements,
