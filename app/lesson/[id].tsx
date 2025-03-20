@@ -16,13 +16,16 @@ export default function LessonPage() {
 
   const [audioSound, setAudioSound] = useState<unknown>();
 
-  async function playSound(audio: unknown) {
+  async function playSound(option: ListeningOption) {
+    console.log(option.vowel)
+    console.log(option.audio)
 
     try {
       await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-      const { sound } = await Audio.Sound.createAsync(audio as unknown as AVPlaybackSource, {shouldPlay: true});
+      const { sound } = await Audio.Sound.createAsync(option.audio as unknown as AVPlaybackSource, {shouldPlay: true});
       setAudioSound(sound);
       // await sound.playAsync();
+      handleOptionSelect(option.vowel)
     } catch (error) {
       console.log('Error playing sound:', error);
     }
@@ -202,8 +205,10 @@ export default function LessonPage() {
                     key={index}
                     style={styles.optionButton}
                     onPress={() => playSound(
-                   listeningOption.audio
+                   listeningOption
                     )}
+
+
                   >
                     <Feather name="volume-2" size={24} color="black" />
                     <Text style={styles.optionText}>{listeningOption.vowel}</Text>
