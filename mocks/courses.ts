@@ -1,12 +1,7 @@
 import { Course } from "@/types";
+import { Vowels } from "./vowels";
 
-const Vowels = [
-  { vowel: 'A', audio: require('@/assets/audio/kalanga/kalanga_dumilani.aac') },
-  { vowel: 'E', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'I', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'O', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'U', audio: require('@/assets/audio/Schwa-What.mp3') },
-]
+
 
 export const courses: Course[] = [
 
@@ -31,7 +26,7 @@ export const courses: Course[] = [
 
           {
             id: 'st-basics-1-2',
-            type: 'listening',
+            type: 'multipleChoice',
             question: 'How do you say "B" in Setswana?',
             options: ['A', 'D', 'B', "W"],
             correctAnswer: 'B',
