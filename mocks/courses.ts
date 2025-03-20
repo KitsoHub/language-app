@@ -1,7 +1,7 @@
 import { Course } from "@/types";
 
 const Vowels = [
-  { vowel: 'A', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'A', audio: require('@/assets/audio/kalanga/kalanga_dumilani.aac') },
   { vowel: 'E', audio: require('@/assets/audio/Schwa-What.mp3') },
   { vowel: 'I', audio: require('@/assets/audio/Schwa-What.mp3') },
   { vowel: 'O', audio: require('@/assets/audio/Schwa-What.mp3') },
@@ -18,7 +18,7 @@ export const courses: Course[] = [
     level: 1,
     icon: '🏠',
     lessons: [
-     
+
       {
         id: 'st-basics-1',
         courseId: 'st-basics',
@@ -33,7 +33,7 @@ export const courses: Course[] = [
             type: 'listening',
             question: 'listen to setswana vowels?',
             options: Vowels,
-        
+
           },
           {
             id: 'st-basics-1-2',

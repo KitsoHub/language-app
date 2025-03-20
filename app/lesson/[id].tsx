@@ -6,41 +6,38 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@/utils/constants/colors';
 import { Button } from '@/components/ui/Button';
 import { Check, Icon, X } from 'lucide-react-native';
-import { Audio } from "expo-av";
+import { Audio, AVPlaybackSource } from "expo-av";
 import Feather from '@expo/vector-icons/Feather';
 import { Exercise, ListeningOption } from '@/types';
 
 
 
 export default function LessonPage() {
- 
-  const [sound, setSound] = useState<Audio.Sound | undefined>();
-  
-  //audio function
-  async function playSound(audioUri: string) {
-    console.log('Loading Sound, URI:', audioUri); // Log the actual URI
-    if (!audioUri) {
-      console.log('Error: Audio URI is null or undefined');
-      return;
-    }
+
+  const [audioSound, setAudioSound] = useState<unknown>();
+
+  async function playSound(audio:NodeRequire) {
+    console.log(">>>>> My sound >>>",audio)
+
     try {
-      const { sound } = await Audio.Sound.createAsync({ uri: audioUri });
-      setSound(sound);
-      console.log('Playing Sound');
-      await sound.playAsync();
+      await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+      const { sound } = await Audio.Sound.createAsync(audio as unknown as AVPlaybackSource, {shouldPlay: true});
+      setAudioSound(sound);
+      // await sound.playAsync();
+
+
     } catch (error) {
       console.log('Error playing sound:', error);
     }
   }
 
   useEffect(() => {
-    return sound
+    return audioSound
       ? () => {
-          console.log('Unloading Sound');
-          sound.unloadAsync();
+          (audioSound as Audio.Sound).unloadAsync();
         }
       : undefined;
-  }, [sound]);
+  }, [audioSound]);
 
 
   const router = useRouter();
@@ -89,7 +86,7 @@ export default function LessonPage() {
     console.log(">>>>>>>>>>>>>>> Is correct >>>>>", isCorrect);
 
   }
- 
+
 
   // handle next
   // handle next to when the answer is wrong // update to keep track of each exercise reward
@@ -207,7 +204,9 @@ export default function LessonPage() {
                   <TouchableOpacity
                     key={index}
                     style={styles.optionButton}
-                    onPress={() => playSound(listeningOption.audio)}
+                    onPress={() => playSound(
+                   listeningOption.audio
+                    )}
                   >
                     <Feather name="volume-2" size={24} color="black" />
                     <Text style={styles.optionText}>{listeningOption.vowel}</Text>
