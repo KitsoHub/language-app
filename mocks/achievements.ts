@@ -1,12 +1,22 @@
 import { Achievement } from "@/types";
 
 export const achievements: Achievement[] = [
+
+  {
+    id: 'sign-in',
+    title: 'Daily sign in',
+    description: 'Welcome Back',
+    icon: '✨',
+    unlocked: true,
+    progress: 0,
+    total: 0,
+  },
     {
       id: 'first-lesson',
       title: 'First Steps',
       description: 'Complete your first lesson',
       icon: '🎯',
-      unlocked: false,
+      unlocked: true,
       progress: 0,
       total: 1,
     },

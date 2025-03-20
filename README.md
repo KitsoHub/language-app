@@ -46,3 +46,4 @@ Courses [id] => dynamic routes
 
 ### TODO
 - re-evaluate the state {progress-storage}
+- re-evaluate the Skill update and checkAchievements -> achievements page
