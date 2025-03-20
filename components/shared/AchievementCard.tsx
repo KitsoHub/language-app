@@ -15,6 +15,8 @@ type AchievementCardProps = {
 }
 
 export default function AchievementCard({achievement, style}: AchievementCardProps) {
+
+    const achievementTotal = achievement.progress / achievement.total
   return (
     <View style={[styles.container, achievement.unlocked && styles.unlockedContainer, style]}>
       <View style={styles.header}>
@@ -39,7 +41,7 @@ export default function AchievementCard({achievement, style}: AchievementCardPro
       showPercentage={false}
 
       />
-      <Text style={styles.progressText}>{achievement.progress / achievement.total}</Text>
+      <Text style={styles.progressText}>{achievementTotal >= 0 ? achievementTotal: ''}</Text>
     </View>
   )
 }

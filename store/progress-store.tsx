@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { useAuthStore } from './auth-store';
 import { Achievement, Course, Lesson, Skill } from '@/types';
-import { achievements as mockAchievements } from '@/mocks/achievements';
+import { achievements} from '@/mocks/achievements';
 import { courses} from '@/mocks/courses';
 
 interface ProgressState{
@@ -23,7 +23,7 @@ selectCourse:(courseId: string)=> void;
 selectLesson:(lessonId:string)=>void;
 completeLesson:(lessonId:string)=>void;
 getCoursesByLanguage:(languageId:string | undefined)=> Course[];
-// updateSkill: (skillId: string, progress: number)=>void;
+updateSkill: (skillId: string, progress: number)=>void;
 
 }
 
@@ -42,7 +42,7 @@ export const useProgressStore = create(
                 { id: 'grammar', name: 'grammar', progress: 0 },
               ],
 
-            achievements: mockAchievements,
+            achievements,
             dailyGoal: 50,
             dailyProgress: 0,
             lastPracticeDate: null,
@@ -97,8 +97,14 @@ export const useProgressStore = create(
         return get().courses.filter(course => course.languageId === languageId);
       },
 
+      updateSkill:(skillId, progress)=>{
+        set((state)=>({
+          skills: state.skills.map((skill) => skill.id === skillId ? {...skill, progress}: skill)
+        }))
+      }
 
 
-        }),{name:'O', storage: createJSONStorage(()=> AsyncStorage)}
+
+        }),{name:'z', storage: createJSONStorage(()=> AsyncStorage)}
     )
 )
