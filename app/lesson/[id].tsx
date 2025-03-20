@@ -16,16 +16,13 @@ export default function LessonPage() {
 
   const [audioSound, setAudioSound] = useState<unknown>();
 
-  async function playSound(audio:NodeRequire) {
-    console.log(">>>>> My sound >>>",audio)
+  async function playSound(audio: unknown) {
 
     try {
       await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
       const { sound } = await Audio.Sound.createAsync(audio as unknown as AVPlaybackSource, {shouldPlay: true});
       setAudioSound(sound);
       // await sound.playAsync();
-
-
     } catch (error) {
       console.log('Error playing sound:', error);
     }
