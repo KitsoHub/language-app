@@ -50,6 +50,7 @@ export interface Exercise {
     hint?: string;
     audio?: string; 
     vowel?: string;
+    uri?: string;
 }
 
 export interface ListeningOption {

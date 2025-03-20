@@ -1,4 +1,3 @@
-
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
@@ -18,10 +17,14 @@ export default function LessonPage() {
   const [sound, setSound] = useState<Audio.Sound | undefined>();
   
   //audio function
-  async function playSound(audioAsset: any) {
-    console.log('Loading Sound, Asset:', audioAsset); // Log the actual asset
+  async function playSound(audioUri: string) {
+    console.log('Loading Sound, URI:', audioUri); // Log the actual URI
+    if (!audioUri) {
+      console.log('Error: Audio URI is null or undefined');
+      return;
+    }
     try {
-      const { sound } = await Audio.Sound.createAsync(audioAsset);
+      const { sound } = await Audio.Sound.createAsync({ uri: audioUri });
       setSound(sound);
       console.log('Playing Sound');
       await sound.playAsync();
@@ -208,6 +211,7 @@ export default function LessonPage() {
                   >
                     <Feather name="volume-2" size={24} color="black" />
                     <Text style={styles.optionText}>{listeningOption.vowel}</Text>
+                    <Feather name="play" size={24} color="black" />
                   </TouchableOpacity>
                 );
               })}
@@ -269,7 +273,6 @@ export default function LessonPage() {
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     backgroundColor: COLORS.white
@@ -304,10 +307,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderTopWidth: 1,
     borderTopColor: COLORS.gray200,
-  }
-  ,
+  },
   continueButton: {
-    width: "100%"
+    width: '80%',
+    alignSelf: 'center',
   },
   progressBarContainer: {
     height: 6,
@@ -346,12 +349,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '100%',
+    width: '80%',
   },
   selectedOption: {
     borderColor: COLORS.primary,
     backgroundColor: COLORS.primaryLight,
-    
   },
   correctOption: {
     borderColor: COLORS.success,
@@ -377,4 +379,4 @@ const styles = StyleSheet.create({
     color: COLORS.error,
     fontWeight: '500',
   },
-})
+});

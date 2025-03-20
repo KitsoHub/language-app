@@ -1,12 +1,11 @@
 import { Course } from "@/types";
-import { Audio } from "expo-av";
 
 const Vowels = [
-  { vowel: 'A', audio: require('././assets/audio/Schwa-What.mp3') },
-  { vowel: 'E', audio: require('././assets/audio/Schwa-What.mp3') },
-  { vowel: 'I', audio: require('././assets/audio/Schwa-What.mp3') },
-  { vowel: 'O', audio: require('././assets/audio/Schwa-What.mp3') },
-  { vowel: 'U', audio: require('././assets/audio/Schwa-What.mp3')},
+  { vowel: 'A', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'E', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'I', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'O', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'U', audio: require('@/assets/audio/Schwa-What.mp3') },
 ]
 
 export const courses: Course[] = [
