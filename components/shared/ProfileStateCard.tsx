@@ -5,7 +5,7 @@ import { colors, COLORS } from '@/utils/constants/colors';
 import { useAuthStore } from '@/store/auth-store'; // Import the auth store
 import { useRouter } from 'expo-router'; // Import the router
 import Avatar from './Avatar';
-import { Bell, Bookmark, BookMarked, BookOpen, ChevronRight, FileQuestion, GlobeLockIcon, Info, PenIcon, Share2, ShieldClose, Star } from 'lucide-react-native';
+import { Bell, Bookmark, BookMarked, BookOpen, ChevronRight, FileQuestion, GlobeLockIcon, Info, LogOut, PenIcon, Share2, ShieldClose, Star } from 'lucide-react-native';
 
 interface ProfileProps {
   name: string,
@@ -189,7 +189,16 @@ export default function ProfileStateCard({
 </View>
 
 
-      // <Button title="Log Out" onPress={handleLogout} />
+
+      <TouchableOpacity
+          style={styles.signOutButton}
+          onPress={handleLogout}
+        >
+          <LogOut size={20} color={colors.error} />
+          <Text style={styles.signOutText}>Sign Out</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.versionText}>Version 1.0.0</Text>
 
       <Modal
         animationType="slide"
@@ -330,6 +339,26 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: colors.black,
 
+  },
+  signOutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.white,
+    paddingVertical: 16,
+    marginBottom: 16,
+  },
+  signOutText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: colors.error,
+    marginLeft: 8,
+  },
+  versionText: {
+    fontSize: 12,
+    color: colors.textMuted,
+    textAlign: 'center',
+    marginBottom: 24,
   },
   // end
 
