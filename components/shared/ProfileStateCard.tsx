@@ -347,6 +347,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     paddingVertical: 16,
     marginBottom: 16,
+    borderRadius:10
   },
   signOutText: {
     fontSize: 16,
