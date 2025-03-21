@@ -1,23 +1,7 @@
 import { Course } from "@/types";
-
-const Vowels = [
-  { vowel: 'A', audio: require('@/assets/audio/kalanga/kalanga_dumilani.aac') },
-  { vowel: 'E', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'I', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'O', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'U', audio: require('@/assets/audio/Schwa-What.mp3') },
-]
-const greetings = [
-  { vowel: 'dumilani', audio: require('@/assets/audio/kalanga/kalanga_dumilani.aac') },
-  { vowel: 'Rumela', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'Rumela', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'mamuka', audio: require('@/assets/audio/Schwa-What.mp3') },
- 
-]
-const avatars = [
-  { name: 'mosimane', image: require('@/assets/avatars/boy.png') }, // Import image just like audio
-  { name: 'mosadi', image: require('@/assets/avatars/women.png') },
-]
+import { Vowels } from "./vowels";
+import { greetings } from "./vowels";
+import { avatars } from "./vowels";
 
 export const courses: Course[] = [
 
