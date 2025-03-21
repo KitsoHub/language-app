@@ -1,7 +1,19 @@
 import { Course } from "@/types";
-import { Vowels } from "./vowels";
 
-
+const Vowels = [
+  { vowel: 'A', audio: require('@/assets/audio/kalanga/kalanga_dumilani.aac') },
+  { vowel: 'E', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'I', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'O', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'U', audio: require('@/assets/audio/Schwa-What.mp3') },
+]
+const greetings = [
+  { vowel: 'dumilani', audio: require('@/assets/audio/kalanga/kalanga_dumilani.aac') },
+  { vowel: 'Rumela', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'Rumela', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'mamuka', audio: require('@/assets/audio/Schwa-What.mp3') },
+ 
+]
 
 export const courses: Course[] = [
 
@@ -18,19 +30,17 @@ export const courses: Course[] = [
         id: 'st-basics-1',
         courseId: 'st-basics',
         title: 'Vowels',
-        description: 'Learn how to greet people in Setswana',
+        description: 'Learn how to Vowels people in Setswana',
         xpReward: 10,
         completed: false,
         locked: false,
         exercises: [
-
-          {
-            id: 'st-basics-1-2',
-            type: 'multipleChoice',
-            question: 'How do you say "B" in Setswana?',
-            options: ['A', 'D', 'B', "W"],
-            correctAnswer: 'B',
-            hint: 'It starts with B',
+                    {
+            id: 'st-basics-1-1',
+            type: 'listening',
+            question: 'listen to setswana vowels?',
+            options: Vowels,
+            correctAnswer: Vowels[0].vowel,
           },
 
         ],
@@ -48,8 +58,8 @@ export const courses: Course[] = [
             id: 'st-basics-2-1',
             type: 'listening',
             question: 'listen to setswana vowels?',
-            options: Vowels,
-            correctAnswer: Vowels[0].vowel,
+            options: greetings,
+            correctAnswer: greetings[0].vowel,
           },
         ]
       },

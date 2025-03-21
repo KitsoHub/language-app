@@ -1,11 +1,11 @@
-
-import { ScrollView, StyleSheet, Text, View, Modal, TextInput } from 'react-native'
+import { ScrollView, StyleSheet, View, Modal } from 'react-native'
 import { useAuthStore } from '@/store/auth-store'; // Import the auth store
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/Button';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '@/utils/constants/colors';
 import ProfileStateCard from '@/components/shared/ProfileStateCard';
+import {Button} from '@/components/ui/Button'; // Import Button component
+import {Input} from '@/components/ui/Input'; // Import InputForm component
 
 export default function ProfilePage() {
   const { user, updateUser } = useAuthStore();
@@ -20,13 +20,11 @@ export default function ProfilePage() {
   };
 
   return (
-<SafeAreaView style={styles.container}>
-<ScrollView
-showsVerticalScrollIndicator={false}
-style={styles.scrollView}
->
-
-
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
         <ProfileStateCard
           name={user?.name || 'Guest User'}
           email={user?.email || ''}
@@ -48,20 +46,17 @@ style={styles.scrollView}
           }}
         >
           <View style={styles.modalView}>
-            <TextInput
-              style={styles.input}
+            <Input
               placeholder="Name"
               value={name}
               onChangeText={setName}
             />
-            <TextInput
-              style={styles.input}
+            <Input
               placeholder="Email"
               value={email}
               onChangeText={setEmail}
             />
-            <TextInput
-              style={styles.input}
+            <Input
               placeholder="Password"
               value={password}
               onChangeText={setPassword}
@@ -69,33 +64,37 @@ style={styles.scrollView}
             />
 
             <Button title="Save" onPress={handleSave} />
+            <View style={styles.buttonSpacer} /> {/* Spacer between buttons */}
             <Button title="Cancel" onPress={() => setModalVisible(false)} />
           </View>
         </Modal>
-
-    </ScrollView>
-</SafeAreaView>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-   flex:1,
-   backgroundColor:colors.backgroundLight
+    flex: 1,
+    backgroundColor: colors.backgroundLight
   },
-  scrollView:{
-    flex:1,
-    padding:16,
-    marginBottom:4
+  scrollView: {
+    flex: 1,
+    padding: 16,
+    marginBottom: 4
   },
-
   modalView: {
+    flex: 1,
+    width: '90%',
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
     shadowColor: "#000",
+    position: 'absolute',
+    bottom: 0,
+    
     shadowOffset: {
       width: 0,
       height: 2
@@ -104,13 +103,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingLeft: 8,
-    width: '100%',
+  buttonSpacer: {
+    height: 10, // Adjust the height as needed
   },
-
 })

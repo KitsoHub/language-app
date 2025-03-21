@@ -51,6 +51,7 @@ export interface Exercise {
     audio?: string;
     vowel?: string;
     uri?: string;
+    image?: string;
 }
 
 export interface ListeningOption {

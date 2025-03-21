@@ -1,10 +1,11 @@
-import { Button, Modal, Pressable, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, ViewStyle, Image } from 'react-native'
+import {Modal, Pressable, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, ViewStyle, Image ,ScrollView} from 'react-native'
 import React, { useState } from 'react'
 import Feather from '@expo/vector-icons/build/Feather';
 import { colors, COLORS } from '@/utils/constants/colors';
 import { useAuthStore } from '@/store/auth-store'; // Import the auth store
 import { useRouter } from 'expo-router'; // Import the router
 import Avatar from './Avatar';
+import {Button} from '@/components/ui/Button';
 import { Bell, Bookmark, BookMarked, BookOpen, ChevronRight, FileQuestion, GlobeLockIcon, Info, LogOut, PenIcon, Share2, ShieldClose, Star } from 'lucide-react-native';
 
 interface ProfileProps {
@@ -206,9 +207,13 @@ export default function ProfileStateCard({
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View style={styles.modalView}>
-          <Text style={styles.modalText}>{modalContent}</Text>
-          <Button title="Close" onPress={() => setModalVisible(false)} />
+        <View style={styles.modalContainer}>
+          <View style={styles.modalView}>
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+              <Text style={styles.modalText}>{modalContent}</Text>
+              <Button title="Close" onPress={() => setModalVisible(false)} />
+            </ScrollView>
+          </View>
         </View>
       </Modal>
 
@@ -412,24 +417,37 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 16,
+    
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalView: {
-    margin: 20,
+    width: '90%',
+    maxHeight: '80%',
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 20,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   modalText: {
     marginBottom: 15,
     textAlign: "center"
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
