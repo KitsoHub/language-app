@@ -1,22 +1,23 @@
 import { Button, Modal, Pressable, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, ViewStyle, Image } from 'react-native'
 import React, { useState } from 'react'
 import Feather from '@expo/vector-icons/build/Feather';
-import { COLORS } from '@/utils/constants/colors';
+import { colors, COLORS } from '@/utils/constants/colors';
 import { useAuthStore } from '@/store/auth-store'; // Import the auth store
 import { useRouter } from 'expo-router'; // Import the router
+import Avatar from './Avatar';
 
 interface ProfileProps {
   name: string,
   email: string,
-  level: string,
+  level: number,
   currentLanguage: string,
-  streak: string,
-  xp: string,
+  streak: number,
+  xp: number,
   title: string;
   description?: string;
   icon?: keyof typeof Feather.glyphMap;
   buttonTitle?: string;
-  onButtonPress?: () => void;
+  onPress?: () => void;
   style?: ViewStyle;
 }
 
@@ -32,9 +33,10 @@ const modalContents = {
   'Contact Us': 'You can contact us at contact@example.com for any inquiries, feedback, or support requests. We value your input and are here to make your experience better. If you have suggestions or questions, we’d love to hear from you!',
 };
 
-export default function ProfileState({
+export default function ProfileStateCard({
   name,
   email,
+  xp,
   level,
   streak,
   currentLanguage,
@@ -42,7 +44,7 @@ export default function ProfileState({
   description,
   icon = "inbox",
   buttonTitle,
-  onButtonPress,
+  onPress,
   style
 }: ProfileProps) {
   const { logout } = useAuthStore(); // Get the logout function from the auth store
@@ -62,50 +64,73 @@ export default function ProfileState({
   };
 
   return (
-    <View style={styles.container}>
+    <>
       <View style={styles.profileHeader}>
-        <Feather name={icon} size={40} color={COLORS.primary} />
-        <View style={styles.profileInfo}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.email}>{email}</Text>
+
+        <Avatar
+          uri={name}
+          name={name}
+          size={80}
+
+        />
+        <Text style={styles.userName}>{name}</Text>
+        <Text style={styles.userEmail}>{email}</Text>
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={onPress}
+
+        >
+          <Text style={styles.editButtonText}>Edit Profile</Text>
+        </TouchableOpacity>
+
+      </View>
+      <View style={styles.statsContainer}>
+        <View style={styles.statCard}>
+          <Text style={styles.statValue}>{level}</Text>
+          <Text style={styles.statLabel}>Level</Text>
         </View>
-        <TouchableOpacity onPress={onButtonPress}>
-          <Feather name="edit-2" size={20} color={COLORS.primary} />
-        </TouchableOpacity>
-      </View>
-      
-      <View style={styles.TandCs}>
-        <TouchableOpacity style={styles.TandC} onPress={() => openModal('Help')}>
-          <Feather name="info" size={30} color={COLORS.primary} />
-          <Text>Help</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.TandC} onPress={() => openModal('Privacy Policy')}>
-          <Feather name="lock" size={30} color={COLORS.primary} />
-          <Text>Privacy Policy</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.TandC} onPress={() => openModal('Terms and Conditions')}>
-          <Feather name="book" size={30} color={COLORS.primary} />
-          <Text>Terms and Conditions</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.TandC} onPress={() => openModal('FAQs')}>
-          <Feather name="search" size={30} color={COLORS.primary} />
-          <Text>FAQs</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.TandC} onPress={() => openModal('Contact Us')}>
-          <Feather name="phone" size={30} color={COLORS.primary} />
-          <Text>Contact Us</Text>
-        </TouchableOpacity>
-      </View>
-      
-      <View style={styles.TandCs}>
-        <View style={styles.TandC}>
-          <Feather name="info" size={30} color={COLORS.secondary} />
-          <Text>Remove ads</Text>
+        <View style={styles.statCard}>
+          <Text style={styles.statValue}>{xp}</Text>
+          <Text style={styles.statLabel}>Total XP</Text>
+        </View>
+        <View style={styles.statCard}>
+          <Text style={styles.statValue}>{streak}</Text>
+          <Text style={styles.statLabel}>Day Streak</Text>
         </View>
       </View>
-      
-      <Button title="Log Out" onPress={handleLogout} />
-      
+
+      // <View style={styles.TandCs}>
+      //   <TouchableOpacity style={styles.TandC} onPress={() => openModal('Help')}>
+      //     <Feather name="info" size={30} color={COLORS.primary} />
+      //     <Text>Help</Text>
+      //   </TouchableOpacity>
+      //   <TouchableOpacity style={styles.TandC} onPress={() => openModal('Privacy Policy')}>
+      //     <Feather name="lock" size={30} color={COLORS.primary} />
+      //     <Text>Privacy Policy</Text>
+      //   </TouchableOpacity>
+      //   <TouchableOpacity style={styles.TandC} onPress={() => openModal('Terms and Conditions')}>
+      //     <Feather name="book" size={30} color={COLORS.primary} />
+      //     <Text>Terms and Conditions</Text>
+      //   </TouchableOpacity>
+      //   <TouchableOpacity style={styles.TandC} onPress={() => openModal('FAQs')}>
+      //     <Feather name="search" size={30} color={COLORS.primary} />
+      //     <Text>FAQs</Text>
+      //   </TouchableOpacity>
+      //   <TouchableOpacity style={styles.TandC} onPress={() => openModal('Contact Us')}>
+      //     <Feather name="phone" size={30} color={COLORS.primary} />
+      //     <Text>Contact Us</Text>
+      //   </TouchableOpacity>
+      // </View>
+
+      // <View style={styles.TandCs}>
+      //   <View style={styles.TandC}>
+      //     <Feather name="info" size={30} color={COLORS.secondary} />
+      //     <Text>Remove ads</Text>
+      //   </View>
+      // </View>
+
+      // <Button title="Log Out" onPress={handleLogout} />
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -117,12 +142,63 @@ export default function ProfileState({
           <Button title="Close" onPress={() => setModalVisible(false)} />
         </View>
       </Modal>
-      {/* ...existing code... */}
-    </View>
+
+    </>
   )
 }
 
 const styles = StyleSheet.create({
+  statsContainer: {
+    flexDirection: 'row',
+  },
+  statCard: {
+    flex: 1,
+    backgroundColor: colors.white,
+    borderRadius: 12,
+    padding: 16,
+    marginHorizontal: 4,
+    alignItems: 'center',
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  statValue: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: colors.text,
+    marginBottom: 4,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: colors.textLight,
+  },
+  userName: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: colors.text,
+    marginTop: 12,
+    marginBottom: 4,
+  },
+  userEmail: {
+    fontSize: 14,
+    color: colors.textLight,
+    marginBottom: 16,
+  },
+  editButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: colors.primaryLight,
+    borderRadius: 20,
+  },
+  editButtonText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: colors.primary,
+  },
+
+  // end
   container: {
     paddingTop: 10,
     fontSize: 20,
@@ -130,15 +206,9 @@ const styles = StyleSheet.create({
     lineHeight: 32,
   },
   profileHeader: {
-    flexDirection: 'row',
     alignItems: 'center',
-    height: 50,
-    width: "100%",
-    marginBottom: 20,
-    backgroundColor: COLORS.white,
-    borderRadius: 10,
-    padding: 5,
-    justifyContent: 'space-between',
+    padding: 24,
+    backgroundColor: colors.white
   },
   profileImage: {
     width: 40,

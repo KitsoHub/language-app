@@ -1,11 +1,14 @@
-import ProfileState from '@/components/shared/profile'
+
 import { ScrollView, StyleSheet, Text, View, Modal, TextInput } from 'react-native'
 import { useAuthStore } from '@/store/auth-store'; // Import the auth store
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '@/utils/constants/colors';
+import ProfileStateCard from '@/components/shared/ProfileStateCard';
 
 export default function ProfilePage() {
-  const { user, updateUser } = useAuthStore(); // Get the user and updateUser from the auth store
+  const { user, updateUser } = useAuthStore();
   const [modalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
@@ -17,20 +20,25 @@ export default function ProfilePage() {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <ProfileState
-          name={user?.name || 'Ogaufi Mokopakagosi'}
+<SafeAreaView style={styles.container}>
+<ScrollView
+showsVerticalScrollIndicator={false}
+style={styles.scrollView}
+>
+
+
+        <ProfileStateCard
+          name={user?.name || 'Guest User'}
           email={user?.email || ''}
           title="Profile Details"
           currentLanguage={user?.currentLanguage || 'st'}
-          xp={user?.xp || '0'}
-          streak={user?.streak || '0'}
-          level={user?.level || ''}
+          xp={user?.xp || 0}
+          streak={user?.streak || 0}
+          level={user?.level || 1}
           icon="user"
-          onButtonPress={() => setModalVisible(true)} // Pass the onButtonPress prop
+          onPress={() => setModalVisible(true)} // Pass the onButtonPress prop
         />
-        
+
         <Modal
           animationType="slide"
           transparent={true}
@@ -59,30 +67,28 @@ export default function ProfilePage() {
               onChangeText={setPassword}
               secureTextEntry
             />
-            
+
             <Button title="Save" onPress={handleSave} />
             <Button title="Cancel" onPress={() => setModalVisible(false)} />
           </View>
         </Modal>
-      </View>
+
     </ScrollView>
+</SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    display: "flex",
-    marginTop: 20,
-    marginLeft: "auto",
-    marginRight: "auto",
-    borderColor: "black",
-    width: "90%",
-    flexDirection: "column",
-    overflow: "hidden",
-    alignItems: "center",
-    fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
+   flex:1,
+   backgroundColor:colors.backgroundLight
   },
+  scrollView:{
+    flex:1,
+    padding:16,
+    marginBottom:4
+  },
+
   modalView: {
     margin: 20,
     backgroundColor: "white",
@@ -106,4 +112,5 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     width: '100%',
   },
+
 })
