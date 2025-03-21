@@ -42,21 +42,27 @@ export interface Lesson{
 
 export interface Exercise {
     id: string;
-    type: 'multipleChoice' | 'translation' | 'matching' | 'listening' | 'speaking';
+    type: 'multipleChoice' | 'translation' | 'matching' | 'listening' | 'speaking' ;
     question: string;
     // For listening exercises, options will be an array of ListeningOption objects
-    options?: (string | ListeningOption)[];
+    options?: (string | ListeningOption | matchingOption)[];
     correctAnswer?: string;
     hint?: string;
     audio?: string;
     vowel?: string;
     uri?: string;
     image?: string;
-}
+    avatar?: string;
+    imageOptions?: string[];
+    correctAnswers?: string[];}
 
 export interface ListeningOption {
     vowel: string;
     audio: string;
+}
+export interface matchingOption {
+    avatar: string;
+    image: string;
 }
 export interface Achievement{
     id:string;

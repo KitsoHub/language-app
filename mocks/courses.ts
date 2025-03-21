@@ -1,19 +1,7 @@
 import { Course } from "@/types";
-
-const Vowels = [
-  { vowel: 'A', audio: require('@/assets/audio/kalanga/kalanga_dumilani.aac') },
-  { vowel: 'E', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'I', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'O', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'U', audio: require('@/assets/audio/Schwa-What.mp3') },
-]
-const greetings = [
-  { vowel: 'dumilani', audio: require('@/assets/audio/kalanga/kalanga_dumilani.aac') },
-  { vowel: 'Rumela', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'Rumela', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'mamuka', audio: require('@/assets/audio/Schwa-What.mp3') },
- 
-]
+import { Vowels } from "./vowels";
+import { greetings } from "./vowels";
+import { avatars } from "./vowels";
 
 export const courses: Course[] = [
 
@@ -83,7 +71,36 @@ export const courses: Course[] = [
 
         ],
       },
+      {
+        id: 'st-basics-4',
+        courseId: 'st-basics',
+        title: 'People',
+        description: 'Learn how to speak in Setswana',
+        xpReward: 20,
+        completed: false,
+        locked: true,
+        exercises: [
+          {
+            id: 'st-basics-4-1',
+            type: 'matching',
+            question: 'choose the word that matches the image',
+            avatar: avatars[0].image, // Use imported image
+            options: ['Mosimane', 'Mosadi', 'monna', "mosetsana"],
+            correctAnswer: 'Mosimane',
+            hint: 'It starts with M',
+          },
+          {
+            id: 'st-basics-4-2',
+            type: 'matching',
+            question: 'choose the word that matches the image',
+            avatar: avatars[1].image, // Use imported image
+            options: ['Mosimane', 'Mosadi', 'monna', "mosetsana"],
+            correctAnswer: 'Mosadi',
+            hint: 'It starts with M',
+          },
 
+        ],
+      },
 
     ],
   },
