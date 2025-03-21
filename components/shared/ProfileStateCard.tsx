@@ -5,6 +5,7 @@ import { colors, COLORS } from '@/utils/constants/colors';
 import { useAuthStore } from '@/store/auth-store'; // Import the auth store
 import { useRouter } from 'expo-router'; // Import the router
 import Avatar from './Avatar';
+import { Bell, Bookmark, BookMarked, BookOpen, ChevronRight, FileQuestion, GlobeLockIcon, Info, PenIcon, Share2, ShieldClose, Star } from 'lucide-react-native';
 
 interface ProfileProps {
   name: string,
@@ -99,35 +100,94 @@ export default function ProfileStateCard({
         </View>
       </View>
 
-      // <View style={styles.TandCs}>
-      //   <TouchableOpacity style={styles.TandC} onPress={() => openModal('Help')}>
-      //     <Feather name="info" size={30} color={COLORS.primary} />
-      //     <Text>Help</Text>
-      //   </TouchableOpacity>
-      //   <TouchableOpacity style={styles.TandC} onPress={() => openModal('Privacy Policy')}>
-      //     <Feather name="lock" size={30} color={COLORS.primary} />
-      //     <Text>Privacy Policy</Text>
-      //   </TouchableOpacity>
-      //   <TouchableOpacity style={styles.TandC} onPress={() => openModal('Terms and Conditions')}>
-      //     <Feather name="book" size={30} color={COLORS.primary} />
-      //     <Text>Terms and Conditions</Text>
-      //   </TouchableOpacity>
-      //   <TouchableOpacity style={styles.TandC} onPress={() => openModal('FAQs')}>
-      //     <Feather name="search" size={30} color={COLORS.primary} />
-      //     <Text>FAQs</Text>
-      //   </TouchableOpacity>
-      //   <TouchableOpacity style={styles.TandC} onPress={() => openModal('Contact Us')}>
-      //     <Feather name="phone" size={30} color={COLORS.primary} />
-      //     <Text>Contact Us</Text>
-      //   </TouchableOpacity>
-      // </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Account</Text>
+        <TouchableOpacity style={styles.settingsItem} onPress={() => openModal('Help')}>
+          <View style={styles.settingsIconContainer}>
+            <Bell size={20} color={colors.primary} />
+          </View>
+          <Text style={styles.settingsItemText}>Notifications</Text>
+          <ChevronRight size={20} color={colors.gray400} />
+        </TouchableOpacity>
 
-      // <View style={styles.TandCs}>
-      //   <View style={styles.TandC}>
-      //     <Feather name="info" size={30} color={COLORS.secondary} />
-      //     <Text>Remove ads</Text>
-      //   </View>
-      // </View>
+
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Settings</Text>
+        <TouchableOpacity style={styles.settingsItem} onPress={() => openModal('Help')}>
+          <View style={styles.settingsIconContainer}>
+            <Info size={20} color={colors.primary} />
+          </View>
+          <Text style={styles.settingsItemText}>Help</Text>
+          <ChevronRight size={20} color={colors.gray400} />
+        </TouchableOpacity>
+        {/* Privacy */}
+        <TouchableOpacity style={styles.settingsItem} onPress={() => openModal('Help')}>
+          <View style={styles.settingsIconContainer}>
+            <GlobeLockIcon size={20} color={colors.primary} />
+          </View>
+          <Text style={styles.settingsItemText}>Privacy Policy</Text>
+          <ChevronRight size={20} color={colors.gray400} />
+        </TouchableOpacity>
+
+        {/* Terms and Conditions */}
+        <TouchableOpacity style={styles.settingsItem} onPress={() => openModal('Help')}>
+          <View style={styles.settingsIconContainer}>
+            <BookOpen size={20} color={colors.primary} />
+          </View>
+          <Text style={styles.settingsItemText}>Terms and Conditions</Text>
+          <ChevronRight size={20} color={colors.gray400} />
+        </TouchableOpacity>
+
+        {/* FAQ */}
+        <TouchableOpacity style={styles.settingsItem} onPress={() => openModal('Help')}>
+          <View style={styles.settingsIconContainer}>
+            <FileQuestion size={20} color={colors.primary} />
+          </View>
+          <Text style={styles.settingsItemText}>FAQ</Text>
+          <ChevronRight size={20} color={colors.gray400} />
+        </TouchableOpacity>
+
+      </View>
+{/* Extras */}
+
+<View style={styles.section}>
+          {/* share with friends */}
+          <TouchableOpacity style={styles.settingsItemExta} onPress={() => openModal('Help')}>
+          <View style={styles.settingsIconContainerExtra}>
+            <Share2 size={15} color={colors.white} />
+          </View>
+          <Text style={styles.settingsItemTextExtra}>Share with friends</Text>
+
+        </TouchableOpacity>
+                {/* rate us */}
+                <TouchableOpacity style={styles.settingsItemExta} onPress={() => openModal('Help')}>
+          <View style={styles.settingsIconContainerExtra}>
+            <Star size={15} color={colors.white} />
+          </View>
+          <Text style={styles.settingsItemTextExtra}>Rate us</Text>
+
+        </TouchableOpacity>
+                {/* feedback */}
+                <TouchableOpacity style={styles.settingsItemExta} onPress={() => openModal('Help')}>
+          <View style={styles.settingsIconContainerExtra}>
+            <PenIcon size={15} color={colors.white} />
+          </View>
+          <Text style={styles.settingsItemTextExtra}>Feedback</Text>
+
+        </TouchableOpacity>
+                {/* remove adds */}
+                <TouchableOpacity style={styles.settingsItemExta} onPress={() => openModal('Help')}>
+          <View style={styles.settingsIconContainerExtra}>
+            <ShieldClose size={15} color={colors.white} />
+          </View>
+          <Text style={styles.settingsItemTextExtra}>Remove Ads</Text>
+
+        </TouchableOpacity>
+
+</View>
+
 
       // <Button title="Log Out" onPress={handleLogout} />
 
@@ -148,8 +208,19 @@ export default function ProfileStateCard({
 }
 
 const styles = StyleSheet.create({
+  profileHeader: {
+    alignItems: 'center',
+    padding: 24,
+    backgroundColor: colors.white
+  },
   statsContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 16,
+    backgroundColor: colors.white,
+    marginBottom: 16,
+    borderBottomWidth: 1,
+    borderBlockColor: colors.gray200,
   },
   statCard: {
     flex: 1,
@@ -198,21 +269,72 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
 
-  // end
-  container: {
-    paddingTop: 10,
-    fontSize: 20,
-    fontWeight: 400,
-    lineHeight: 32,
+  section: {
+    padding: 16,
+    marginBottom: 13,
+    backgroundColor: colors.white,
+    borderRadius: 12,
   },
-  profileHeader: {
+  sectionTitle: {
+    fontSize: 16,
+    color: colors.textLight,
+    fontWeight: 600,
+    marginBottom: 8,
+  },
+
+  settingsItem: {
+    flexDirection: 'row',
     alignItems: 'center',
-    padding: 24,
-    backgroundColor: colors.white
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderTopWidth: 1,
+    borderTopColor: colors.gray200,
   },
+  settingsIconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: colors.primaryLight,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  settingsItemText: {
+    flex: 1,
+    fontSize: 15,
+    color: colors.text,
+
+  },
+
+  settingsItemExta:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderTopWidth: 1,
+    borderTopColor: colors.gray100,
+
+  },
+
+  settingsIconContainerExtra: {
+    width: 26,
+    height: 26,
+    borderRadius: 5,
+    backgroundColor: COLORS.colorGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  settingsItemTextExtra: {
+    flex: 1,
+    fontSize: 15,
+    color: colors.black,
+
+  },
+  // end
+
   profileImage: {
     width: 40,
-    height: 40,
     borderRadius: 20,
     marginRight: 10,
   },
