@@ -105,6 +105,6 @@ export const useProgressStore = create(
 
 
 
-        }),{name:'c', storage: createJSONStorage(()=> AsyncStorage)}
+        }),{name:'Y', storage: createJSONStorage(()=> AsyncStorage)}
     )
 )

@@ -128,6 +128,7 @@ export default function LessonPage() {
           // show options
           //show hint button
           <View style={styles.exerciseContainer}>
+            
             <Text style={styles.question}>{currentExercise.question}</Text>
 
             {showHint && currentExercise.hint && (
