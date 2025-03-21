@@ -25,9 +25,9 @@ interface ProfileProps {
 const modalContents = {
   'Help': 'If you need assistance, please contact our support team at support@example.com. We are available to help you with any issues related to using the app, whether it’s account access, subscription problems, or questions about learning Setswana. Don’t hesitate to reach out!',
 
-  'Privacy Policy': 'Your privacy is important to us. We do not share your personal information with third parties without your consent. Your data is securely stored and only used to improve your learning experience. If you want to learn more about how we protect your data, please read our full privacy policy.',
+  'Privacy': 'Your privacy is important to us. We do not share your personal information with third parties without your consent. Your data is securely stored and only used to improve your learning experience. If you want to learn more about how we protect your data, please read our full privacy policy.',
 
-  'Terms and Conditions': 'By using this app, you agree to our terms and conditions. These include:\n\n Using the app in a responsible manner for learning purposes only. Not copying, sharing, or reselling any learning materials without permission.Following community guidelines if interacting with other learners.Ensuring that your account credentials remain confidential and not shared with others.Acknowledging that the app reserves the right to modify content, pricing, and features as needed.Understanding that the app is provided "as is," and the developers are not responsible for any data loss or service interruptions.Agreeing that any misuse of the app, including attempts to exploit its services, may result in suspension or termination of access.If you do not agree with these terms, please discontinue using the app. Read the full terms and conditions to understand your rights and responsibilities.',
+  'TCs': 'By using this app, you agree to our terms and conditions. These include:\n\n Using the app in a responsible manner for learning purposes only. Not copying, sharing, or reselling any learning materials without permission.Following community guidelines if interacting with other learners.Ensuring that your account credentials remain confidential and not shared with others.Acknowledging that the app reserves the right to modify content, pricing, and features as needed.Understanding that the app is provided "as is," and the developers are not responsible for any data loss or service interruptions.Agreeing that any misuse of the app, including attempts to exploit its services, may result in suspension or termination of access.If you do not agree with these terms, please discontinue using the app. Read the full terms and conditions to understand your rights and responsibilities.',
 
   'FAQs': 'Frequently Asked Questions:\n\n1. How do I reset my password?\n   - Go to your account settings and select "Reset Password." Follow the instructions to create a new password. If you have trouble accessing your account, please contact support for further assistance.\n\n2. How do I change my email address?\n   - In your account settings, select "Change Email," enter your new email, and confirm the change. You will receive a verification email to complete the update. If you do not receive the email, check your spam folder or contact support.\n\n3. How do I contact support?\n   - You can reach us at ogaufimokopakgosi3@gmail.com or use the "Help" section in the app to send us a message. Our support team typically responds within 24-48 hours.\n\n4. Is the app free to use?\n   - The app offers a free version with basic features. To access premium lessons, advanced exercises, and personalized tutoring, you can subscribe to a paid plan.\n\n5. Can I use the app offline?\n   - Yes! Some lessons and features are available offline. However, certain interactive elements, such as live tutoring and community discussions, require an internet connection.\n\n6. How do I report a bug or suggest a feature?\n   - If you encounter a bug or have a feature request, please send us an email at support@example.com with detailed information. We appreciate your feedback and strive to improve your experience!\n\n7. Can I delete my account?\n   - Yes, if you wish to delete your account permanently, go to account settings and select "Delete Account." Please note that this action is irreversible, and all your data will be lost.',
 
@@ -102,7 +102,7 @@ export default function ProfileStateCard({
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Account</Text>
-        <TouchableOpacity style={styles.settingsItem} onPress={() => openModal('Help')}>
+        <TouchableOpacity style={styles.settingsItem} >
           <View style={styles.settingsIconContainer}>
             <Bell size={20} color={colors.primary} />
           </View>
@@ -123,7 +123,7 @@ export default function ProfileStateCard({
           <ChevronRight size={20} color={colors.gray400} />
         </TouchableOpacity>
         {/* Privacy */}
-        <TouchableOpacity style={styles.settingsItem} onPress={() => openModal('Help')}>
+        <TouchableOpacity style={styles.settingsItem} onPress={() => openModal('Privacy')}>
           <View style={styles.settingsIconContainer}>
             <GlobeLockIcon size={20} color={colors.primary} />
           </View>
@@ -132,7 +132,7 @@ export default function ProfileStateCard({
         </TouchableOpacity>
 
         {/* Terms and Conditions */}
-        <TouchableOpacity style={styles.settingsItem} onPress={() => openModal('Help')}>
+        <TouchableOpacity style={styles.settingsItem} onPress={() => openModal('TCs')}>
           <View style={styles.settingsIconContainer}>
             <BookOpen size={20} color={colors.primary} />
           </View>
@@ -141,7 +141,7 @@ export default function ProfileStateCard({
         </TouchableOpacity>
 
         {/* FAQ */}
-        <TouchableOpacity style={styles.settingsItem} onPress={() => openModal('Help')}>
+        <TouchableOpacity style={styles.settingsItem} onPress={() => openModal('FAQs')}>
           <View style={styles.settingsIconContainer}>
             <FileQuestion size={20} color={colors.primary} />
           </View>
