@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 import { useProgressStore } from '@/store/progress-store';
@@ -120,6 +120,7 @@ export default function LessonPage() {
   }
 
   const renderExercise = () => {
+
     switch (currentExercise.type) {
       case 'multipleChoice':
         return (
@@ -211,15 +212,54 @@ export default function LessonPage() {
 
 
                   >
-                    <Feather name="volume-2" size={24} color="black" />
+                    <Feather  style={styles.optionTe} name="volume-2" size={24} color="black" />
                     <Text style={styles.optionText}>{listeningOption.vowel}</Text>
-                    <Feather name="play" size={24} color="black" />
+                    <Feather style={styles.optionTex} name="play" size={24} color="black" />
                   </TouchableOpacity>
                 );
               })}
             </View>
           </View>
 
+        )
+        case 'matching':
+        return (
+          <View style={styles.exerciseContainer}>
+            <View style={styles.questionContainer}>
+              <Image
+                source={currentExercise.avatar} // Display the image
+                style={styles.questionImage}
+              />
+              <Text style={styles.question}>{currentExercise.question}</Text>
+            </View>
+            <View style={styles.optionsGrid}>
+              {currentExercise.options?.map((option, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.optionButton,
+                    selectedOption === option && styles.selectedOption,
+                    selectedOption === option && isCorrect && styles.correctOption,
+                    selectedOption === option && !isCorrect && styles.incorrectOption,
+                  ]}
+                  onPress={() => handleOptionSelect(option)}
+                  disabled={selectedOption !== null}
+                >
+                  <Text
+                    style={[
+                      styles.optionText,
+                      selectedOption === option && styles.selectedOptionText,
+                      selectedOption === option && isCorrect && styles.correctOptionText,
+                      selectedOption === option && !isCorrect && styles.incorrectOptionText,
+                    ]}
+                  >
+                    {option}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          
+          </View>
         )
       case 'translation':
         break;
@@ -326,6 +366,24 @@ const styles = StyleSheet.create({
   exerciseContainer: {
     alignItems: 'center',
   },
+  questionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 30,
+    margin: 40,
+  },
+  questionImage: {
+    width: 100,
+    height: 140,
+    marginRight: 20,
+    marginBottom: 16,
+    borderRadius: 12,
+  },
+  optionsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
   question: {
     fontSize: 24,
     fontWeight: '600',
@@ -349,9 +407,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.gray300,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    width: '48%', // Adjust width for 2x2 grid
+    justifyContent: 'center', // Center the text horizontally
+    alignItems: 'center', // Center the text vertically
+  },
+  checkAnswerButton: {
+    marginTop: 16,
     width: '80%',
+    alignSelf: 'center',
   },
   selectedOption: {
     borderColor: COLORS.primary,
@@ -368,6 +431,16 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 16,
     color: COLORS.text,
+    textAlign: 'center', // Center the text within the Text component
+  },
+  optionTex: {
+    position: 'absolute',
+    right: 10,
+  },
+  optionTe: {
+    position: 'absolute',
+    left: 10,
+   
   },
   selectedOptionText: {
     color: COLORS.primary,

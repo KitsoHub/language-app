@@ -64,7 +64,7 @@ export default function ProfilePage() {
             />
 
             <Button title="Save" onPress={handleSave} />
-            <View style={styles.buttonSpacer} /> {/* Spacer between buttons */}
+            <View style={styles.buttonSpacer} /> 
             <Button title="Cancel" onPress={() => setModalVisible(false)} />
           </View>
         </Modal>

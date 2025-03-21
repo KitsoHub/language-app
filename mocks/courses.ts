@@ -14,6 +14,10 @@ const greetings = [
   { vowel: 'mamuka', audio: require('@/assets/audio/Schwa-What.mp3') },
  
 ]
+const avatars = [
+  { name: 'mosimane', image: require('@/assets/avatars/boy.png') }, // Import image just like audio
+  { name: 'mosadi', image: require('@/assets/avatars/women.png') },
+]
 
 export const courses: Course[] = [
 
@@ -83,7 +87,36 @@ export const courses: Course[] = [
 
         ],
       },
+      {
+        id: 'st-basics-4',
+        courseId: 'st-basics',
+        title: 'People',
+        description: 'Learn how to speak in Setswana',
+        xpReward: 20,
+        completed: false,
+        locked: true,
+        exercises: [
+          {
+            id: 'st-basics-4-1',
+            type: 'matching',
+            question: 'choose the word that matches the image',
+            avatar: avatars[0].image, // Use imported image
+            options: ['Mosimane', 'Mosadi', 'monna', "mosetsana"],
+            correctAnswer: 'Mosimane',
+            hint: 'It starts with M',
+          },
+          {
+            id: 'st-basics-4-2',
+            type: 'matching',
+            question: 'choose the word that matches the image',
+            avatar: avatars[1].image, // Use imported image
+            options: ['Mosimane', 'Mosadi', 'monna', "mosetsana"],
+            correctAnswer: 'Mosadi',
+            hint: 'It starts with M',
+          },
 
+        ],
+      },
 
     ],
   },
