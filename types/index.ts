@@ -54,7 +54,10 @@ export interface Exercise {
     image?: string;
     avatar?: string;
     imageOptions?: string[];
-    correctAnswers?: string[];}
+    correctAnswers?: string[];
+    translation?: string;
+    word?: string;
+}
 
 export interface ListeningOption {
     vowel: string;
@@ -63,6 +66,12 @@ export interface ListeningOption {
 export interface matchingOption {
     avatar: string;
     image: string;
+}
+export interface translationOption {
+    avatar: string;
+    image: string;
+    word: string;
+    translation: string;
 }
 export interface Achievement{
     id:string;

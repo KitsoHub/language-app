@@ -227,7 +227,7 @@ export default function LessonPage() {
           <View style={styles.exerciseContainer}>
             <View style={styles.questionContainer}>
               <Image
-                source={currentExercise.avatar} // Display the image
+                source={{ uri: currentExercise.image }}
                 style={styles.questionImage}
               />
               <Text style={styles.question}>{currentExercise.question}</Text>
@@ -262,7 +262,43 @@ export default function LessonPage() {
           </View>
         )
       case 'translation':
-        break;
+        return (
+          <View style={styles.exerciseContainer}>
+            <View style={styles.questionContainer}>
+              <Image
+                source={{ uri: currentExercise.image }}
+                style={styles.questionImage}
+              />
+              <Text style={styles.question}>{currentExercise.question}</Text>
+            </View>
+            <View style={styles.translationContainer}>
+              {/* Avatar and Setswana word */}
+              <View style={styles.avatarContainer}>
+                <Image
+                  source={{ uri: currentExercise.image }}
+                  style={styles.avatarImage}
+                />
+                <Text style={styles.setswanaWord}>{currentExercise.word}</Text>
+              </View>
+              {/* Draggable area for words */}
+              <View style={styles.draggableArea}>
+                {/* Placeholder for draggable words */}
+              </View>
+              {/* Word options */}
+              <View style={styles.wordOptionsContainer}>
+                {currentExercise.options?.map((option, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.wordOption}
+                    // Add onPress logic for dragging words
+                  >
+                    <Text style={styles.wordOptionText}>{option}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          </View>
+        );
       default:
         // break;
         return (
@@ -369,15 +405,12 @@ const styles = StyleSheet.create({
   questionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 30,
-    margin: 40,
+    marginBottom: 16,
   },
   questionImage: {
-    width: 100,
-    height: 140,
-    marginRight: 20,
-    marginBottom: 16,
-    borderRadius: 12,
+    width: 50,
+    height: 50,
+    marginRight: 16,
   },
   optionsGrid: {
     flexDirection: 'row',
@@ -453,5 +486,52 @@ const styles = StyleSheet.create({
   incorrectOptionText: {
     color: COLORS.error,
     fontWeight: '500',
+  },
+  translationContainer: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  draggableArea: {
+    width: '80%',
+    height: 100,
+    borderWidth: 2,
+    borderColor: COLORS.gray300,
+    borderRadius: 12,
+    marginBottom: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  wordOptionsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  wordOption: {
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    padding: 8,
+    margin: 8,
+    borderWidth: 2,
+    borderColor: COLORS.gray300,
+  },
+  wordOptionText: {
+    fontSize: 16,
+    color: COLORS.text,
+  },
+  avatarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  avatarImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 16,
+  },
+  setswanaWord: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: COLORS.text,
   },
 });

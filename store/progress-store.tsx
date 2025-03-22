@@ -1,4 +1,3 @@
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -105,6 +104,6 @@ export const useProgressStore = create(
 
 
 
-        }),{name:'o', storage: createJSONStorage(()=> AsyncStorage)}
+        }),{name:'r', storage: createJSONStorage(()=> AsyncStorage)}
     )
 )
