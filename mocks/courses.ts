@@ -111,12 +111,12 @@ export const courses: Course[] = [
         locked: false,
         exercises:[
                     {
-            id: 'st-basics-2-1',
+            id: 'st-basics-5-1',
             type: 'translation',
-            question: 'listen to translate setswana ?',
-            avatar: avatars[1].image,
-            options: ['dumela', 'tsamaya', 'leboga', "dumela"],
-            correctAnswer: 'dumela'+'tsamaya'+'leboga'+"dumela",
+            question: 'hello in setswana?',
+            avatar: avatars[0].image,
+            options: ['u', 'd', 'l', 'e','m','a',],
+            correctAnswer: "dumela",
           },
         ]
       },
