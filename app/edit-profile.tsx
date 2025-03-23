@@ -1,12 +1,14 @@
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Stack, useRouter } from 'expo-router'
 import { useAuthStore } from '@/store/auth-store';
 import { Input } from '@/components/ui/Input';
-import { Mail, User } from 'lucide-react-native';
+import { Camera, Mail, User } from 'lucide-react-native';
 import { colors } from '@/utils/constants/colors';
 import { Button } from '@/components/ui/Button';
+import WrapperContainer from '@/components/shared/WrapperContainer';
+import Avatar from '@/components/shared/Avatar';
 
 export default function EditProfile() {
     const router = useRouter();
@@ -24,14 +26,49 @@ export default function EditProfile() {
         email:'',
     })
 
+    const validateForm = () =>{
+        let isValid = true;
+        const newErrors = {name: '', email:''};
+        const isCheckEmail = /[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}/
+
+        if(!name.trim()){
+            newErrors.name = "Name is required";
+            isValid = false;
+        }
+
+        if(!email.trim()){
+            newErrors.email = "Email is required";
+        } else if (!isCheckEmail.test(email)){
+            newErrors.email = "Email is invalid";
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
+    }
+
+    const handleImagePicker =()=>{
+        console.log(" Handling Image Picker")
+    }
     const handleSave = () =>{
-        console.log('Handling Save')
+        // form validate
+        if(!validateForm()) return;
+
+        setIsLoading(true);
+        try {
+            console.log('Handling Save')
+
+        } catch (error) {
+
+        }finally{
+            setIsLoading(false)
+        }
     }
 
   return (
 <>
     <Stack.Screen options={{title:"EditProfile", headerBackTitle:"Back"}} />
-<SafeAreaView>
+<WrapperContainer>
 <KeyboardAvoidingView
 behavior={Platform.OS === 'ios' ?"padding":"height"}
 >
@@ -39,6 +76,16 @@ behavior={Platform.OS === 'ios' ?"padding":"height"}
 
     <ScrollView showsVerticalScrollIndicator={false}>
         {/* avatar*/}
+        <View style={styles.avatarContainer}>
+            <Avatar/>
+            <TouchableOpacity style={styles.cameraButton}
+            onPress={handleImagePicker}>
+                <Camera size={30} color={colors.white}/>
+            </TouchableOpacity>
+
+        </View>
+
+
 
         {/* list of avatars */}
 
@@ -56,10 +103,29 @@ behavior={Platform.OS === 'ios' ?"padding":"height"}
 
     </ScrollView>
 </KeyboardAvoidingView>
-</SafeAreaView>
+</WrapperContainer>
 
 </>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    avatarContainer: {
+        alignItems: 'center',
+        marginBottom: 32,
+        position: 'relative',
+      },
+      cameraButton: {
+        position: 'absolute',
+        bottom: 0,
+        right: '35%',
+        backgroundColor: colors.primary,
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 2,
+        borderColor: colors.white,
+      },
+})
