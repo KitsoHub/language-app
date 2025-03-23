@@ -25,7 +25,7 @@ export default function LessonPage() {
   const [audioSound, setAudioSound] = useState<unknown>();
   const [droppedLetters, setDroppedLetters] = useState<string[]>([]);
   const [draggingLetter, setDraggingLetter] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   // Animation refs
   const position = useRef(new Animated.ValueXY()).current;
@@ -36,7 +36,7 @@ export default function LessonPage() {
       if (id && typeof id === 'string') {
         try {
           setIsLoading(true);
-          await selectLesson(id); // Ensure selectLesson is awaited if it's async
+          await selectLesson(id);
         } catch (error) {
           console.error('Error loading lesson:', error);
         } finally {
@@ -191,11 +191,14 @@ export default function LessonPage() {
           duration: 200,
           useNativeDriver: true
         }).start(() => {
+          // Move to the next exercise
           setCurrentExerciseIndex(currentExerciseIndex + 1);
+          // Reset all relevant state for the new question
           setSelectedOption(null);
           setIsCorrect(null);
           setShowHint(false);
           setDroppedLetters([]);
+          setDraggingLetter(null);
           fadeAnim.setValue(1);
         });
       }
@@ -273,7 +276,15 @@ export default function LessonPage() {
         return (
           <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
             <View style={styles.questionContainer}>
-              {currentExercise.image && <Image source={{ uri: currentExercise.image }} style={styles.questionImage} />}
+              {currentExercise.avatar ? (
+                typeof currentExercise.avatar === 'string' ? (
+                  <Image source={{ uri: currentExercise.avatar }} style={styles.questionImage} />
+                ) : (
+                  <Image source={currentExercise.avatar} style={styles.questionImage} />
+                )
+              ) : (
+                <Text style={styles.errorText}>No image available</Text>
+              )}
               <Text style={styles.question}>{currentExercise.question}</Text>
             </View>
             <View style={styles.optionsGrid}>
@@ -289,11 +300,14 @@ export default function LessonPage() {
                   onPress={() => handleOptionSelect(option as string)}
                   disabled={selectedOption !== null}
                 >
-                  <Text style={[
-                    styles.optionText,
-                    selectedOption === option && isCorrect && styles.correctOptionText,
-                    selectedOption === option && !isCorrect && styles.incorrectOptionText,
-                  ]}>
+                  <Text
+                    style={[
+                      styles.optionText,
+                      selectedOption === option && styles.selectedOptionText,
+                      selectedOption === option && isCorrect && styles.correctOptionText,
+                      selectedOption === option && !isCorrect && styles.incorrectOptionText,
+                    ]}
+                  >
                     {option as string}
                   </Text>
                 </TouchableOpacity>
@@ -432,7 +446,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 20,
+    padding: 24,
     justifyContent: 'center',
   },
   contentContainer: {
@@ -444,16 +458,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   questionImage: {
-    width: 50,
-    height: 50,
-    marginRight: 16,
+    width: 150,
+    height: 150,
+    
   },
   question: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: '600',
     color: COLORS.text,
+    marginBottom: 32,
     textAlign: 'center',
-    marginBottom: 40,
   },
   hintContainer: {
     backgroundColor: COLORS.secondaryLight,
@@ -478,38 +492,40 @@ const styles = StyleSheet.create({
   optionsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: 10,
+    justifyContent: 'space-between',
   },
   optionButton: {
     backgroundColor: COLORS.white,
     borderRadius: 12,
-    padding: 12,
-    marginVertical: 6,
+    padding: 16,
+    marginBottom: 12,
     borderWidth: 1,
-    borderColor: COLORS.gray200,
+    borderColor: COLORS.gray300,
     flexDirection: 'row',
+    width: '48%',
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '90%',
-    elevation: 2,
   },
   selectedOption: {
     borderColor: COLORS.primary,
+    backgroundColor: COLORS.primaryLight,
   },
   correctOption: {
     borderColor: COLORS.success,
-    backgroundColor: '#e8f5e9',
+    backgroundColor: '#E8F5E9',
   },
   incorrectOption: {
     borderColor: COLORS.error,
-    backgroundColor: '#ffebee',
+    backgroundColor: '#FFEBEE',
   },
   optionText: {
-    fontSize: 18,
+    fontSize: 16,
     color: COLORS.text,
-    flex: 1,
     textAlign: 'center',
+  },
+  selectedOptionText: {
+    color: COLORS.primary,
+    fontWeight: '500',
   },
   correctOptionText: {
     color: COLORS.success,
@@ -587,11 +603,14 @@ const styles = StyleSheet.create({
     opacity: 0.4,
   },
   footer: {
-    padding: 20,
+    padding: 16,
     backgroundColor: COLORS.white,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.gray200,
   },
   checkButton: {
-    width: '100%',
+    width: '80%',
+    alignSelf: 'center',
     paddingVertical: 15,
     borderRadius: 12,
   },

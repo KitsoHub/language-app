@@ -105,7 +105,7 @@ export const courses: Course[] = [
         id: 'st-basics-5',
         courseId: 'st-basics',
         title: 'translation',
-        description: "Learn how to trsnslate words",
+        description: "Learn how to translate words",
         xpReward: 50,
         completed:false,
         locked: false,
