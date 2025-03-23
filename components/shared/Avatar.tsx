@@ -3,19 +3,21 @@
 import { StyleSheet, Text, View, ViewStyle, Image } from 'react-native'
 import React from 'react'
 import { colors } from '@/utils/constants/colors';
+import { avatars } from '@/mocks/vowels';
 
 
 type AvatarProps ={
     uri?: string | null;
+    img_index?: number;
     name?: string;
     size?: number;
     style?: ViewStyle;
 
 }
 export default function Avatar({
-    uri, name, size = 48,style
+    uri, name, size = 48,style, img_index=0
 }: AvatarProps) {
-
+console.log(uri)
     const getInitials =() =>{
         if(!name)return '';
         const nameParts = name.split(' ');
@@ -39,14 +41,15 @@ export default function Avatar({
     ]}
   >
 {/* TODO: update to use stored avatar */}
-    {uri?(
+    {uri?.includes("ImagePicker") ?(
         <Image source={ uri ? { uri: uri } : require("@/assets/avatars/avatar_1.jpg")} style={styles.image} resizeMode='cover'/>
         // <Image source={require("@/assets/avatars/avatar_1.jpg")} style={styles.image} resizeMode='cover'/>
     ):(
-        //<Image source={require("@/assets/avatars/avata_1.jpg")} style={styles.image} resizeMode='cover'/>
-        <Text style={[styles.initials, {fontSize: size*0.4}]}>
-            {getInitials()}
-        </Text>
+
+      <Image source={avatars[img_index].image} style={styles.image} resizeMode='cover'/>
+        // <Text style={[styles.initials, {fontSize: size*0.4}]}>
+        //     {getInitials()}
+        // </Text>
     )}
 
   </View>

@@ -1,4 +1,4 @@
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Stack, useRouter } from 'expo-router'
@@ -99,6 +99,12 @@ export default function EditProfile() {
         }
     }
 
+    const handleAvatarPicker = async (image:string)=> {
+        console.log(image)
+        await new Promise(resolve=> setTimeout(resolve, 1000))
+        setAvatar(image)
+    }
+
   return (
 <>
     <Stack.Screen options={{title:"EditProfile", headerBackTitle:"Back"}} />
@@ -122,6 +128,17 @@ behavior={Platform.OS === 'ios' ?"padding":"height"}
             </TouchableOpacity>
 
         </View>
+
+        <View style={styles.avatarSelectContainer}>
+
+            <TouchableOpacity style={styles.cameraButton}
+            onPress={()=>setAvatar(
+                "1")}>
+               <Image source={require("@/assets/avatars/avatar_1.jpg")} style={styles.image}/>
+            </TouchableOpacity>
+
+        </View>
+
 
 
 
@@ -153,6 +170,12 @@ const styles = StyleSheet.create({
         marginBottom: 32,
         position: 'relative',
       },
+      avatarSelectContainer: {
+        alignItems: 'center',
+        marginTop: 32,
+        marginBottom: 32,
+        position: 'relative',
+      },
       ScrollViewContent:{
         flexGrow:1,
         padding:24
@@ -173,5 +196,9 @@ const styles = StyleSheet.create({
       form:{marginBottom:24},
       saveButton:{
         marginTop:16
-      }
+      },
+      image: {
+        width: '100%',
+        height: '100%',
+      },
 })
