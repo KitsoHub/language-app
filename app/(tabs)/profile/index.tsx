@@ -6,6 +6,8 @@ import { colors } from '@/utils/constants/colors';
 import ProfileStateCard from '@/components/shared/ProfileStateCard';
 import {Button} from '@/components/ui/Button'; // Import Button component
 import {Input} from '@/components/ui/Input'; // Import InputForm component
+import { router } from 'expo-router';
+import { ROUTES } from '@/utils/constants/routes';
 
 export default function ProfilePage() {
   const { user, updateUser } = useAuthStore();
@@ -18,6 +20,10 @@ export default function ProfilePage() {
     updateUser({ name, email });
     setModalVisible(false);
   };
+
+  const handleProfileEdit =() =>{
+    router.push(ROUTES.EDITPROFILE)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,10 +40,11 @@ export default function ProfilePage() {
           streak={user?.streak || 0}
           level={user?.level || 1}
           icon="user"
-          onPress={() => setModalVisible(true)} // Pass the onButtonPress prop
-        />
+          onPress={handleProfileEdit}
+          // onPress={() => setModalVisible(true)}
+                  />
 
-        <Modal
+        {/* <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
@@ -64,10 +71,10 @@ export default function ProfilePage() {
             />
 
             <Button title="Save" onPress={handleSave} />
-            <View style={styles.buttonSpacer} /> 
+            <View style={styles.buttonSpacer} />
             <Button title="Cancel" onPress={() => setModalVisible(false)} />
           </View>
-        </Modal>
+        </Modal> */}
       </ScrollView>
     </SafeAreaView>
   )
@@ -94,7 +101,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     position: 'absolute',
     bottom: 0,
-    
+
     shadowOffset: {
       width: 0,
       height: 2

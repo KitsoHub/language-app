@@ -6,5 +6,6 @@ export const ROUTES = {
     HOME:"/",
     LEARN:"/learn",
     COURSE:"/course/",
-    LESSON:"/lesson/"
+    LESSON:"/lesson/",
+    EDITPROFILE:"/edit-profile"
   }
