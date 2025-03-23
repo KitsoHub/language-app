@@ -8,6 +8,7 @@ export interface User{
     xp:number;
     level:number;
     joinedAt:string;
+
 }
 
 export interface Language{
