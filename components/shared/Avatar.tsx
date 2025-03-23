@@ -6,7 +6,7 @@ import { colors } from '@/utils/constants/colors';
 
 
 type AvatarProps ={
-    uri?: string;
+    uri?: string | null;
     name?: string;
     size?: number;
     style?: ViewStyle;
@@ -40,8 +40,8 @@ export default function Avatar({
   >
 {/* TODO: update to use stored avatar */}
     {uri?(
-        //<Image source={ uri ? { uri: uri } : require("@/assets/avatars/avata_1.jpg")} style={styles.image} resizeMode='cover'/>
-        <Image source={require("@/assets/avatars/avatar_1.jpg")} style={styles.image} resizeMode='cover'/>
+        <Image source={ uri ? { uri: uri } : require("@/assets/avatars/avatar_1.jpg")} style={styles.image} resizeMode='cover'/>
+        // <Image source={require("@/assets/avatars/avatar_1.jpg")} style={styles.image} resizeMode='cover'/>
     ):(
         //<Image source={require("@/assets/avatars/avata_1.jpg")} style={styles.image} resizeMode='cover'/>
         <Text style={[styles.initials, {fontSize: size*0.4}]}>

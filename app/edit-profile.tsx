@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Stack, useRouter } from 'expo-router'
@@ -9,6 +9,7 @@ import { colors } from '@/utils/constants/colors';
 import { Button } from '@/components/ui/Button';
 import WrapperContainer from '@/components/shared/WrapperContainer';
 import Avatar from '@/components/shared/Avatar';
+import * as ImagePicker from "expo-image-picker";
 
 export default function EditProfile() {
     const router = useRouter();
@@ -17,7 +18,7 @@ export default function EditProfile() {
     //user details
     const [name, setName] = useState(user?.name || '');
     const [email, setEmail] = useState(user?.email || '');
-    const [avatar, setAvatar] = useState(user?.avatar || null);
+    const [avatar, setAvatar] = useState(user?.avatar || '');
 
     //app submission state
     const [isLoading, setIsLoading] = useState(false);
@@ -47,20 +48,53 @@ export default function EditProfile() {
         return isValid;
     }
 
-    const handleImagePicker =()=>{
+    const handleImagePicker = async ()=>{
         console.log(" Handling Image Picker")
+          //request image library
+          const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync()
+
+          if(status === 'granted'){
+
+              const result = await ImagePicker.launchImageLibraryAsync({
+                  mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                  allowsEditing: true,
+                  aspect: [1,1],
+                  quality: 0.5
+              });
+              console.log(JSON.stringify(result, null, ' '))
+              if(!result.canceled){
+                  //console.log(result.assets[0].uri)
+                 setAvatar(result.assets[0].uri)
+              }
+
+          }else{
+              let alert_title= "Permission Denied";
+              let alert_message = "We need to camera roll permission to update the avatar";
+              Alert.alert(alert_title, alert_message);
+          }
     }
-    const handleSave = () =>{
+    const handleSave = async () =>{
         // form validate
         if(!validateForm()) return;
 
         setIsLoading(true);
         try {
+            await new Promise(resolve =>setTimeout(resolve, 1000));
             console.log('Handling Save')
+            updateUser(
+                {
+                    name,
+                    email,
+                    avatar
+                }
+            )
+
 
         } catch (error) {
+            console.log("<<< Image update error >>>",error);
 
         }finally{
+            console.log("<<< Finished updating >>>");
             setIsLoading(false)
         }
     }
@@ -74,13 +108,17 @@ behavior={Platform.OS === 'ios' ?"padding":"height"}
 >
 
 
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewContent}>
         {/* avatar*/}
         <View style={styles.avatarContainer}>
-            <Avatar/>
+            <Avatar
+            uri={avatar}
+            name={name}
+            size={100}
+            />
             <TouchableOpacity style={styles.cameraButton}
             onPress={handleImagePicker}>
-                <Camera size={30} color={colors.white}/>
+                <Camera size={20} color={colors.white}/>
             </TouchableOpacity>
 
         </View>
@@ -90,11 +128,11 @@ behavior={Platform.OS === 'ios' ?"padding":"height"}
         {/* list of avatars */}
 
         {/* inputs */}
-        <View>
+        <View style={styles.form}>
             <Input label="Full Name" placeholder=' Enter your full name' value={name} onChangeText={setName} error={errors.name} leftIcon={<User size={20} color={colors.gray500} />}/>
             <Input keyboardType='email-address' autoCapitalize="words" label="Email Address" placeholder='Enter your email address' value={email} onChangeText={setEmail} error={errors.email} leftIcon={<Mail size={20} color={colors.gray500} />}/>
 
-        <Button title='Save Changes'
+        <Button style={styles.saveButton} title='Save Changes'
         onPress={handleSave}
         isLoading={isLoading}
         />
@@ -115,6 +153,10 @@ const styles = StyleSheet.create({
         marginBottom: 32,
         position: 'relative',
       },
+      ScrollViewContent:{
+        flexGrow:1,
+        padding:24
+      },
       cameraButton: {
         position: 'absolute',
         bottom: 0,
@@ -128,4 +170,8 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: colors.white,
       },
+      form:{marginBottom:24},
+      saveButton:{
+        marginTop:16
+      }
 })

@@ -16,10 +16,10 @@ export default function ProfilePage() {
   const [email, setEmail] = useState(user?.email || '');
   const [password, setPassword] = useState('');
 
-  const handleSave = () => {
-    updateUser({ name, email });
-    setModalVisible(false);
-  };
+  // const handleSave = () => {
+  //   updateUser({ name, email });
+  //   setModalVisible(false);
+  // };
 
   const handleProfileEdit =() =>{
     router.push(ROUTES.EDITPROFILE)
