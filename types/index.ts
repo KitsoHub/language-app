@@ -46,7 +46,7 @@ export interface Exercise {
     type: 'multipleChoice' | 'translation' | 'matching' | 'listening' | 'speaking' ;
     question: string;
     // For listening exercises, options will be an array of ListeningOption objects
-    options?: (string | ListeningOption | matchingOption)[];
+    options?: (string | ListeningOption | matchingOption)[] | string[];
     correctAnswer?: string;
     hint?: string;
     audio?: string;
@@ -55,7 +55,12 @@ export interface Exercise {
     image?: string;
     avatar?: string;
     imageOptions?: string[];
-    correctAnswers?: string[];}
+    correctAnswers?: string[];
+    translation?: string;
+    word?: string;
+    letter?: string;
+    wordOptions?: string[];
+}
 
 export interface ListeningOption {
     vowel: string;
@@ -64,6 +69,15 @@ export interface ListeningOption {
 export interface matchingOption {
     avatar: string;
     image: string;
+    letter: string;
+    word: string;
+}
+export interface translationOption {
+    avatar: string;
+    image: string;
+    word: string;
+    translation: string;
+
 }
 export interface Achievement{
     id:string;
