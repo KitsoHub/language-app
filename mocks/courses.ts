@@ -1,7 +1,8 @@
 import { Course } from "@/types";
 import { Vowels } from "./vowels";
-import { greetings } from "./vowels";
+
 import { avatars } from "./vowels";
+import { greetings } from "./greetings";
 
 export const courses: Course[] = [
 
@@ -45,9 +46,9 @@ export const courses: Course[] = [
                     {
             id: 'st-basics-2-1',
             type: 'listening',
-            question: 'listen to setswana vowels?',
+            question: 'listen to setswana greetings?',
             options: greetings,
-            correctAnswer: greetings[0].vowel,
+            correctAnswer: greetings[0].greeting,
           },
         ]
       },
@@ -82,7 +83,7 @@ export const courses: Course[] = [
         exercises: [
           {
             id: 'st-basics-4-1',
-            type: 'matching',
+            type: 'picture-matching',
             question: 'choose the word that matches the image',
             avatar: avatars[0].image, // Use imported image
             options: ['Mosimane', 'Mosadi', 'monna', "mosetsana"],
@@ -91,7 +92,7 @@ export const courses: Course[] = [
           },
           {
             id: 'st-basics-4-2',
-            type: 'matching',
+            type: 'picture-matching',
             question: 'choose the word that matches the image',
             avatar: avatars[1].image, // Use imported image
             options: ['Mosimane', 'Mosadi', 'monna', "mosetsana"],
@@ -108,7 +109,7 @@ export const courses: Course[] = [
         description: "Learn how to translate words",
         xpReward: 50,
         completed:false,
-        locked: false,
+        locked: true,
         exercises:[
                     {
             id: 'st-basics-5-1',
@@ -120,7 +121,25 @@ export const courses: Course[] = [
           },
         ]
       },
-
+      {
+        id: 'st-basics-6',
+        courseId: 'st-basics-6',
+        title: 'Word Matching',
+        description: "Learn how to write words",
+        xpReward: 50,
+        completed:false,
+        locked: false,
+        exercises:[
+                    {
+            id: 'st-basics-6-1',
+            type: 'word-matching',
+            question: "Form the word 'Hello' in Setswana",
+            avatar: avatars[0].image,
+            wordOptions: ['me', 'la', 'du'],
+            correctWordOrder: ['du', 'me', 'la'],
+          },
+        ]
+      },
     ],
   },
   {
@@ -186,7 +205,7 @@ export const courses: Course[] = [
             type: 'listening',
             question: 'listen to kalanga vowels?',
             options: greetings,
-            correctAnswer: greetings[0].vowel,
+            correctAnswer: greetings[0].greeting,
           },
         ]
       },
@@ -243,7 +262,7 @@ export const courses: Course[] = [
 
     ],
   },
-  // shekhalagadi
+  // TODO: to fix
   {
     id: 'kr-basics',
     languageId: 'kr',
@@ -286,7 +305,7 @@ export const courses: Course[] = [
             type: 'listening',
             question: 'listen to setswana vowels?',
             options: greetings,
-            correctAnswer: greetings[0].vowel,
+            correctAnswer: greetings[0].greeting,
           },
         ]
       },

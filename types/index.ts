@@ -43,10 +43,10 @@ export interface Lesson{
 
 export interface Exercise {
     id: string;
-    type: 'multipleChoice' | 'translation' | 'matching' | 'listening' | 'speaking' ;
+    type: 'multipleChoice' | 'translation' | 'picture-matching' | 'listening' | 'speaking' | 'word-matching' | 'challenge' ;
     question: string;
     // For listening exercises, options will be an array of ListeningOption objects
-    options?: (string | ListeningOption | matchingOption)[] | string[];
+    options?: (string | ListeningOption | matchingOption | GreetingOption)[] | string[];
     correctAnswer?: string;
     hint?: string;
     audio?: string;
@@ -56,10 +56,16 @@ export interface Exercise {
     avatar?: string;
     imageOptions?: string[];
     correctAnswers?: string[];
+    correctWordOrder?: string[];
     translation?: string;
     word?: string;
     letter?: string;
     wordOptions?: string[];
+}
+
+export interface GreetingOption {
+    greeting: string;
+    audio: string;
 }
 
 export interface ListeningOption {
@@ -77,8 +83,8 @@ export interface translationOption {
     image: string;
     word: string;
     translation: string;
-
 }
+
 export interface Achievement{
     id:string;
     title: string;

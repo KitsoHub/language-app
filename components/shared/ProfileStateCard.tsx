@@ -222,10 +222,13 @@ export default function ProfileStateCard({
 }
 
 const styles = StyleSheet.create({
+
+
   profileHeader: {
     alignItems: 'center',
     padding: 24,
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
+    borderRadius: 12,
   },
   statsContainer: {
     flexDirection: 'row',
@@ -235,6 +238,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderBottomWidth: 1,
     borderBlockColor: colors.gray200,
+    borderBottomRightRadius:12,
+    borderBottomLeftRadius:12,
   },
   statCard: {
     flex: 1,
@@ -417,7 +422,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 16,
-    
+
   },
   modalContainer: {
     flex: 1,

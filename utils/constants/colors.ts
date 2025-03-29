@@ -70,4 +70,6 @@ export const COLORS = {
     gray700: '#495057',
     gray800: '#343A40',
     gray900: '#212529',
+    cardBackground: '#F7F7F7',
+    mascotBackground: '#FFF4D4',
   };

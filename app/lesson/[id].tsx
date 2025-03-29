@@ -1,15 +1,23 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View, Image, ActivityIndicator } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+
+
+import { Alert, StyleSheet, Text, TouchableOpacity, View, Image, ActivityIndicator, Dimensions, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useProgressStore } from '@/store/progress-store';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS } from '@/utils/constants/colors';
+import { colors, COLORS } from '@/utils/constants/colors';
 import { Button } from '@/components/ui/Button';
 import { Check, X } from 'lucide-react-native';
 import { Audio, AVPlaybackSource } from "expo-av";
 import Feather from '@expo/vector-icons/Feather';
 import { Exercise, ListeningOption, Lesson } from '@/types';
-import { PanResponder, Animated } from 'react-native';
+import WordBank from '@/components/wordMatching/WordBank';
+import { useWordMatchGameStore } from '@/store/word-matching-game-store';
+import { challenges } from '@/mocks/challenges';
+import WordDropZone from '@/components/wordMatching/WordDropZone';
+import ProgressBar from '@/components/shared/ProgressBar';
+import WordMatchProgressBar from '@/components/wordMatching/WordMatchProgressBar';
+import MascotAlert from '@/components/wordMatching/MascotAlert';
 
 export default function LessonPage() {
   const router = useRouter();
@@ -27,9 +35,61 @@ export default function LessonPage() {
   const [draggingLetter, setDraggingLetter] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // word matching state
+
+  const { addWordToArrangement, removeWordFromArrangement,
+    arrangedWords, score, currentLevel,
+    setShowFeedback,showFeedback, nextLevel, resetLevel,
+    isWordCorrect, checkAnswer,resetGame } = useWordMatchGameStore();
+
+  const [currentChallenge, setCurrentChallenge] = useState(challenges[0]);
+
+  const handleReset = () => {
+    // resetLevel();
+    resetGame()
+  }
+
+  const handleRemoveWord = (index: number) => {
+    removeWordFromArrangement(index);
+  }
+
+  const handleWordCheck = ()=>{
+    console.log(">> Word to check >>>", arrangedWords);
+    const wordCheckResult = checkAnswer()
+    console.log(">> Check result >>", wordCheckResult);
+
+  // on web
+  if(Platform.OS === 'web'){
+    if (wordCheckResult) {
+      Alert.alert("Correct", "Great job! Moving the next level");
+      setTimeout(()=>{nextLevel();},2000)
+    }else{
+      Alert.alert("Incorrect", "Try Again!")
+    }
+  }else{
+    setTimeout(()=>{
+      if (wordCheckResult) {
+        nextLevel()
+      }else{setShowFeedback(false)}
+    }, 3000)
+  }
+  }
+  //current level change state
+  useEffect(() => {
+    //get current level
+    const challenge = challenges.find(c => c.id === currentLevel);
+    if (challenge) {
+      setCurrentChallenge(challenge)
+    }
+  }, [currentLevel])
+
+
+  const isWordCheckDisabled = arrangedWords.length !== currentChallenge.correctOrder.length
+  // const fadeAnim = useSharedValue(1);
+
   // Animation refs
-  const position = useRef(new Animated.ValueXY()).current;
-  const fadeAnim = useRef(new Animated.Value(1)).current;
+  // const position = useRef(new Animated.ValueXY()).current;
+  // const fadeAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     const loadLesson = async () => {
@@ -65,49 +125,50 @@ export default function LessonPage() {
   useEffect(() => {
     return audioSound
       ? () => {
-          (audioSound as Audio.Sound).unloadAsync();
-        }
+        (audioSound as Audio.Sound).unloadAsync();
+      }
       : undefined;
   }, [audioSound]);
 
   // Pan Responder for translation drag and drop
-  const createPanResponder = (letter: string) => PanResponder.create({
-    onStartShouldSetPanResponder: () => !draggingLetter || draggingLetter === letter,
-    onMoveShouldSetPanResponder: () => !draggingLetter || draggingLetter === letter,
-    onPanResponderGrant: () => {
-      setDraggingLetter(letter);
-      position.setOffset({
-        x: position.x as unknown as number,
-        y: position.y as unknown as number
-      });
-    },
-    onPanResponderMove: Animated.event(
-      [null, { dx: position.x, dy: position.y }],
-      { useNativeDriver: false }
-    ),
-    onPanResponderRelease: (e, gesture) => {
-      const isInDropZone = gesture.moveY > 200 && gesture.moveY < 300;
+  // const createPanResponder = (letter: string) => PanResponder.create({
+  //   onStartShouldSetPanResponder: () => !draggingLetter || draggingLetter === letter,
+  //   onMoveShouldSetPanResponder: () => !draggingLetter || draggingLetter === letter,
+  //   onPanResponderGrant: () => {
+  //     setDraggingLetter(letter);
+  //     position.extractOffset();
+  //     position.flattenOffset();
+  //     // position.setOffset({
+  //     //   x: position.x.extractOffset() ,
+  //     //   y: position.y.extractOffset()     });
+  //   },
+  //   onPanResponderMove: Animated.event(
+  //     [null, { dx: position.x, dy: position.y }],
+  //     { useNativeDriver: false }
+  //   ),
+  //   onPanResponderRelease: (e, gesture) => {
+  //     const isInDropZone = gesture.moveY > 200 && gesture.moveY < 300;
 
-      if (isInDropZone) {
-        const letterIndex = Math.floor(gesture.moveX / 60);
-        setDroppedLetters(prev => {
-          const newDropped = [...prev];
-          newDropped.splice(letterIndex, 0, letter);
-          return newDropped;
-        });
-        const currentAnswer = [...droppedLetters, letter].join('');
-        setIsCorrect(currentAnswer === currentExercise?.correctAnswer);
-      }
+  //     if (isInDropZone) {
+  //       const letterIndex = Math.floor(gesture.moveX / 60);
+  //       setDroppedLetters(prev => {
+  //         const newDropped = [...prev];
+  //         newDropped.splice(letterIndex, 0, letter);
+  //         return newDropped;
+  //       });
+  //       const currentAnswer = [...droppedLetters, letter].join('');
+  //       setIsCorrect(currentAnswer === currentExercise?.correctAnswer);
+  //     }
 
-      Animated.spring(position, {
-        toValue: { x: 0, y: 0 },
-        friction: 5,
-        useNativeDriver: false
-      }).start(() => {
-        setDraggingLetter(null);
-      });
-    }
-  });
+  //     Animated.spring(position, {
+  //       toValue: { x: 0, y: 0 },
+  //       friction: 5,
+  //       useNativeDriver: false
+  //     }).start(() => {
+  //       setDraggingLetter(null);
+  //     });
+  //   }
+  // });
 
   // Guard against null currentLesson
   if (isLoading) {
@@ -145,34 +206,34 @@ export default function LessonPage() {
     setIsCorrect(option === currentExercise.correctAnswer);
   };
 
-  const handleDrop = (letter: string) => {
-    const newDroppedLetters = [...droppedLetters, letter];
-    setDroppedLetters(newDroppedLetters);
-    const currentAnswer = newDroppedLetters.join('');
-    setIsCorrect(currentAnswer === currentExercise.correctAnswer);
+  // const handleDrop = (letter: string) => {
+  //   const newDroppedLetters = [...droppedLetters, letter];
+  //   setDroppedLetters(newDroppedLetters);
+  //   const currentAnswer = newDroppedLetters.join('');
+  //   setIsCorrect(currentAnswer === currentExercise.correctAnswer);
 
-    if (currentAnswer === currentExercise.correctAnswer) {
-      Animated.sequence([
-        Animated.timing(fadeAnim, {
-          toValue: 0.7,
-          duration: 100,
-          useNativeDriver: true
-        }),
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 100,
-          useNativeDriver: true
-        })
-      ]).start();
-    }
-  };
+  //   if (currentAnswer === currentExercise.correctAnswer) {
+  //     Animated.sequence([
+  //       Animated.timing(fadeAnim, {
+  //         toValue: 0.7,
+  //         duration: 100,
+  //         useNativeDriver: true
+  //       }),
+  //       Animated.timing(fadeAnim, {
+  //         toValue: 1,
+  //         duration: 100,
+  //         useNativeDriver: true
+  //       })
+  //     ]).start();
+  //   }
+  // };
 
-  const removeLetter = (index: number) => {
-    const newDroppedLetters = [...droppedLetters];
-    newDroppedLetters.splice(index, 1);
-    setDroppedLetters(newDroppedLetters);
-    setIsCorrect(newDroppedLetters.join('') === currentExercise.correctAnswer);
-  };
+  // const removeLetter = (index: number) => {
+  //   const newDroppedLetters = [...droppedLetters];
+  //   newDroppedLetters.splice(index, 1);
+  //   setDroppedLetters(newDroppedLetters);
+  //   setIsCorrect(newDroppedLetters.join('') === currentExercise.correctAnswer);
+  // };
 
   const handleNext = () => {
     if (isCorrect) {
@@ -186,24 +247,24 @@ export default function LessonPage() {
           [{ text: 'Continue', onPress: () => router.back() }]
         );
       } else {
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 200,
-          useNativeDriver: true
-        }).start(() => {
-          // Move to the next exercise
-          setCurrentExerciseIndex(currentExerciseIndex + 1);
-          // Reset all relevant state for the new question
-          setSelectedOption(null);
-          setIsCorrect(null);
-          setShowHint(false);
-          setDroppedLetters([]);
-          setDraggingLetter(null);
-          fadeAnim.setValue(1);
-        });
+
+
+        setCurrentExerciseIndex(currentExerciseIndex + 1);
+        // Reset all relevant state for the new question
+        setSelectedOption(null);
+        setIsCorrect(null);
+        setShowHint(false);
+
+
       }
     }
   };
+
+  const handleWordSelect = (word: string) => {
+    addWordToArrangement(word);
+    console.log(">>> Selected >>>", word)
+
+  }
 
   const renderExercise = () => {
     if (!currentExercise) {
@@ -213,7 +274,7 @@ export default function LessonPage() {
     switch (currentExercise.type) {
       case 'multipleChoice':
         return (
-          <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
+          <View style={[styles.contentContainer]}>
             <Text style={styles.question}>{currentExercise.question}</Text>
             {showHint && currentExercise.hint && (
               <View style={styles.hintContainer}>
@@ -248,12 +309,12 @@ export default function LessonPage() {
                 <Text style={styles.hintButtonText}>Show Hint</Text>
               </TouchableOpacity>
             )}
-          </Animated.View>
+          </View>
         );
 
       case 'listening':
         return (
-          <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
+          <View style={[styles.contentContainer]}>
             <Text style={styles.question}>{currentExercise.question}</Text>
             {currentExercise.options?.map((option, index) => {
               const listeningOption = option as ListeningOption;
@@ -269,12 +330,12 @@ export default function LessonPage() {
                 </TouchableOpacity>
               );
             })}
-          </Animated.View>
+          </View>
         );
 
-      case 'matching':
+      case 'picture-matching':
         return (
-          <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
+          <View style={[styles.contentContainer]}>
             <View style={styles.questionContainer}>
               {currentExercise.avatar ? (
                 typeof currentExercise.avatar === 'string' ? (
@@ -313,58 +374,61 @@ export default function LessonPage() {
                 </TouchableOpacity>
               ))}
             </View>
-          </Animated.View>
+          </View>
         );
 
       case 'translation':
+
         return (
-          <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
-            <Text style={styles.question}>{currentExercise.question}</Text>
-            <View style={[
-              styles.dropZone,
-              isCorrect === true && styles.correctDropZone,
-              isCorrect === false && styles.incorrectDropZone
-            ]}>
-              {droppedLetters.map((letter, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.droppedLetter}
-                  onPress={() => removeLetter(index)}
-                >
-                  <Text style={styles.droppedLetterText}>{letter}</Text>
-                </TouchableOpacity>
-              ))}
-              {droppedLetters.length === 0 && (
-                <Text style={styles.placeholderText}>Drag letters here</Text>
-              )}
+          <View style={styles.container}>
+            <Text style={styles.title}>Translate words into Setswana Words</Text>
+
+          </View>
+
+        );
+
+      case 'word-matching':
+
+        return (
+          <SafeAreaView style={styles.container}>
+
+            {/* progress bar */}
+
+            <WordMatchProgressBar currentLevel={currentChallenge.id} totalLevels={challenges.length} />
+            {/* instruction text */}
+            <View style={styles.instructionContainer}>
+              <Text style={styles.instructionText}>{currentChallenge.instruction}</Text>
+
             </View>
-            <View style={styles.lettersContainer}>
-              {currentExercise.options?.map((letter, index) => {
-                const panResponder = createPanResponder(letter as string);
-                return (
-                  <Animated.View
-                    key={index}
-                    {...(!droppedLetters.includes(letter as string) ? panResponder.panHandlers : {})}
-                    style={[
-                      styles.letterTile,
-                      !droppedLetters.includes(letter as string) && draggingLetter === letter && {
-                        transform: position.getTranslateTransform()
-                      },
-                      droppedLetters.includes(letter as string) && styles.usedLetter,
-                      draggingLetter === letter && styles.draggingLetter
-                    ]}
-                  >
-                    <TouchableOpacity
-                      onPress={() => handleDrop(letter as string)}
-                      disabled={droppedLetters.includes(letter as string) || !!draggingLetter}
-                    >
-                      <Text style={styles.letterText}>{letter as string}</Text>
-                    </TouchableOpacity>
-                  </Animated.View>
-                );
-              })}
+
+            {/* dropszone */}
+            <WordDropZone arragedWords={arrangedWords} onRemoveWord={handleRemoveWord} />
+
+            {/* Show feedback with Mascot */}
+            {
+              showFeedback && (
+                <MascotAlert isCorrect={isWordCorrect ?? undefined} visible={showFeedback} />
+              )
+            }
+
+
+            {/* Word bank  */}
+            <WordBank
+              words={currentChallenge.wordBank}
+              usedWords={arrangedWords}
+              onSelectWord={handleWordSelect}
+            />
+
+            {/* Check and reset buttons */}
+            <View style={styles.buttonContainer}>
+              <Button title='Reset' onPress={handleReset} style={styles.resetButton} />
+
+              <Button title='Check' onPress={handleWordCheck} style={styles.checkButton} disabled={isWordCheckDisabled}/>
+
             </View>
-          </Animated.View>
+
+          </SafeAreaView>
+
         );
 
       default:
@@ -391,7 +455,7 @@ export default function LessonPage() {
         </View>
         <View style={styles.footer}>
           <Button
-            title={isLastExercise ? "Finish" : "Check"}
+            title={isLastExercise ? "Complete Lesson" : "Continue"}
             disabled={!isCorrect}
             style={
               styles.continueButton
@@ -403,7 +467,7 @@ export default function LessonPage() {
     </>
   );
 }
-
+const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -500,8 +564,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.gray300,
     flexDirection: 'row',
-    width: '48%',
-    justifyContent: 'center',
+    width: '100%',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   selectedOption: {
@@ -533,28 +597,7 @@ const styles = StyleSheet.create({
     color: COLORS.error,
     fontWeight: '500',
   },
-  dropZone: {
-    width: '90%',
-    minHeight: 60,
-    borderWidth: 2,
-    borderColor: COLORS.gray300,
-    borderRadius: 12,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    padding: 8,
-    backgroundColor: '#f5f5f5',
-    marginBottom: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  correctDropZone: {
-    borderColor: COLORS.success,
-    backgroundColor: '#e8f5e9',
-  },
-  incorrectDropZone: {
-    borderColor: COLORS.error,
-    backgroundColor: '#ffebee',
-  },
+
   droppedLetter: {
     backgroundColor: COLORS.white,
     borderRadius: 8,
@@ -605,13 +648,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderTopWidth: 1,
     borderTopColor: COLORS.gray200,
+    alignItems: 'center',
   },
-  checkButton: {
-    width: '80%',
-    alignSelf: 'center',
-    paddingVertical: 15,
-    borderRadius: 12,
-  },
+
   correctButton: {
     backgroundColor: COLORS.success,
   },
@@ -620,6 +659,108 @@ const styles = StyleSheet.create({
   },
   continueButton: {
     width: '80%',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
+
+  wordBankContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#333',
+  },
+
+  draggableWord: {
+    backgroundColor: '#4CAF50',
+    padding: 10,
+    margin: 5,
+    borderRadius: 10,
+  },
+  wordText: {
+    color: 'white',
+    fontSize: 18,
+  },
+  dropZone: {
+    width: width * 0.8,
+    minHeight: 100,
+    borderWidth: 2,
+    borderColor: '#2196F3',
+    borderStyle: 'dashed',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    marginBottom: 20,
+  },
+  droppedWordText: {
+    fontSize: 18,
+    margin: 5,
+  },
+  buttonContainer: {
+    marginTop: 40,
+    marginBottom: 40,
+    justifyContent: 'space-between',
+    flexDirection: 'row'
+  },
+  // checkButton: {
+  //   backgroundColor: '#2196F3',
+  //   color: 'white',
+  //   padding: 10,
+  //   borderRadius: 10,
+  //   fontSize: 18,
+  // },
+  mascot: {
+    position: 'absolute',
+    bottom: 50,
+    alignSelf: 'center',
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    padding: 15,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  mascotText: {
+    fontSize: 20,
+    textAlign: 'center',
+  },
+  instructionContainer: {
+    backgroundColor: colors.mascotBackground,
+    borderRadius: 16,
+    padding: 16,
+    marginVertical: 8,
+  },
+  instructionText: {
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: colors.text,
+  },
+  resetButton: {
+    flex: 1,
+    marginRight: 8,
+    borderRadius: 25,
+    backgroundColor: "#2D9ECE",
+  },
+  checkButton: {
+    flex: 2,
+    marginLeft: 8,
+    borderRadius: 25,
+  },
+  // nextButtonText: {
+  //   fontFamily: "Work Sans, -apple-system, Roboto, Helvetica, sans-serif",
+  //   fontSize: 16,
+  //   color: "rgba(255, 255, 255, 1)",
+  //   letterSpacing: 0.48,
+  //   textAlign: "center",
+  // },
 });
