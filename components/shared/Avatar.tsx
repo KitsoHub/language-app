@@ -1,23 +1,24 @@
 
 
 import { StyleSheet, Text, View, ViewStyle, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { colors } from '@/utils/constants/colors';
 import { avatars } from '@/mocks/vowels';
 
 
 type AvatarProps ={
-    uri?: string | null;
-    img_index?: number;
+    uri?: string | number;
     name?: string;
     size?: number;
     style?: ViewStyle;
 
 }
 export default function Avatar({
-    uri, name, size = 48,style, img_index=0
+    uri, name, size = 48,style,
 }: AvatarProps) {
-console.log(uri)
+console.log(" >> Image from store >>",uri)
+const [imgIndex, setImgIndex] = useState<number | null >(-1);
+
     const getInitials =() =>{
         if(!name)return '';
         const nameParts = name.split(' ');
@@ -31,7 +32,20 @@ console.log(uri)
             nameParts[nameParts.length -1].charAt(0).toLocaleUpperCase()
         );
     }
-
+    useEffect(() => {
+      if (typeof uri === 'string') {
+        if (uri.includes("ImagePicker")) {
+            setImgIndex(null);
+        } else {
+            const parsed = parseInt(uri, 10);
+            setImgIndex(Number.isInteger(parsed) ? parsed : null);
+        }
+    } else if (typeof uri === 'number') {
+        setImgIndex(Number.isInteger(uri) ? uri : null);
+    } else {
+        setImgIndex(null);
+    }
+  }, [uri]);
   return (
     <View
     style={[
@@ -41,16 +55,24 @@ console.log(uri)
     ]}
   >
 {/* TODO: update to use stored avatar */}
-    {uri?.includes("ImagePicker") ?(
+    { typeof uri === 'string' && uri?.includes("ImagePicker") ?(
         <Image source={ uri ? { uri: uri } : require("@/assets/avatars/avatar_1.jpg")} style={styles.image} resizeMode='cover'/>
-        // <Image source={require("@/assets/avatars/avatar_1.jpg")} style={styles.image} resizeMode='cover'/>
-    ):(
+    ):
 
-      <Image source={avatars[img_index].image} style={styles.image} resizeMode='cover'/>
-        // <Text style={[styles.initials, {fontSize: size*0.4}]}>
-        //     {getInitials()}
-        // </Text>
-    )}
+    (
+      imgIndex !== null && avatars[imgIndex] ? (
+        <Image
+          source={avatars[imgIndex].image}
+          style={styles.image}
+          resizeMode='cover'
+        />
+      ) : (
+        <Text style={[styles.initials, {fontSize: size*0.4}]}>
+          {getInitials()}
+        </Text>
+      ))
+
+    }
 
   </View>
   )

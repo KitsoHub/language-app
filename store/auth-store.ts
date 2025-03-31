@@ -75,6 +75,6 @@ export const useAuthStore = create(
             clearError: () => {
                 set({ error: null })
             }
-        })), { name: "auth-storage", storage: createJSONStorage(() => AsyncStorage) }
+        })), { name: "auth-storage-a1", storage: createJSONStorage(() => AsyncStorage) }
     )
 )

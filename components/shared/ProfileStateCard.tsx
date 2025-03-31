@@ -7,9 +7,11 @@ import { useRouter } from 'expo-router'; // Import the router
 import Avatar from './Avatar';
 import {Button} from '@/components/ui/Button';
 import { Bell, Bookmark, BookMarked, BookOpen, ChevronRight, FileQuestion, GlobeLockIcon, Info, LogOut, PenIcon, Share2, ShieldClose, Star } from 'lucide-react-native';
+import { avatars } from '@/mocks/vowels';
 
 interface ProfileProps {
   name: string,
+  avatar: string,
   email: string,
   level: number,
   currentLanguage: string,
@@ -47,11 +49,12 @@ export default function ProfileStateCard({
   icon = "inbox",
   buttonTitle,
   onPress,
-  style
+  style,
+  avatar
 }: ProfileProps) {
   const { logout } = useAuthStore(); // Get the logout function from the auth store
   const router = useRouter(); // Get the router
-
+  const { user} = useAuthStore();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState('');
 
@@ -70,7 +73,7 @@ export default function ProfileStateCard({
       <View style={styles.profileHeader}>
 
         <Avatar
-          uri={name}
+          uri={user?.avatar !== null ? user?.avatar: ''}
           name={name}
           size={80}
 

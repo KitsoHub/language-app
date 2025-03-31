@@ -100,7 +100,7 @@ export const useWordMatchGameStore = create(
 
 
 
-        }),{name: 'word-matching-a5', storage: createJSONStorage(()=> AsyncStorage)}
+        }),{name: 'word-matching-a6', storage: createJSONStorage(()=> AsyncStorage)}
     )
 
 )

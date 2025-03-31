@@ -13,7 +13,7 @@ import * as ImagePicker from "expo-image-picker";
 
 export default function EditProfile() {
     const router = useRouter();
-    const {user, updateUser} = useAuthStore();
+    const { user, updateUser } = useAuthStore();
 
     //user details
     const [name, setName] = useState(user?.name || '');
@@ -23,23 +23,23 @@ export default function EditProfile() {
     //app submission state
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState({
-        name:'',
-        email:'',
+        name: '',
+        email: '',
     })
 
-    const validateForm = () =>{
+    const validateForm = () => {
         let isValid = true;
-        const newErrors = {name: '', email:''};
+        const newErrors = { name: '', email: '' };
         const isCheckEmail = /[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}/
 
-        if(!name.trim()){
+        if (!name.trim()) {
             newErrors.name = "Name is required";
             isValid = false;
         }
 
-        if(!email.trim()){
+        if (!email.trim()) {
             newErrors.email = "Email is required";
-        } else if (!isCheckEmail.test(email)){
+        } else if (!isCheckEmail.test(email)) {
             newErrors.email = "Email is invalid";
             isValid = false;
         }
@@ -48,39 +48,39 @@ export default function EditProfile() {
         return isValid;
     }
 
-    const handleImagePicker = async ()=>{
+    const handleImagePicker = async () => {
         console.log(" Handling Image Picker")
-          //request image library
-          const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync()
+        //request image library
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
 
-          if(status === 'granted'){
+        if (status === 'granted') {
 
-              const result = await ImagePicker.launchImageLibraryAsync({
-                  mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                  allowsEditing: true,
-                  aspect: [1,1],
-                  quality: 0.5
-              });
-              console.log(JSON.stringify(result, null, ' '))
-              if(!result.canceled){
-                  //console.log(result.assets[0].uri)
-                 setAvatar(result.assets[0].uri)
-              }
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 0.5
+            });
+            console.log(JSON.stringify(result, null, ' '))
+            if (!result.canceled) {
+                //console.log(result.assets[0].uri)
+                setAvatar(result.assets[0].uri)
+            }
 
-          }else{
-              let alert_title= "Permission Denied";
-              let alert_message = "We need to camera roll permission to update the avatar";
-              Alert.alert(alert_title, alert_message);
-          }
+        } else {
+            let alert_title = "Permission Denied";
+            let alert_message = "We need to camera roll permission to update the avatar";
+            Alert.alert(alert_title, alert_message);
+        }
     }
-    const handleSave = async () =>{
+    const handleSave = async () => {
         // form validate
-        if(!validateForm()) return;
+        if (!validateForm()) return;
 
         setIsLoading(true);
         try {
-            await new Promise(resolve =>setTimeout(resolve, 1000));
-            console.log('Handling Save')
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            console.log('>> Handling Save >>', avatar, name, email)
             updateUser(
                 {
                     name,
@@ -91,77 +91,77 @@ export default function EditProfile() {
 
 
         } catch (error) {
-            console.log("<<< Image update error >>>",error);
+            console.log("<<< Image update error >>>", error);
 
-        }finally{
+        } finally {
             console.log("<<< Finished updating >>>");
             setIsLoading(false)
         }
     }
 
-    const handleAvatarPicker = async (image:string)=> {
-        console.log(image)
-        await new Promise(resolve=> setTimeout(resolve, 1000))
+    const handleAvatarPicker = async (image: string) => {
+        console.log(" >> Avatar Picker >> ",image)
+        await new Promise(resolve => setTimeout(resolve, 1000))
         setAvatar(image)
     }
 
-  return (
-<>
-    <Stack.Screen options={{title:"EditProfile", headerBackTitle:"Back"}} />
-<WrapperContainer>
-<KeyboardAvoidingView
-behavior={Platform.OS === 'ios' ?"padding":"height"}
->
+    return (
+        <>
+            <Stack.Screen options={{ title: "EditProfile", headerBackTitle: "Back" }} />
+            <WrapperContainer>
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === 'ios' ? "padding" : "height"}
+                >
 
 
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewContent}>
-        {/* avatar*/}
-        <View style={styles.avatarContainer}>
-            <Avatar
-            uri={avatar}
-            name={name}
-            size={100}
-            />
-            <TouchableOpacity style={styles.cameraButton}
-            onPress={handleImagePicker}>
-                <Camera size={20} color={colors.white}/>
-            </TouchableOpacity>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewContent}>
+                        {/* avatar*/}
+                        <View style={styles.avatarContainer}>
+                            <Avatar
+                                uri={avatar}
+                                name={name}
+                                size={100}
+                            />
+                            <TouchableOpacity style={styles.cameraButton}
+                                onPress={handleImagePicker}>
+                                <Camera size={20} color={colors.white} />
+                            </TouchableOpacity>
 
-        </View>
+                        </View>
 
-        <View style={styles.avatarSelectContainer}>
+                        <View style={styles.avatarSelectContainer}>
+                        {/* list of avatars */}
 
-            <TouchableOpacity style={styles.cameraButton}
-            onPress={()=>setAvatar(
-                "1")}>
-               <Image source={require("@/assets/avatars/avatar_1.jpg")} style={styles.image}/>
-            </TouchableOpacity>
-
-        </View>
-
-
-
-
-        {/* list of avatars */}
-
-        {/* inputs */}
-        <View style={styles.form}>
-            <Input label="Full Name" placeholder=' Enter your full name' value={name} onChangeText={setName} error={errors.name} leftIcon={<User size={20} color={colors.gray500} />}/>
-            <Input keyboardType='email-address' autoCapitalize="words" label="Email Address" placeholder='Enter your email address' value={email} onChangeText={setEmail} error={errors.email} leftIcon={<Mail size={20} color={colors.gray500} />}/>
-
-        <Button style={styles.saveButton} title='Save Changes'
-        onPress={handleSave}
-        isLoading={isLoading}
-        />
-        </View>
+                            <TouchableOpacity style={styles.avatarSubContainer}
+                                onPress={()=>handleAvatarPicker("0")}>
+                                <Image source={require("@/assets/avatars/boy.png")} style={styles.avatarImage} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.avatarSubContainer}
+                                onPress={()=>handleAvatarPicker("1")}>
+                                <Image source={require("@/assets/avatars/women.png")} style={styles.avatarImage} />
+                            </TouchableOpacity>
 
 
-    </ScrollView>
-</KeyboardAvoidingView>
-</WrapperContainer>
+                        </View>
 
-</>
-  )
+                        {/* inputs */}
+                        <View style={styles.form}>
+                            <Input label="Full Name" placeholder=' Enter your full name' value={name} onChangeText={setName} error={errors.name} leftIcon={<User size={20} color={colors.gray500} />} />
+                            <Input keyboardType='email-address' autoCapitalize="words" label="Email Address" placeholder='Enter your email address' value={email} onChangeText={setEmail} error={errors.email} leftIcon={<Mail size={20} color={colors.gray500} />} />
+
+                            <Button style={styles.saveButton} title='Save Changes'
+                                onPress={handleSave}
+                                isLoading={isLoading}
+                            />
+                        </View>
+
+
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </WrapperContainer>
+
+        </>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -169,18 +169,30 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 32,
         position: 'relative',
-      },
-      avatarSelectContainer: {
+    },
+    avatarSelectContainer: {
+        flex:1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+gap:20,
+    },
+    avatarSubContainer: {
+        backgroundColor: colors.gray300,
+        justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 32,
+        overflow: 'hidden',
         marginBottom: 32,
-        position: 'relative',
-      },
-      ScrollViewContent:{
-        flexGrow:1,
-        padding:24
-      },
-      cameraButton: {
+        width: 60,
+        height: 60,
+        borderRadius: 50,
+        borderWidth: 1,
+        borderColor: colors.secondary,
+    },
+    ScrollViewContent: {
+        flexGrow: 1,
+        padding: 24
+    },
+    cameraButton: {
         position: 'absolute',
         bottom: 0,
         right: '35%',
@@ -192,13 +204,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 2,
         borderColor: colors.white,
-      },
-      form:{marginBottom:24},
-      saveButton:{
-        marginTop:16
-      },
-      image: {
+    },
+    form: { marginBottom: 24 },
+    saveButton: {
+        marginTop: 16
+    },
+    image: {
         width: '100%',
         height: '100%',
-      },
+    },
+
+    avatarImage: {
+        width: '100%',
+        height: '100%',
+    },
 })
