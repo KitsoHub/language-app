@@ -6,8 +6,8 @@ export default function Layout() {
   return (
   <Stack>
     <Stack.Screen name="index" options={{title:"Profile"}}>
-
     </Stack.Screen>
+    <Stack.Screen name="terms" options={{title:"Terms"}}></Stack.Screen>
   </Stack>
   )
 }
