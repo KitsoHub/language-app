@@ -100,3 +100,12 @@ export interface Skill{
     name: 'vocabulary' | 'listening' | 'speaking' | 'reading' | 'writing'| 'grammar';
     progress: number;
 }
+
+export type SubscriptionPlanType = {
+    id: string;
+    title: string;
+    subtitle: string;
+    pricePerWeek: string;
+    badge?: string;
+    badgeColor?:string;
+}

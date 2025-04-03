@@ -6,6 +6,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 interface AuthState {
     user: User | null;
     isAuthenticated: boolean;
+    isSubscribed: boolean;
     isLoading: boolean;
     error: string | null;
     // selectedRole: UserRole | null;
@@ -30,6 +31,7 @@ export const useAuthStore = create(
             isAuthenticated: false,
             isLoading: false,
             error: null,
+            isSubscribed: false,
             login: async (email, password) => {
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 try {

@@ -7,5 +7,6 @@ export enum ROUTES {
     LEARN="/learn",
     COURSE="/course/",
     LESSON="/lesson/",
-    EDITPROFILE="/edit-profile"
+    EDITPROFILE="/edit-profile",
+    SUBSCRIPTION="/subscription"
   }
