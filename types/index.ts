@@ -109,3 +109,24 @@ export type SubscriptionPlanType = {
     badge?: string;
     badgeColor?:string;
 }
+
+
+export interface Challenge {
+    id: number;
+    instruction: string;
+    correctOrder: string[];
+    wordBank: string[];
+    languageId: string,
+    isLocked?: boolean;
+    isCompleted?: boolean;
+    badge?: string;
+  }
+
+  export interface Game {
+    id: string;
+    title: string;
+    description: string;
+    challenges: Challenge[],
+    gameBadge: string;
+    gameIcon?: string;
+  }

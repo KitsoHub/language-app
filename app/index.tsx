@@ -5,9 +5,9 @@ import { Redirect } from "expo-router";
 export default function Index(){
     const {isAuthenticated, isSubscribed, user} = useAuthStore();
 
-    if (!isSubscribed){
-        return <Redirect href={ROUTES.SUBSCRIPTION as never}/>
-    }
+    // if (!isSubscribed){
+    //     return <Redirect href={ROUTES.SUBSCRIPTION as never}/>
+    // }
 
     //user is not authenticated
     if (!isAuthenticated){

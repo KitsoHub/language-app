@@ -1,9 +1,8 @@
-export interface Challenge {
-    id: number;
-    instruction: string;
-    correctOrder: string[];
-    wordBank: string[];
-  }
+
+// add challeng type (word matching game, image matching game, etc)
+
+import type { Challenge } from "@/types";
+
 
   export const challenges: Challenge[] = [
     {
@@ -11,45 +10,40 @@ export interface Challenge {
       instruction: "Form the setswana greeting",
       correctOrder: ['du', 'me', 'la'],
       wordBank: ['me', 'du', 'la'],
+      languageId: 'st',
+      isLocked: false,
+      isCompleted: false,
+      badge: 'Hard',
     },
     {
       id: 2,
       instruction: "Form the word for rain",
       correctOrder: ['pu', 'la'],
       wordBank: ['la', 'pu'],
-    },
-  ];
-
-
-  export const newchallenges: Challenge[] = [
-    {
-      id: 1,
-      instruction: "Form the setswana greeting",
-      correctOrder: ['du', 'me', 'la'],
-      wordBank: ['me', 'du', 'la'],
-    },
-    {
-      id: 2,
-      instruction: "Form the word 'rumela'",
-      correctOrder: ['ru', 'me', 'la'],
-      wordBank: ['la', 'ru', 'me'],
+      languageId: 'st',
+      isLocked: false,
+      isCompleted: false,
+      badge: 'Medium',
     },
     {
       id: 3,
       instruction: "Form the word for rain",
       correctOrder: ['pu', 'la'],
       wordBank: ['la', 'pu'],
+      languageId: 'st',
+      isLocked: true,
+      isCompleted: false,
+      badge: 'Expert',
     },
+
     {
       id: 4,
-      instruction: "Form the word for woman",
-      correctOrder: ['mo', 'sa', 'di'],
-      wordBank: ['di', 'mo', 'sa'],
-    },
-    {
-      id: 5,
-      instruction: "Form the phrase 'dumela mosadi'",
-      correctOrder: ['du', 'me', 'la', 'mo', 'sa', 'di'],
-      wordBank: ['mo', 'du', 'sa', 'me', 'di', 'la'],
+      instruction: "Kalanga greeting",
+      correctOrder: ['ma', 'mu', 'ka'],
+      wordBank: ['ka', 'ma', 'mu'],
+      languageId: 'kl',
+      isLocked: false,
+      isCompleted: false,
+      badge: 'Easy',
     },
   ];

@@ -8,6 +8,9 @@ import { useLanguageStore } from '@/store/language-store';
 import CourseCard from './CourseCard';
 import { ROUTES } from '@/utils/constants/routes';
 import { COLORS } from '@/utils/constants/colors';
+import { challenges } from '@/mocks/challenges';
+import { useGameStore } from '@/store/game-store';
+import GamesCard from './games/GamesCard';
 
 
 export enum CustomTab {
@@ -45,6 +48,15 @@ export default function TabScreen() {
                 router.push(`${ROUTES.COURSE}${course.id}`);
             };
 
+            const handleGamePress = (game: any) => {
+                router.push(`${ROUTES.GAME}${game.id}`);
+            };
+
+            const games = useGameStore((s) => s.games)
+            const selectGame = useGameStore((s) => s.selectGame)
+
+        const availableChallenges = challenges.filter(challenge => challenge.languageId === selectedLanguage?.id && challenge.isLocked === false)
+        // const language = appLanguages.find((lang)=> lang.id === selectedLanguage. )
 
     const buttons: TabButtonProps[] = [{ title: "Available Courses" }, { title: "Challenges" }]
     return (
@@ -64,6 +76,7 @@ export default function TabScreen() {
                             />
                         ))
                     ) : (
+
                         <View style={styles.emptyState}>
                             <Text style={styles.emptyStateText}>
                                 No courses available. Please select a different language.
@@ -71,12 +84,27 @@ export default function TabScreen() {
                         </View>
                     )}
                     </> // end
-                ):(
-                    <View style={styles.emptyState}>
-                    <Text style={styles.emptyStateText}>
-                        No challenges available. Please select a different language.
-                    </Text>
-                </View>
+                ):(<>
+
+                <Text style={styles.sectionTitle}>{selectedLanguage?.name} Challenges</Text>
+                {availableChallenges.length > 0 ? (
+                        games.map((game) => (
+                            <GamesCard
+                                key={game.id}
+                                game={game}
+                                onPress={handleGamePress}
+                            />
+                        ))
+                    ) : (
+
+                        <View style={styles.emptyState}>
+                            <Text style={styles.emptyStateText}>
+                                No courses available. Please select a different language.
+                            </Text>
+                        </View>
+                    )}
+                </>
+
                 )}
             </View>
         </>

@@ -23,6 +23,7 @@ interface WordMatchGameState{
     checkAnswer: () => boolean;
     setShowFeedback: (show: boolean) => void;
     resetGame: () => void;
+    // getChallenges: () => void;
 }
 
 export const useWordMatchGameStore = create(
@@ -96,6 +97,7 @@ export const useWordMatchGameStore = create(
 
             return isWordCorrect
         }
+
 
 
 
