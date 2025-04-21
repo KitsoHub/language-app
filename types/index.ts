@@ -130,4 +130,5 @@ export interface Challenge {
     gameBadge: string;
     gameIcon?: string;
     type: 'word-matching' | 'image-matching' | 'listening' | 'speaking' | 'word-guessing';
+    languageId?: string;
   }

@@ -7,6 +7,7 @@ import { COLORS } from '@/utils/constants/colors';
 
 interface GamesCardProps {
     game: Game;
+    selectedLanguageId?: string;
     onPress: (game: Game) => void;
     style?: ViewStyle;
 }
@@ -14,11 +15,13 @@ interface GamesCardProps {
 export default function CourseCard({
     game,
     onPress,
+    selectedLanguageId,
     style
 }: GamesCardProps) {
 
     const completedChallenges = game.challenges.filter(challenge => challenge.isCompleted).length;
-    const totalChallenges = game.challenges.length;
+
+    const totalChallenges =game.challenges.filter(challenge => challenge.languageId === selectedLanguageId && challenge.isLocked === false).length;
     const progressPercentage = totalChallenges > 0 ? (completedChallenges / totalChallenges) * 100 : 0;
 
     return (

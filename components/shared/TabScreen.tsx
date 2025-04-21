@@ -26,7 +26,8 @@ export default function TabScreen() {
         // resetDailyProgressIfNeeded,
         getCoursesByLanguage,
     } = useProgressStore();
-
+    //game state
+    const { currentGameId, selectGame, games } = useGameStore();
     useEffect(() => {
         // resetDailyProgressIfNeeded();
 
@@ -52,8 +53,7 @@ export default function TabScreen() {
                 router.push(`${ROUTES.GAME}${game.id}`);
             };
 
-            const games = useGameStore((s) => s.games)
-            const selectGame = useGameStore((s) => s.selectGame)
+
 
         const availableChallenges = challenges.filter(challenge => challenge.languageId === selectedLanguage?.id && challenge.isLocked === false)
         // const language = appLanguages.find((lang)=> lang.id === selectedLanguage. )
@@ -93,6 +93,7 @@ export default function TabScreen() {
                                 key={game.id}
                                 game={game}
                                 onPress={handleGamePress}
+                                selectedLanguageId={selectedLanguage?.id}
                             />
                         ))
                     ) : (

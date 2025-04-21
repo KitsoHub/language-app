@@ -27,9 +27,9 @@ import type { Challenge } from "@/types";
     },
     {
       id: 3,
-      instruction: "Form the word for rain",
-      correctOrder: ['pu', 'la'],
-      wordBank: ['la', 'pu'],
+      instruction: "Form the word for look",
+      correctOrder: ['bo', 'na'],
+      wordBank: ['na', 'bo'],
       languageId: 'st',
       isLocked: true,
       isCompleted: false,
@@ -45,5 +45,15 @@ import type { Challenge } from "@/types";
       isLocked: false,
       isCompleted: false,
       badge: 'Easy',
+    },
+    {
+      id: 5,
+      instruction: "Form the word for look",
+      correctOrder: ['bo', 'na'],
+      wordBank: ['na', 'bo'],
+      languageId: 'kl',
+      isLocked: false,
+      isCompleted: false,
+      badge: 'Expert',
     },
   ];
