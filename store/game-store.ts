@@ -26,6 +26,7 @@ interface GameState {
                     challenges: [...challenges.filter(challenge => challenge.isLocked === false)],
                     gameBadge: 'Hard',
                     gameIcon: '🏠',
+                    type: 'word-matching',
                 }
             ],
             currentGameId: null,
