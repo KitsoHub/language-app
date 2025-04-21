@@ -9,7 +9,6 @@ import { useAuthStore } from './auth-store';
 interface GameState {
   games: Game[];
   currentGameId: string | null;
-  currentChallengeIndex: number;
   selectGame: (gameId: string) => void;
   //currentLanguageId: string | null;
   //setLanguageId: () => void;
@@ -45,8 +44,6 @@ export const useGameStore = create(
         },
       ],
       currentGameId: null,
-
-      currentChallengeIndex: 0,
 
       selectGame: (gameId) => set({ currentGameId: gameId }),
       // &&

@@ -19,7 +19,7 @@ export default function AppChallenges() {
   const currentLanguage = useLanguageStore((state) => state.selectedLanguage);
 
 	//game state
-	const { currentGameId, selectGame, games, currentChallengeIndex } = useGameStore();
+	const { currentGameId, selectGame, games } = useGameStore();
 	const [currentGame, setCurrentGame] = useState(games[0]);
 	// current game id
 	useEffect(() => {
@@ -70,12 +70,16 @@ export default function AppChallenges() {
     }else{
     setTimeout(() => {
       if (wordCheckResult) {
-        if(isLastExercise){
+        if(isLastTask){
+
                Alert.alert(
-                    'Lesson Completed!',
+                    'Challenge Completed!',
                     'You have earned 10 XP!',
-                    [{ text: 'Continue', onPress: () => router.back() }]
+                    [{ text: 'Continue', onPress: () => setTimeout(()=>{
+                      router.back(); resetGame();
+                    },1000)  }]
                   );
+
         }else{
 
           nextLevel();
@@ -98,16 +102,15 @@ export default function AppChallenges() {
   },[currentLevel, currentGame.challenges])
 
   // check challenge end
-  const currentGameChallenge = currentGame.challenges[currentChallengeIndex];
-  const isLastExercise = currentLevel === currentGame.challenges.length;
+  const currentGameChallenge = currentGame.challenges[currentLevel];
+  const isLastTask = currentLevel === currentGame.challenges.length;
 
 	// render function
 	const renderChallenge = () => {
 		console.log("Challenge length: ", currentGame.challenges.length);
-    console.log("Current Challenge: ",currentLevel );
-    console.log("Is Last exercise: ", isLastExercise);
+    console.log("Current Challenge: ",currentGameChallenge );
+    console.log("Is Last exercise: ", isLastTask);
 
-    // console.log(">>> Current level >>>: ", currentLevel, currentLanguage);
 
 		switch (currentGame.type) {
 			case "word-matching":
