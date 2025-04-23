@@ -104,7 +104,7 @@ export const useWordMatchGameStore = create(
       },
     }),
     {
-      name: 'word-matching-a7',
+      name: 'word-matching-a8',
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),
