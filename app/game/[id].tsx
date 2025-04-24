@@ -13,11 +13,13 @@ import WordBank from "@/components/wordMatching/WordBank";
 import { Button } from "@/components/ui/Button";
 import { useLanguageStore } from "@/store/language-store";
 import ScoreDisplay from "@/components/shared/games/ScoreDisplay";
+import GameCompletedModal from "@/components/modals/GameCompletedModal";
 
 export default function AppChallenges() {
 	const router = useRouter();
 	const { id } = useLocalSearchParams();
 	const currentLanguage = useLanguageStore((state) => state.selectedLanguage);
+	const [showCompletionModal, setShowCompletionModal] = useState(false);
 
 	//game state
 	const { currentGameId, selectGame, games } = useGameStore();
@@ -51,7 +53,6 @@ export default function AppChallenges() {
 		resetGame,
 	} = useWordMatchGameStore();
 
-
 	const handleRemoveWord = (index: number) => {
 		removeWordFromArrangement(index);
 	};
@@ -63,27 +64,24 @@ export default function AppChallenges() {
 	const handleGameReset = () => {
 		resetGame();
 	};
+	const handleContinue = () => {
+		setShowCompletionModal(false);
+		router.back();
+		resetGame();
+	};
+	const handleCloseCompletedModal = () => {
+
+		setShowCompletionModal(false);
+		router.back();
+		resetGame();
+	};
 
 	const [isGameCompleted, setIsGameCompleted] = useState(false);
 	useEffect(() => {
-		if(isGameCompleted){
-			Alert.alert(
-				"Challenge Completed tests!",
-				`You have earned ${score} XP!`,
-				[
-				  {
-					text: "Continue",
-					onPress: () =>
-					  setTimeout(() => {
-						router.back();
-						resetGame();
-						setIsGameCompleted(false);
-					  }, 1000),
-				  },
-				],
-			  );
+		if (isGameCompleted && !showCompletionModal) {
+			setShowCompletionModal(true);
 		}
-	},[isGameCompleted, score, router, resetGame])
+	}, [isGameCompleted, showCompletionModal]);
 
 	const handleWordCheck = () => {
 		const wordCheckResult = checkAnswer();
@@ -101,27 +99,10 @@ export default function AppChallenges() {
 			setTimeout(() => {
 				if (wordCheckResult) {
 					if (isLastTask) {
-
-						// const currentXp = useWordMatchGameStore.getState().score;
-						// Alert.alert(
-						// 	"Challenge Completed tests!",
-						// 	`You have earned ${currentXp} XP!`,
-						// 	[
-						// 		{
-						// 			text: "Continue",
-						// 			onPress: () =>
-						// 				setTimeout(() => {
-						// 					router.back();
-						// 					resetGame();
-						// 				}, 1000),
-						// 		},
-						// 	],
-						// );
 						setIsGameCompleted(true);
-
+						setShowCompletionModal(true);
 					} else {
 						nextLevel();
-
 					}
 					//check challenge end
 				} else setShowFeedback(false);
@@ -148,7 +129,6 @@ export default function AppChallenges() {
 
 	// render function
 	const renderChallenge = () => {
-
 		switch (currentGame.type) {
 			case "word-matching":
 				return (
@@ -217,8 +197,6 @@ export default function AppChallenges() {
 		}
 	};
 
-
-
 	return (
 		<>
 			<Stack.Screen
@@ -232,6 +210,15 @@ export default function AppChallenges() {
 			/>
 			<SafeAreaView style={styles.container}>
 				<View style={styles.content}>{renderChallenge()}</View>
+				<View style={styles.content}>
+					<GameCompletedModal
+						visible={showCompletionModal}
+						onClose={handleCloseCompletedModal}
+						onContinue={handleContinue}
+						gameTitle={currentGame.title}
+						earnedXP={score}
+					/>
+				</View>
 			</SafeAreaView>
 		</>
 	);
