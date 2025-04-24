@@ -139,7 +139,7 @@ export const useNewGameStore = create(
         })),
 
       checkAnswer: () => {
-        console.log('Init');
+
         const { arrangedWords } = get();
         const currentChallenge = get().getCurrentChallenge();
 
@@ -158,9 +158,8 @@ export const useNewGameStore = create(
 
         if (isCorrect) {
           const authStore = useAuthStore.getState();
-        //   if (!authStore.user) return false;
+          if (!authStore.user) return false;
 
-        //   console.log('Current challeng:', currentChallenge.id);
           authStore.addCompletedChallenge(currentChallenge.id);
           authStore.addXp(currentChallenge.points || 10);
 

@@ -78,7 +78,7 @@ export default function GamePage() {
 		resetGame();
 	};
 	const handleWordCheck = () => {
-    console.log("Result: ", arrangedWords)
+
 		const wordCheckResult = checkAnswer();
 		if (Platform.OS === "web") {
 			if (wordCheckResult) {
