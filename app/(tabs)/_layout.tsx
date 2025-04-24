@@ -3,6 +3,7 @@ import React from 'react'
 import { Tabs } from 'expo-router'
 import Feather from '@expo/vector-icons/build/Feather'
 import { COLORS } from '@/utils/constants/colors'
+import { Gamepad2 } from 'lucide-react-native'
 
 
 export default function MainLayout() {
@@ -18,15 +19,17 @@ export default function MainLayout() {
   <Feather name="book-open" size={size} color={color}/>
 )
 }} />
-
-<Tabs.Screen name='achievements' options={{title:'Achievements', tabBarIcon:({color,size})=>(
-  <Feather name='award' size={size} color={color}/>
+<Tabs.Screen name='games' options={{title:'Game', tabBarIcon:({color,size})=>(
+  <Gamepad2 size={size} color={color}/>
 )}}/>
         <Tabs.Screen name="profile"  options={{ title: "Profile", headerShown: false, animation: "fade" ,
       tabBarIcon: ({color, size})=>(
         <Feather name="user" size={size} color={color} />
       )
     }} />
+    {/* <Tabs.Screen name='achievements' options={{title:'Achievements', tabBarIcon:({color,size})=>(
+      <Feather name='award' size={size} color={color}/>
+    )}}/> */}
 </Tabs>
   )
 }

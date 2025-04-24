@@ -8,6 +8,7 @@ export interface User{
     xp:number;
     level:number;
     joinedAt:string;
+    completedChallenges: string[];
 
 }
 
@@ -112,13 +113,19 @@ export type SubscriptionPlanType = {
 
 
 export interface Challenge {
-    id: number;
+    id: number | string;
+    type: "word-matching" |"multiple-choice"| 'fill-blank'| 'sentence-builder';
     instruction: string;
-    correctOrder: string[];
-    wordBank: string[];
+    correctOrder?: string[];
+    wordBank?: string[];
+    options?: string[];
+    correctAnswer?: string;
+    sentence?: string;
+    blanks?: number[];
     languageId: string,
     isLocked?: boolean;
-    isCompleted?: boolean;
+    points: number;
+    difficulty: 'easy' | 'medium' | 'hard';
     badge?: string;
   }
 
@@ -129,6 +136,6 @@ export interface Challenge {
     challenges: Challenge[],
     gameBadge: string;
     gameIcon?: string;
-    type: 'word-matching' | 'image-matching' | 'listening' | 'speaking' | 'word-guessing';
+    type: 'word-matching' | 'image-matching' | 'listening' | 'speaking' | 'sentence-builder'| 'fill-blank';
     languageId?: string;
   }
