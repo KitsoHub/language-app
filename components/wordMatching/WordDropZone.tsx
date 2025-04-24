@@ -4,11 +4,11 @@ import { colors } from "@/utils/constants/colors";
 import WordTile from "./WordTile";
 
 type WordDropZoneProps = {
-	arragedWords: string[];
+	arrangedWords: string[];
 	onRemoveWord: (index: number) => void;
 };
 export default function WordDropZone({
-	arragedWords,
+	arrangedWords,
 	onRemoveWord,
 }: WordDropZoneProps) {
 	return (
@@ -16,13 +16,13 @@ export default function WordDropZone({
 			<View style={styles.dropZoneArea}>
 				{/* display word tiles if they exist */}
 
-				{arragedWords.length === 0 ? (
+				{arrangedWords.length === 0 ? (
 					<Text style={styles.placeholder}>
 						Select words below to add them here.
 					</Text>
 				) : (
 					<View style={styles.wordContainer}>
-						{arragedWords.map((word, index) => (
+						{arrangedWords.map((word, index) => (
 							<WordTile
 								key={`${word}-${index}`}
 								word={word}

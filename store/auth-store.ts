@@ -1,4 +1,4 @@
-import { User } from "@/types";
+import type { User } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
@@ -20,6 +20,8 @@ interface AuthState {
     // setSelectedRole: (role: UserRole | null) => void;
     // setUserRole: (role: UserRole | null) => void;
     // setUser: (user: User | null) => void;
+    addCompletedChallenge: (challengeId: string | number) => void;
+    addXp: (points: number) => void;
 }
 
 
@@ -46,7 +48,8 @@ export const useAuthStore = create(
                             streak: 0,
                             xp: 0,
                             level: 1,
-                            joinedAt: new Date().toISOString()
+                            joinedAt: new Date().toISOString(),
+                            completedChallenges: [],
                         }
 
                         set({ user: mockUser, isAuthenticated: true, isLoading: false })
@@ -76,7 +79,29 @@ export const useAuthStore = create(
             },
             clearError: () => {
                 set({ error: null })
-            }
+            },
+
+            // challenge actions
+            addCompletedChallenge: (challengeId) => set((state) => {
+                if(!state.user) return state;
+                const completedChallenges = [...(state.user.completedChallenges || [])];
+                if (!completedChallenges.includes(String(challengeId))) {
+                    completedChallenges.push(String(challengeId));
+                }
+
+                return {
+                    user:{...state.user, completedChallenges}
+                }
+            }),
+            addXp: (points) => set((state) => {
+                if (!state.user) return state;
+                const newXp = state.user.xp + points;
+                const level = Math.floor(newXp / 100) + 1;
+
+                return {
+                    user: { ...state.user, xp:newXp, level:level },
+                };
+            })
         })), { name: "auth-storage-a1", storage: createJSONStorage(() => AsyncStorage) }
     )
 )

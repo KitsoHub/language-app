@@ -4,11 +4,11 @@ import { colors } from '@/utils/constants/colors';
 
 
 type WordMatchProgressBarProps={
-    currentLevel: number,
+    currentLevel: number| string,
     totalLevels: number,
 }
 export default function WordMatchProgressBar({currentLevel, totalLevels}: WordMatchProgressBarProps) {
-  const progress = (currentLevel/totalLevels)*100;
+  const progress = (Number(currentLevel) / totalLevels) * 100;
     return (
 <View style={styles.container}>
 <View style={styles.progressInfo}>

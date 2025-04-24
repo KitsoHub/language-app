@@ -8,7 +8,7 @@ export interface User{
     xp:number;
     level:number;
     joinedAt:string;
-    completedChallenges: string[];
+    completedChallenges?: string[];
 
 }
 
@@ -136,6 +136,6 @@ export interface Challenge {
     challenges: Challenge[],
     gameBadge: string;
     gameIcon?: string;
-    type: 'word-matching' | 'image-matching' | 'listening' | 'speaking' | 'sentence-builder'| 'fill-blank';
+    type: 'word-matching' | 'multiple-choice' | 'listening' | 'speaking' | 'sentence-builder'| 'fill-blank';
     languageId?: string;
   }
