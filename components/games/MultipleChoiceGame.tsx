@@ -26,12 +26,18 @@ export default function MultipleChoiceGame({
 
 	const [selectedOption, setSelectedOption] = useState<string | null>(null);
 	const [showResult, setShowResult] = useState<boolean>(false);
-	const { submitAnswer, setShowFeedback, setSelectedChoice, selectedChoice } = useNewGameStore();
+	const { submitAnswer, setShowFeedback, setSelectedChoice, getCurrentWordSelection } = useNewGameStore();
 
 	const handleSelectOption = (option: string) => {
 		// setSelectedOption(option);
     setSelectedChoice(option);
-    console.log(">> Game Component from store >> ",selectedChoice)
+    setSelectedOption(option)
+
+    const selection = getCurrentWordSelection()
+    console.log(" >>> My option >>>", selection)
+      //     setTimeout(() => {
+      //       console.log(">> Game Component from store >> ",selectedChoice)
+      // }, 1000);
 		// setShowResult(true);
 
 		// check isCorrect answer
@@ -67,7 +73,7 @@ export default function MultipleChoiceGame({
 
 	// validate options
 	const isCorretOption = (option: string) => {
-		return showResult && option === challenge.correctAnswer;
+		return option === challenge.correctAnswer;
 	};
 	const isIncorrectSelection = (option: string) => {
 		return selectedOption === option && option !== challenge.correctAnswer
@@ -89,8 +95,8 @@ export default function MultipleChoiceGame({
 							isCorretOption(option) && styles.correctOption,
               isIncorrectSelection(option) && styles.incorrectOption,
 						]}
-						onPress={() => !showResult && handleSelectOption(option)}
-						disabled={showResult}
+						onPress={() => handleSelectOption(option)}
+						// disabled={showResult}
 					>
 						<Text
 							style={[

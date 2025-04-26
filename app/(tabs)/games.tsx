@@ -136,7 +136,7 @@ export default function GamePage() {
         <View style={{padding:16}}>
         <WordMatchProgressBar
 					currentLevel={currentGame.challenges.indexOf(currentChallenge)}
-					totalLevels={currentGame.challenges.length}
+					totalLevels={currentGame.challenges.length - 1}
 				/>
 
 				<View style={styles.instructionContainer}>
@@ -183,7 +183,7 @@ export default function GamePage() {
 					<Button
 						title="Check"
 						onPress={handleWordCheck}
-						disabled={isCheckDisabled}
+						// disabled={isCheckDisabled}
 						style={styles.checkButton}
 					/>
 				</View>

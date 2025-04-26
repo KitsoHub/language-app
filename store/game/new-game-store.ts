@@ -23,7 +23,7 @@ interface NewGameState {
   selectGame: (gameId: string) => void;
   getCurrentGame: () => Game | null;
   getCurrentChallenge: () => Challenge | null;
-
+  getCurrentWordSelection: () => string | null;
   //   Challenge Actions
   addWordToArrangement: (word: string) => void;
   removeWordFromArrangement: (index: number) => void;
@@ -35,6 +35,7 @@ interface NewGameState {
   resetGame: () => void;
   isGameCompleted: () => boolean;
   setSelectedChoice: (choice:string)=>void;
+
 }
 
 export const useNewGameStore = create(
@@ -128,6 +129,13 @@ export const useNewGameStore = create(
           return null;
         return currentGame.challenges[currentChallengeIndex];
       },
+      getCurrentWordSelection: () => {
+        const state = get();
+        if (!state.currentGameId) return null;
+        return (
+          state.selectedChoice || null
+        );
+      },
 
       addWordToArrangement: (word) =>
         set((state) => ({
@@ -153,8 +161,11 @@ export const useNewGameStore = create(
         // current challenge = multiple-choice
         if( currentChallenge.type === "multiple-choice"){
           const { selectedChoice } = get();
+          console.log(`From the store: ${selectedChoice}`, )
           const isCorrect = selectedChoice === currentChallenge.correctAnswer;
           //console.log(`From the store: ${selectedChoice} is ${isCorrect}`, )
+
+          set({ isCorrect, showFeedback: true });
 
           if (isCorrect) {
             console.log(`From the store: ${currentChallenge.id} is ${isCorrect}`, )
@@ -225,6 +236,7 @@ export const useNewGameStore = create(
           arrangedWords: [],
           isCorrect: null,
           showFeedback: false,
+          selectedChoice: null
         }),
 
       resetGame: () =>
@@ -235,6 +247,7 @@ export const useNewGameStore = create(
           isCorrect: null,
           showFeedback: false,
           gameCompleted: false,
+          selectedChoice: null
         }),
 
       setShowFeedback: (show) => set({ showFeedback: show }),
@@ -249,7 +262,8 @@ export const useNewGameStore = create(
         const currentGame = get().getCurrentGame();
         if (!currentGame) return false;
         return (
-          currentChallengeIndex >= currentGame.challenges.length ||
+          // TODO: ensure the length is correct for all game and that the progress bar updates
+          currentChallengeIndex >= currentGame.challenges.length -1 ||
           gameCompleted
         );
       },
