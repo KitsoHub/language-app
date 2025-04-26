@@ -262,7 +262,6 @@ export const useNewGameStore = create(
         const currentGame = get().getCurrentGame();
         if (!currentGame) return false;
         return (
-          // TODO: ensure the length is correct for all game and that the progress bar updates
           currentChallengeIndex >= currentGame.challenges.length -1 ||
           gameCompleted
         );
@@ -270,7 +269,7 @@ export const useNewGameStore = create(
     }),
 
     {
-      name: 'new-game-storage',
+      name: 'new-game-storage-a3',
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),

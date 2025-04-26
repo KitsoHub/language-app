@@ -21,6 +21,7 @@ import MascotAlert from "@/components/wordMatching/MascotAlert";
 import GameCompletedModal from "@/components/modals/GameCompletedModal";
 import MultiChoiceGame from "@/components/games/MultipleChoiceGame";
 import MultipleChoiceGame from "@/components/games/MultipleChoiceGame";
+import FillBlankGame from "@/components/games/FillBlankGame";
 
 export default function GamePage() {
 	const router = useRouter();
@@ -37,7 +38,8 @@ export default function GamePage() {
 		resetLevel,
 		setShowFeedback,
 		isGameCompleted,
-		resetGame, selectedChoice
+		resetGame,
+		selectedChoice,
 	} = useNewGameStore();
 
 	const { user } = useAuthStore();
@@ -80,7 +82,6 @@ export default function GamePage() {
 		resetGame();
 	};
 	const handleWordCheck = () => {
-
 		const wordCheckResult = checkAnswer();
 		if (Platform.OS === "web") {
 			if (wordCheckResult) {
@@ -104,7 +105,7 @@ export default function GamePage() {
 		}
 	};
 	// const isCheckDisabled = !currentChallenge?.correctOrder || arrangedWords.length !== currentChallenge.correctOrder.length || selectedChoice;
-	const isCheckDisabled = !selectedChoice
+	const isCheckDisabled = !selectedChoice;
 	if (!currentGame || !currentChallenge) {
 		return (
 			<SafeAreaView style={styles.container}>
@@ -133,74 +134,77 @@ export default function GamePage() {
 				}}
 			/>
 			<SafeAreaView style={styles.container}>
-        <View style={{padding:16}}>
-        <WordMatchProgressBar
-					currentLevel={currentGame.challenges.indexOf(currentChallenge)}
-					totalLevels={currentGame.challenges.length - 1}
-				/>
+				<View style={{ padding: 16 }}>
+					<WordMatchProgressBar
+						currentLevel={currentGame.challenges.indexOf(currentChallenge)}
+						totalLevels={currentGame.challenges.length - 1}
+					/>
 
-				<View style={styles.instructionContainer}>
-					<Text style={styles.instructionText}>
-						{currentChallenge.instruction}
-					</Text>
+					<View style={styles.instructionContainer}>
+						<Text style={styles.instructionText}>
+							{currentChallenge.instruction}
+						</Text>
+					</View>
+
+					{currentChallenge.type === "word-matching" && (
+						<>
+							<WordDropZone
+								arrangedWords={arrangedWords}
+								onRemoveWord={handleRemoveWord}
+							/>
+
+							<WordBank
+								words={currentChallenge.wordBank || []}
+								usedWords={arrangedWords}
+								onSelectWord={handleWordSelect}
+							/>
+						</>
+					)}
+
+					{/* multiple choice */}
+					{currentChallenge.type === "multiple-choice" && (
+						<MultipleChoiceGame challenge={currentChallenge} />
+					)}
+
+					{/* fill in blank */}
+					{currentChallenge.type === "fill-blank" && (
+						<FillBlankGame challenge={currentChallenge} />
+					)}
+
+					{showFeedback && (
+						<MascotAlert
+							isCorrect={isCorrect ?? undefined}
+							visible={showFeedback}
+						/>
+					)}
+					<View style={styles.buttonContainer}>
+						<Button
+							title="Reset"
+							onPress={handleResetLevel}
+							variant="outline"
+							style={styles.resetButton}
+						/>
+						<Button
+							title="Check"
+							onPress={handleWordCheck}
+							// disabled={isCheckDisabled}
+							style={styles.checkButton}
+						/>
+					</View>
 				</View>
 
-				{currentChallenge.type === "word-matching" && (
-					<>
-						<WordDropZone
-							arrangedWords={arrangedWords}
-							onRemoveWord={handleRemoveWord}
-						/>
-
-						<WordBank
-							words={currentChallenge.wordBank || []}
-							usedWords={arrangedWords}
-							onSelectWord={handleWordSelect}
-						/>
-					</>
-				)}
-
-				{/* multiple choice */}
-				{currentChallenge.type === "multiple-choice" && (
-
-					<MultipleChoiceGame challenge={currentChallenge}/>
-
-				)}
-
-				{showFeedback && (
-					<MascotAlert
-						isCorrect={isCorrect ?? undefined}
-						visible={showFeedback}
-					/>
-				)}
-				<View style={styles.buttonContainer}>
-					<Button
-						title="Reset"
-						onPress={handleResetLevel}
-						variant="outline"
-						style={styles.resetButton}
-					/>
-					<Button
-						title="Check"
-						onPress={handleWordCheck}
-						// disabled={isCheckDisabled}
-						style={styles.checkButton}
+				<View style={styles.content}>
+					<GameCompletedModal
+						visible={showCompletionModal}
+						onClose={handleCloseCompletedModal}
+						onContinue={handleContinue}
+						gameTitle={currentGame.title}
+						earnedXP={currentGame.challenges.reduce(
+							(sum, challenge) => sum + (challenge.points || 0),
+							0,
+						)}
 					/>
 				</View>
-
-
-        </View>
-
-        <View style={styles.content}>
-        <GameCompletedModal
-        visible={showCompletionModal}
-        onClose={handleCloseCompletedModal}
-        onContinue={handleContinue}
-        gameTitle={currentGame.title}
-        earnedXP={currentGame.challenges.reduce((sum, challenge) => sum + (challenge.points || 0), 0)}
-      />
-        </View>
-
 
 				{/* <View style={styles.centeredContainer}>
      <Text style={styles.errorText}>No game selected. Please select a game from the home screen.</Text>
@@ -220,7 +224,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: colors.background,
 	},
-  content: {
+	content: {
 		justifyContent: "center",
 		padding: 20,
 		flex: 1,
