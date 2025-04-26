@@ -17,6 +17,7 @@ interface NewGameState {
   showFeedback: boolean;
   userAnswers: Record<string, string[]>;
   gameCompleted: boolean;
+  selectedChoice: string | null;
 
   //Actions
   selectGame: (gameId: string) => void;
@@ -33,6 +34,7 @@ interface NewGameState {
   setShowFeedback: (show: boolean) => void;
   resetGame: () => void;
   isGameCompleted: () => boolean;
+  setSelectedChoice: (choice:string)=>void;
 }
 
 export const useNewGameStore = create(
@@ -100,6 +102,7 @@ export const useNewGameStore = create(
       showFeedback: false,
       userAnswers: {},
       gameCompleted: false,
+      selectedChoice: null,
 
       selectGame: (gameId) =>
         set({
@@ -139,13 +142,32 @@ export const useNewGameStore = create(
         })),
 
       checkAnswer: () => {
-
         const { arrangedWords } = get();
         const currentChallenge = get().getCurrentChallenge();
 
         if (!currentChallenge) {
           set({ isCorrect: false, showFeedback: true });
           return false;
+        }
+
+        // current challenge = multiple-choice
+        if( currentChallenge.type === "multiple-choice"){
+          const { selectedChoice } = get();
+          const isCorrect = selectedChoice === currentChallenge.correctAnswer;
+          //console.log(`From the store: ${selectedChoice} is ${isCorrect}`, )
+
+          if (isCorrect) {
+            console.log(`From the store: ${currentChallenge.id} is ${isCorrect}`, )
+            const authStore = useAuthStore.getState();
+            if (!authStore.user) return false;
+
+            authStore.addCompletedChallenge(currentChallenge.id);
+            authStore.addXp(currentChallenge.points || 10);
+
+
+            get().submitAnswer(currentChallenge.id, arrangedWords);
+          }
+          return isCorrect
         }
 
         const isCorrect =
@@ -157,6 +179,7 @@ export const useNewGameStore = create(
         // Update the auth user store with the completed challenge
 
         if (isCorrect) {
+
           const authStore = useAuthStore.getState();
           if (!authStore.user) return false;
 
@@ -193,6 +216,7 @@ export const useNewGameStore = create(
           isCorrect: null,
           showFeedback: false,
           gameCompleted,
+          selectedChoice: null
         });
       },
 
@@ -214,6 +238,11 @@ export const useNewGameStore = create(
         }),
 
       setShowFeedback: (show) => set({ showFeedback: show }),
+
+      setSelectedChoice: (choice: string) =>
+        set({
+          selectedChoice: choice,
+        }),
 
       isGameCompleted: () => {
         const { currentChallengeIndex, gameCompleted } = get();

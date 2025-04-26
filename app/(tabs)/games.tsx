@@ -37,7 +37,7 @@ export default function GamePage() {
 		resetLevel,
 		setShowFeedback,
 		isGameCompleted,
-		resetGame,
+		resetGame, selectedChoice
 	} = useNewGameStore();
 
 	const { user } = useAuthStore();
@@ -103,7 +103,8 @@ export default function GamePage() {
 			}, 2000);
 		}
 	};
-	const isCheckDisabled = !currentChallenge?.correctOrder || arrangedWords.length !== currentChallenge.correctOrder.length;
+	// const isCheckDisabled = !currentChallenge?.correctOrder || arrangedWords.length !== currentChallenge.correctOrder.length || selectedChoice;
+	const isCheckDisabled = !selectedChoice
 	if (!currentGame || !currentChallenge) {
 		return (
 			<SafeAreaView style={styles.container}>

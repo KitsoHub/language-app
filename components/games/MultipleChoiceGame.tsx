@@ -26,40 +26,42 @@ export default function MultipleChoiceGame({
 
 	const [selectedOption, setSelectedOption] = useState<string | null>(null);
 	const [showResult, setShowResult] = useState<boolean>(false);
-	const { submitAnswer, setShowFeedback } = useNewGameStore();
+	const { submitAnswer, setShowFeedback, setSelectedChoice, selectedChoice } = useNewGameStore();
 
 	const handleSelectOption = (option: string) => {
-		setSelectedOption(option);
+		// setSelectedOption(option);
+    setSelectedChoice(option);
+    console.log(">> Game Component from store >> ",selectedChoice)
 		// setShowResult(true);
 
 		// check isCorrect answer
-		const isCorrect = option === challenge.correctAnswer;
+		//const isCorrect = option === challenge.correctAnswer;
 
-		console.log(">> Result >> ", isCorrect);
+		//console.log(">> Result >> ", isCorrect);
 
-		if (isCorrect) {
-      // setShowResult(false);
+		// if (isCorrect) {
+    //   // setShowResult(false);
 
-			submitAnswer(challenge.id, [option]);
-      setShowFeedback(true);
-      setShowResult(true);
+		// 	submitAnswer(challenge.id, [option]);
+    //   setShowFeedback(true);
+    //   setShowResult(true);
 
-      setTimeout(() => {
-        setShowFeedback(false);
-        setShowResult(false);
-        setSelectedOption(null);
-      }, 2000);
-		}else{
-      setShowFeedback(true);
-      setShowResult(false);
+    //   setTimeout(() => {
+    //     setShowFeedback(false);
+    //     setShowResult(false);
+    //     setSelectedOption(null);
+    //   }, 2000);
+		// }else{
+    //   setShowFeedback(true);
+    //   setShowResult(false);
 
 
-      setTimeout(() => {
-        setShowFeedback(false);
-        setShowResult(false);
-        setSelectedOption(null);
-      }, 2000);
-    }
+    //   setTimeout(() => {
+    //     setShowFeedback(false);
+    //     setShowResult(false);
+    //     setSelectedOption(null);
+    //   }, 2000);
+    // }
 
 	};
 
