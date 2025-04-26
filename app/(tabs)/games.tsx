@@ -19,6 +19,8 @@ import WordDropZone from "@/components/wordMatching/WordDropZone";
 import WordMatchProgressBar from "@/components/wordMatching/WordMatchProgressBar";
 import MascotAlert from "@/components/wordMatching/MascotAlert";
 import GameCompletedModal from "@/components/modals/GameCompletedModal";
+import MultiChoiceGame from "@/components/games/MultipleChoiceGame";
+import MultipleChoiceGame from "@/components/games/MultipleChoiceGame";
 
 export default function GamePage() {
 	const router = useRouter();
@@ -155,6 +157,13 @@ export default function GamePage() {
 							onSelectWord={handleWordSelect}
 						/>
 					</>
+				)}
+
+				{/* multiple choice */}
+				{currentChallenge.type === "multiple-choice" && (
+
+					<MultipleChoiceGame challenge={currentChallenge}/>
+
 				)}
 
 				{showFeedback && (
