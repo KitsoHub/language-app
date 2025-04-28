@@ -180,6 +180,28 @@ export const useNewGameStore = create(
           }
           return isCorrect
         }
+        // fill in blank
+        if( currentChallenge.type === "fill-blank"){
+          const { selectedChoice } = get();
+          console.log(`From the store: ${selectedChoice}`, )
+          const isCorrect = selectedChoice === currentChallenge.correctAnswer;
+
+          set({ isCorrect, showFeedback: true });
+
+          if (isCorrect) {
+            console.log(`From the store: ${currentChallenge.id} is ${isCorrect}`, )
+            const authStore = useAuthStore.getState();
+            if (!authStore.user) return false;
+
+            authStore.addCompletedChallenge(currentChallenge.id);
+            authStore.addXp(currentChallenge.points || 10);
+
+
+            get().submitAnswer(currentChallenge.id, arrangedWords);
+          }
+          return isCorrect
+        }
+
 
         const isCorrect =
           JSON.stringify(arrangedWords) ===
@@ -269,7 +291,7 @@ export const useNewGameStore = create(
     }),
 
     {
-      name: 'new-game-storage-a3',
+      name: 'new-game-storage-a4',
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),

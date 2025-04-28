@@ -1,41 +1,78 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import type { Challenge } from "@/types";
 import { colors } from "@/utils/constants/colors";
+import { useNewGameStore } from "@/store/game/new-game-store";
+import BlankInput from "./BlankInput";
 
 type FillBlankGameProps = {
 	challenge: Challenge;
 };
 export default function FillBlankGame({ challenge }: FillBlankGameProps) {
-    const [answer, setAnswer] = useState('');
-	const formatSentence = () => {
-        console.log("answer: ", answer)
+	// TODO: debouncing
+	const [answer, setAnswer] = useState("");
+	const {
+		submitAnswer,
+		setShowFeedback,
+		setSelectedChoice,
+		getCurrentWordSelection,
+	} = useNewGameStore();
+
+	useEffect(()=>{
+		if(answer){
+			setSelectedChoice(answer);
+		}
+	},[answer, setSelectedChoice,])
+
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		setAnswer('');
+	}, [challenge.id]);
+
+
+
+	const handleSubmit = useCallback(() => {
+		if (answer) {
+			setSelectedChoice(answer);
+
+			setAnswer("");
+		}
+	}, [answer, setSelectedChoice]);
+
+	const formatSentence = useMemo(() => {
 		if (!challenge.sentence) return null;
+		const regex = /(\s*_\s*)/;
+		const new_regex = /(_)/;
+		const parts = challenge.sentence.split(new_regex);
+		console.log(parts);
 
-		return challenge.sentence.split("_").map((part, index, array) => (
+		return (
 			<>
-				<Text style={styles.sentenceText}>{part} </Text>
-				{/* <Text key={`${index}`}>{index}</Text> */}
-
-				{index < array.length - 1 && (
-					<View style={styles.blankContainer}>
-						<TextInput
-							style={styles.blankInput}
-							placeholder="..."
-							placeholderTextColor={colors.black}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            value={answer}
-                            onChangeText={setAnswer}
-						/>
-					</View>
-				)}
+				{parts.map((part, index) => {
+					if (part === "_") {
+						return (
+							<BlankInput
+								key={index}
+								value={answer}
+								onChange={setAnswer}
+								// onSubmitEditing={handleSubmit}
+							/>
+						);
+					}
+					return part ? (
+						<Text key={index} style={styles.sentenceText}>
+							{part}
+						</Text>
+					) : null;
+				})}
 			</>
-		));
-	};
+		);
+	}, [challenge.sentence, answer]);
+
 	return (
 		<View style={styles.container}>
-			<View style={styles.sentenceContainer}>{formatSentence()}</View>
+			<View style={styles.sentenceContainer}>{formatSentence}</View>
 		</View>
 	);
 }
@@ -58,32 +95,20 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		color: colors.text,
 	},
-	blankContainer: {
-		borderBottomWidth: 2,
-		borderBottomColor: colors.primary,
-		marginHorizontal: 4,
-		minWidth: 60,
-	},
 	correctBlank: {
 		borderBottomColor: colors.success,
 	},
 	incorrectBlank: {
 		borderBottomColor: colors.error,
 	},
-	blankInput: {
+	textInput: {
+		borderColor: colors.gray500,
+		borderWidth: 2,
+		padding: 12,
 		fontSize: 18,
-		padding: 4,
-		textAlign: "center",
-		color: colors.text,
+		borderRadius: 50,
+		marginHorizontal: 12,
+		marginBottom: 12,
+		backgroundColor: colors.white,
 	},
-    textInput: {
-        borderColor: colors.gray500,
-        borderWidth: 2,
-        padding: 12,
-        fontSize: 18,
-        borderRadius: 50,
-        marginHorizontal: 12,
-        marginBottom: 12,
-        backgroundColor: colors.white,
-      },
 });
