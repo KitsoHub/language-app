@@ -22,6 +22,7 @@ import GameCompletedModal from "@/components/modals/GameCompletedModal";
 import MultiChoiceGame from "@/components/games/MultipleChoiceGame";
 import MultipleChoiceGame from "@/components/games/MultipleChoiceGame";
 import FillBlankGame from "@/components/games/FillBlankGame";
+import SentenceBuilderGame from "@/components/games/SentenceBuilderGame";
 
 export default function GamePage() {
 	const router = useRouter();
@@ -169,6 +170,11 @@ export default function GamePage() {
 					{/* fill in blank */}
 					{currentChallenge.type === "fill-blank" && (
 						<FillBlankGame challenge={currentChallenge} />
+					)}
+
+					{/* sentence builder */}
+					{currentChallenge.type === "sentence-builder" && (
+						<SentenceBuilderGame challenge={currentChallenge} />
 					)}
 
 					{showFeedback && (
