@@ -129,6 +129,8 @@ export interface Challenge {
     badge?: string;
   }
 
+
+//   to add isGameComplete
   export interface Game {
     id: string;
     title: string;

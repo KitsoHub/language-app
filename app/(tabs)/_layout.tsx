@@ -15,10 +15,10 @@ export default function MainLayout() {
 
 }}/>
 
-<Tabs.Screen name="learn" options={{title:"Learn", tabBarIcon:({color,size})=>(
+{/* <Tabs.Screen name="learn" options={{title:"Learn", tabBarIcon:({color,size})=>(
   <Feather name="book-open" size={size} color={color}/>
 )
-}} />
+}} /> */}
 <Tabs.Screen name='games' options={{title:'Game', tabBarIcon:({color,size})=>(
   <Gamepad2 size={size} color={color}/>
 )}}/>
@@ -27,9 +27,9 @@ export default function MainLayout() {
         <Feather name="user" size={size} color={color} />
       )
     }} />
-    {/* <Tabs.Screen name='achievements' options={{title:'Achievements', tabBarIcon:({color,size})=>(
+    <Tabs.Screen name='achievements' options={{title:'Achievements', tabBarIcon:({color,size})=>(
       <Feather name='award' size={size} color={color}/>
-    )}}/> */}
+    )}}/>
 </Tabs>
   )
 }

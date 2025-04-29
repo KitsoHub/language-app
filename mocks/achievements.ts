@@ -1,4 +1,5 @@
-import { Achievement } from "@/types";
+import type { Achievement } from "@/types";
+
 
 export const achievements: Achievement[] = [
 
@@ -30,9 +31,45 @@ export const achievements: Achievement[] = [
       total: 7,
     },
     {
-      id: 'streak-30',
-      title: 'Monthly Master',
-      description: 'Maintain a 30-day streak',
+      id: 'word-master',
+      title: 'Word Master',
+      description: 'Complete 10 word matching challenges',
+      icon: '🏆',
+      unlocked: false,
+      progress: 0,
+      total: 30,
+    },
+    {
+      id: 'sentence-buider',
+      title: 'Sentence Builder',
+      description: 'Build 5 complete sentences',
+      icon: '🏆',
+      unlocked: false,
+      progress: 0,
+      total: 30,
+    },
+    {
+      id: 'fill-blanks',
+      title: 'Blanks',
+      description: 'Fill in the Blanks',
+      icon: '🏆',
+      unlocked: false,
+      progress: 0,
+      total: 30,
+    },
+    {
+      id: 'multiple-choice',
+      title: 'Multiple Choice',
+      description: 'Choice Master',
+      icon: '🏆',
+      unlocked: false,
+      progress: 0,
+      total: 30,
+    },
+    {
+      id: 'explorer',
+      title: 'Explorer',
+      description: 'Try all game types',
       icon: '🏆',
       unlocked: false,
       progress: 0,
@@ -47,13 +84,63 @@ export const achievements: Achievement[] = [
       progress: 0,
       total: 100,
     },
-    {
-      id: 'perfect-lesson',
-      title: 'Perfectionist',
-      description: 'Complete a lesson with no mistakes',
-      icon: '✨',
-      unlocked: false,
-      progress: 0,
-      total: 1,
-    },
   ];
+
+
+// export const old_achievements: Achievement[] = [
+
+//   {
+//     id: 'sign-in',
+//     title: 'Daily sign in',
+//     description: 'Welcome Back',
+//     icon: '✨',
+//     unlocked: true,
+//     progress: 0,
+//     total: 0,
+//   },
+//     {
+//       id: 'first-lesson',
+//       title: 'First Steps',
+//       description: 'Complete your first lesson',
+//       icon: '🎯',
+//       unlocked: true,
+//       progress: 0,
+//       total: 1,
+//     },
+//     {
+//       id: 'streak-7',
+//       title: 'Week Warrior',
+//       description: 'Maintain a 7-day streak',
+//       icon: '🔥',
+//       unlocked: false,
+//       progress: 0,
+//       total: 7,
+//     },
+//     {
+//       id: 'streak-30',
+//       title: 'Monthly Master',
+//       description: 'Maintain a 30-day streak',
+//       icon: '🏆',
+//       unlocked: false,
+//       progress: 0,
+//       total: 30,
+//     },
+//     {
+//       id: 'xp-100',
+//       title: 'Century Club',
+//       description: 'Earn 100 XP',
+//       icon: '💯',
+//       unlocked: false,
+//       progress: 0,
+//       total: 100,
+//     },
+//     {
+//       id: 'perfect-lesson',
+//       title: 'Perfectionist',
+//       description: 'Complete a lesson with no mistakes',
+//       icon: '✨',
+//       unlocked: false,
+//       progress: 0,
+//       total: 1,
+//     },
+//   ];
