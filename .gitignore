@@ -3,6 +3,9 @@
 # dependencies
 node_modules/
 
+# vscode
+.vscode
+
 # Expo
 .expo/
 dist/
@@ -39,3 +42,12 @@ yarn-error.*
 # build folders
 ios
 android
+web-build
+web-report
+
+
+# lock files
+yarn.lock
+package-lock.json
+bun.lock
+bun.lockb
