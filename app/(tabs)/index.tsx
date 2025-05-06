@@ -13,6 +13,7 @@ import { ROUTES } from "@/utils/constants/routes"
 import { useNewGameStore } from "@/store/game/new-game-store"
 import type { Game } from "@/types"
 import { LinearGradient } from "expo-linear-gradient"
+import { DailyGoal } from "@/components/shared/DailyGoal"
 
 // Expanded Fall Guys inspired color palette
 const COLORS = {
@@ -207,7 +208,8 @@ export default function App() {
       </LinearGradient>
 
       {/* Daily Goal Card */}
-      <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={styles.dailyGoalCard}>
+      {/* <DailyGoal goal={0} current={0} /> */}
+      {/* <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={styles.dailyGoalCard}>
         <View style={styles.dailyGoalHeader}>
           <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={styles.targetIconContainer}>
             <View style={styles.targetIcon}>
@@ -216,7 +218,7 @@ export default function App() {
           </LinearGradient>
           <Text style={styles.dailyGoalTitle}>Daily Goal</Text>
 
-          {/* Star decoration */}
+
           <View style={styles.starContainer}>
             <Star size={16} color={COLORS.secondary} />
           </View>
@@ -235,7 +237,7 @@ export default function App() {
             end={{ x: 1, y: 0 }}
             style={[styles.progressBar, { width: `${Math.min(goalProgress, 100)}%` }]}
           >
-            {/* Add sparkle effect for completed goals */}
+
             {goalProgress >= 100 && (
               <View style={styles.sparkleContainer}>
                 <Star size={12} color="#FFFFFF" style={styles.sparkle} />
@@ -243,7 +245,7 @@ export default function App() {
             )}
           </LinearGradient>
         </View>
-      </LinearGradient>
+      </LinearGradient> */}
 
       {/* Stats Cards */}
       <View style={styles.statsContainer}>

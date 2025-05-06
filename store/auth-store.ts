@@ -102,6 +102,6 @@ export const useAuthStore = create(
                     user: { ...state.user, xp:newXp, level:level },
                 };
             })
-        })), { name: "auth-storage-a1", storage: createJSONStorage(() => AsyncStorage) }
+        })), { name: "auth-storage-a2", storage: createJSONStorage(() => AsyncStorage) }
     )
 )

@@ -37,7 +37,7 @@ export const useLanguageStore = create(
                 return get().appLanguages.find((lang) =>lang.id === id)
             }
 
-        }),{name:'language-storage', storage: createJSONStorage(()=> AsyncStorage)}
+        }),{name:'language-storage-a1', storage: createJSONStorage(()=> AsyncStorage)}
     )
 
 )
