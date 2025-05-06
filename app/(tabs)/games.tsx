@@ -45,6 +45,7 @@ export default function GamePage() {
 
 	const { user } = useAuthStore();
 	const [showCompletionModal, setShowCompletionModal] = useState(false);
+	const [showCheck, setShowCheck] = useState(false);
 
 	// game state
 	const currentGame = getCurrentGame();
@@ -83,6 +84,8 @@ export default function GamePage() {
 		resetGame();
 	};
 	const handleWordCheck = () => {
+
+		setShowCheck(true);
 		const wordCheckResult = checkAnswer();
 		if (Platform.OS === "web") {
 			if (wordCheckResult) {
@@ -96,17 +99,19 @@ export default function GamePage() {
 		} else {
 			setTimeout(() => {
 				if (wordCheckResult) {
+					setShowCheck(false);
 					if (isGameCompleted()) {
 						setShowCompletionModal(true);
+
 					} else {
+
 						nextChallenge();
 					}
-				} else setShowFeedback(false);
+				} else {setShowFeedback(false);setShowCheck(false);}
 			}, 2000);
 		}
 	};
-	// const isCheckDisabled = !currentChallenge?.correctOrder || arrangedWords.length !== currentChallenge.correctOrder.length || selectedChoice;
-	const isCheckDisabled = !selectedChoice;
+
 	if (!currentGame || !currentChallenge) {
 		return (
 			<SafeAreaView style={styles.container}>
@@ -193,7 +198,7 @@ export default function GamePage() {
 						<Button
 							title="Check"
 							onPress={handleWordCheck}
-							// disabled={isCheckDisabled}
+							disabled={showCheck}
 							style={styles.checkButton}
 						/>
 					</View>
