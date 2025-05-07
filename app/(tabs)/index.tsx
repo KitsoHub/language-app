@@ -303,7 +303,7 @@ export default function App() {
         <LinearGradient colors={[COLORS.tertiary, COLORS.tertiaryLight]} style={styles.sectionTitleContainer}>
           <Text style={styles.sectionTitle}>Your Language</Text>
         </LinearGradient>
-        <TouchableOpacity style={styles.seeAllButton} onPress={() => router.push(ROUTES.LANGUAGESELECT)}>
+        <TouchableOpacity style={styles.seeAllButton} onPress={() => router.push(ROUTES.SETTINGS)}>
           <LinearGradient colors={[COLORS.tertiary, COLORS.tertiaryLight]} style={styles.seeAllGradient}>
             <Text style={styles.seeAllText}>Change</Text>
             <ChevronRight size={16} color="#FFFFFF" />

@@ -10,5 +10,6 @@ export enum ROUTES {
     GAMES="/games",
     GAME="/game/",
     EDITPROFILE="/edit-profile",
-    SUBSCRIPTION="/subscription"
+    SUBSCRIPTION="/subscription",
+    SETTINGS="/settings"
   }
