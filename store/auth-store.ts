@@ -22,6 +22,7 @@ interface AuthState {
     // setUser: (user: User | null) => void;
     addCompletedChallenge: (challengeId: string | number) => void;
     addXp: (points: number) => void;
+    resetGameProgress: () => void;
 }
 
 
@@ -101,7 +102,14 @@ export const useAuthStore = create(
                 return {
                     user: { ...state.user, xp:newXp, level:level },
                 };
-            })
+            }),
+            resetGameProgress: () => set((state) => {
+                if (!state.user) return state;
+                return {
+                    user: { ...state.user, completedChallenges: [], xp: 0, level: 1 },
+                };
+            }),
+
         })), { name: "auth-storage-a2", storage: createJSONStorage(() => AsyncStorage) }
     )
 )

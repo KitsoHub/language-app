@@ -9,10 +9,11 @@ import {
 	ViewStyle,
 	Image,
 	ScrollView,
-  Switch,
+	Switch,
+	Alert,
 } from "react-native";
 import React, { useState } from "react";
-import Feather from "@expo/vector-icons/build/Feather";
+import type Feather from "@expo/vector-icons/build/Feather";
 import { colors, COLORS } from "@/utils/constants/colors";
 import { useAuthStore } from "@/store/auth-store"; // Import the auth store
 import { Redirect, useRouter } from "expo-router"; // Import the router
@@ -37,13 +38,15 @@ import {
 	Trash2,
 } from "lucide-react-native";
 import { avatars } from "@/mocks/vowels";
+import { useNewGameStore } from "@/store/game/new-game-store";
+import { useLanguageStore } from "@/store/language-store";
+import { FONT_SIZES, PADDING } from "@/utils/constants";
 
 interface ProfileProps {
 	name: string;
 	avatar: string;
 	email: string;
 	level: number;
-	currentLanguage: string;
 	streak: number;
 	xp: number;
 	title: string;
@@ -74,7 +77,6 @@ export default function SettingsContainer({
 	xp,
 	level,
 	streak,
-	currentLanguage,
 	title,
 	description,
 	icon = "inbox",
@@ -83,13 +85,18 @@ export default function SettingsContainer({
 	style,
 	avatar,
 }: ProfileProps) {
-	const { logout } = useAuthStore(); // Get the logout function from the auth store
-	const router = useRouter(); // Get the router
-	const { user } = useAuthStore();
+	const { logout,resetGameProgress, user } = useAuthStore();
+	const router = useRouter();
 	const [modalVisible, setModalVisible] = useState(false);
 	const [modalContent, setModalContent] = useState("");
 
-  const [hapticEnabled, setHapticEnabled] = useState(false);
+	const {appLanguages, selectLanguage,  } = useLanguageStore();
+
+
+	const [hapticEnabled, setHapticEnabled] = useState(false);
+	//   add sound
+	// add notification
+	//   add dark mode
 	const handleLogout = () => {
 		logout();
 		router.replace("/auth/sign-in");
@@ -104,39 +111,94 @@ export default function SettingsContainer({
 		router.push("/profile/terms");
 	};
 
+	const handleResetProgress = () => {
+		Alert.alert(
+			"Reset Progress",
+			"Are you sure you want to reset your progress? This action cannot be undone.",
+			[
+				{
+					text: "Cancel",
+					style: "cancel",
+				},
+				{
+					text: "OK",
+					onPress: () => resetGameProgress(),
+					style: "destructive",
+
+				},
+			],
+			{ cancelable: false },
+		);
+	};
+
+	const handleLanguageChange =(id:string)=>{
+
+		Alert.alert(
+			"Change Language","Are you sure you want to change language",[
+				{
+					text: "Cancel",
+					style: "cancel",
+				},
+				{
+					text: "OK",
+					onPress: () => selectLanguage(id),
+					style: "destructive",
+				},
+			],{cancelable: false}
+		)
+	}
 	return (
 		<>
 			<View style={styles.section}>
 				<Text style={styles.sectionTitle}>Account</Text>
-				{/* <TouchableOpacity style={styles.settingsItem}>
-					<View style={styles.settingsIconContainer}>
-						<Bell size={20} color={colors.primary} />
-					</View>
-					<Text style={styles.settingsItemText}>Notifications</Text>
-					<ChevronRight size={20} color={colors.gray400} />
-				</TouchableOpacity> */}
 
-				<TouchableOpacity style={styles.settingsItem}>
+				<TouchableOpacity
+					style={styles.settingsItem}
+					onPress={handleResetProgress}
+				>
 					<View style={styles.settingsIconContainer}>
 						<Trash2 size={20} color={colors.error} />
 					</View>
 					<Text style={styles.signOutText}>Reset Progress</Text>
 				</TouchableOpacity>
-        <View style={styles.settingsItem}>
-            <View style={styles.settingLabelContainer}>
-              <RefreshCw size={24} color={colors.text} />
-              <Text style={styles.settingLabel}>Haptic Feedback</Text>
-            </View>
-            <Switch
-              value={hapticEnabled}
-              onValueChange={setHapticEnabled}
-              trackColor={{ false: colors.gray300, true: colors.primary }}
-              thumbColor="white"
-            />
-          </View>
+				<View style={styles.settingsItem}>
+					<View style={styles.settingLabelContainer}>
+						<RefreshCw size={24} color={colors.text} />
+						<Text style={styles.settingLabel}>Haptic Feedback</Text>
+					</View>
+					<Switch
+						value={hapticEnabled}
+						onValueChange={setHapticEnabled}
+						trackColor={{ false: colors.gray300, true: colors.primary }}
+						thumbColor="white"
+					/>
+				</View>
 			</View>
 
-      <View style={styles.section}>
+						{/* Language select */}
+						<View style={styles.section}>
+				<View style={[{flexDirection: "row", alignItems:"flex-start", justifyContent:"space-between"}]}>
+				<Text style={styles.sectionTitle}>Language</Text>
+				<Text style={styles.sectionSubTitle }>Select your language here.</Text>
+				</View>
+
+			<View style={styles.languageOptions}>
+				{appLanguages.map((language) => (
+					<Button
+					key={language.id}
+					title={language.name || language.nativeName}
+					variant={user?.currentLanguage === language.id ? "primary" : "secondary"}
+					onPress={()=>handleLanguageChange(language.id)}
+					style={styles.languageButton}
+					/>
+				))}
+			</View>
+			</View>
+
+
+
+{/* Legal */}
+			<View style={styles.section}>
 				<Text style={styles.sectionTitle}>Legal</Text>
 
 				<TouchableOpacity
@@ -161,8 +223,6 @@ export default function SettingsContainer({
 					<Text style={styles.settingsItemText}>Terms and Conditions</Text>
 					<ChevronRight size={20} color={colors.gray400} />
 				</TouchableOpacity>
-
-
 			</View>
 			{/* Extras */}
 
@@ -186,7 +246,7 @@ export default function SettingsContainer({
 					</View>
 					<Text style={styles.settingsItemTextExtra}>Feedback</Text>
 				</TouchableOpacity>
-        <TouchableOpacity
+				<TouchableOpacity
 					style={styles.settingsItemExta}
 					onPress={() => openModal("Help")}
 				>
@@ -196,6 +256,7 @@ export default function SettingsContainer({
 					<Text style={styles.settingsItemTextExtra}>About Us</Text>
 				</TouchableOpacity>
 			</View>
+
 
 			<TouchableOpacity style={styles.signOutButton} onPress={handleLogout}>
 				<LogOut size={20} color={colors.error} />
@@ -300,6 +361,12 @@ const styles = StyleSheet.create({
 		fontWeight: 600,
 		marginBottom: 8,
 	},
+	sectionSubTitle:{
+		fontSize: FONT_SIZES.sm,
+		color: colors.textLight,
+		marginBottom: 4,
+
+	},
 
 	settingsItem: {
 		flexDirection: "row",
@@ -309,15 +376,15 @@ const styles = StyleSheet.create({
 		borderTopWidth: 1,
 		borderTopColor: colors.gray200,
 	},
-  settingLabel: {
-    fontSize: 16,
-    marginLeft: 12,
-    color: colors.text,
-  },
-  settingLabelContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+	settingLabel: {
+		fontSize: 16,
+		marginLeft: 12,
+		color: colors.text,
+	},
+	settingLabelContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+	},
 	settingsIconContainer: {
 		width: 36,
 		height: 36,
@@ -377,6 +444,16 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		marginBottom: 24,
 	},
+
+	languageOptions: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		marginTop: 8,
+	  },
+	  languageButton: {
+		marginRight: 8,
+		marginBottom: 8,
+	  },
 	// end
 
 	profileImage: {

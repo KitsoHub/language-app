@@ -291,7 +291,7 @@ export const useNewGameStore = create(
     }),
 
     {
-      name: 'new-game-storage-a4',
+      name: 'new-game-storage-a5',
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),
