@@ -34,8 +34,8 @@ interface NewGameState {
   setShowFeedback: (show: boolean) => void;
   resetGame: () => void;
   isGameCompleted: () => boolean;
-  setSelectedChoice: (choice:string)=>void;
-
+  setSelectedChoice: (choice: string) => void;
+  updateAchievements: (challengeType: string) => void;
 }
 
 export const useNewGameStore = create(
@@ -132,9 +132,7 @@ export const useNewGameStore = create(
       getCurrentWordSelection: () => {
         const state = get();
         if (!state.currentGameId) return null;
-        return (
-          state.selectedChoice || null
-        );
+        return state.selectedChoice || null;
       },
 
       addWordToArrangement: (word) =>
@@ -152,56 +150,57 @@ export const useNewGameStore = create(
       checkAnswer: () => {
         const { arrangedWords } = get();
         const currentChallenge = get().getCurrentChallenge();
+        const currentGame = get().getCurrentGame();
 
-        if (!currentChallenge) {
-          set({ isCorrect: false, showFeedback: true });
+        if (!currentGame || !currentChallenge || !currentChallenge.correctOrder)
           return false;
-        }
+
+        // if (!currentChallenge) {
+        //   set({ isCorrect: false, showFeedback: true });
+        //   return false;
+        // }
 
         // current challenge = multiple-choice
-        if( currentChallenge.type === "multiple-choice"){
+        if (currentChallenge.type === 'multiple-choice') {
           const { selectedChoice } = get();
-          console.log(`From the store: ${selectedChoice}`, )
+
           const isCorrect = selectedChoice === currentChallenge.correctAnswer;
           //console.log(`From the store: ${selectedChoice} is ${isCorrect}`, )
 
           set({ isCorrect, showFeedback: true });
 
           if (isCorrect) {
-            console.log(`From the store: ${currentChallenge.id} is ${isCorrect}`, )
             const authStore = useAuthStore.getState();
             if (!authStore.user) return false;
 
             authStore.addCompletedChallenge(currentChallenge.id);
             authStore.addXp(currentChallenge.points || 10);
 
-
             get().submitAnswer(currentChallenge.id, arrangedWords);
+            get().updateAchievements(currentGame.type);
           }
-          return isCorrect
+          return isCorrect;
         }
         // fill in blank
-        if( currentChallenge.type === "fill-blank"){
+        if (currentChallenge.type === 'fill-blank') {
           const { selectedChoice } = get();
-          console.log(`From the store: ${selectedChoice}`, )
+
           const isCorrect = selectedChoice === currentChallenge.correctAnswer;
 
           set({ isCorrect, showFeedback: true });
 
           if (isCorrect) {
-            console.log(`From the store: ${currentChallenge.id} is ${isCorrect}`, )
             const authStore = useAuthStore.getState();
             if (!authStore.user) return false;
 
             authStore.addCompletedChallenge(currentChallenge.id);
             authStore.addXp(currentChallenge.points || 10);
 
-
             get().submitAnswer(currentChallenge.id, arrangedWords);
+            get().updateAchievements(currentGame.type);
           }
-          return isCorrect
+          return isCorrect;
         }
-
 
         const isCorrect =
           JSON.stringify(arrangedWords) ===
@@ -212,15 +211,14 @@ export const useNewGameStore = create(
         // Update the auth user store with the completed challenge
 
         if (isCorrect) {
-
           const authStore = useAuthStore.getState();
           if (!authStore.user) return false;
 
           authStore.addCompletedChallenge(currentChallenge.id);
           authStore.addXp(currentChallenge.points || 10);
 
-
           get().submitAnswer(currentChallenge.id, arrangedWords);
+          get().updateAchievements(currentGame.type);
         }
 
         return isCorrect;
@@ -249,7 +247,7 @@ export const useNewGameStore = create(
           isCorrect: null,
           showFeedback: false,
           gameCompleted,
-          selectedChoice: null
+          selectedChoice: null,
         });
       },
 
@@ -258,7 +256,7 @@ export const useNewGameStore = create(
           arrangedWords: [],
           isCorrect: null,
           showFeedback: false,
-          selectedChoice: null
+          selectedChoice: null,
         }),
 
       resetGame: () =>
@@ -269,7 +267,7 @@ export const useNewGameStore = create(
           isCorrect: null,
           showFeedback: false,
           gameCompleted: false,
-          selectedChoice: null
+          selectedChoice: null,
         }),
 
       setShowFeedback: (show) => set({ showFeedback: show }),
@@ -284,9 +282,70 @@ export const useNewGameStore = create(
         const currentGame = get().getCurrentGame();
         if (!currentGame) return false;
         return (
-          currentChallengeIndex >= currentGame.challenges.length -1 ||
+          currentChallengeIndex >= currentGame.challenges.length - 1 ||
           gameCompleted
         );
+      },
+
+      updateAchievements: (challengeType) => {
+        const authStore = useAuthStore.getState();
+        const { user } = authStore;
+
+        if (!user) return;
+        //track completed game types
+        //update achievements based on challenge type
+        //Check if all game types have been played
+        // check for word master achievement
+        //check for fill-blank achievement
+        //check for sentence builder achievement
+        //check for multiple choice achievement
+
+        // get challenge type + check if my current type is there else update
+        const userCompletedGameTypes = user.completedGameTypes || [];
+        if (!userCompletedGameTypes.includes(challengeType)) {
+          authStore.updateUser({
+            completedGameTypes: [...userCompletedGameTypes, challengeType],
+          });
+        }
+
+        switch (challengeType) {
+          case 'word-matching': {
+            const count = user.wordMatchingCompleted || 0;
+            authStore.updateUser({
+              wordMatchingCompleted: count + 1,
+            });
+
+            break;
+          }
+          case 'fill-blank': {
+            const count = user.fillBlankCompleted || 0;
+            authStore.updateUser({
+              fillBlankCompleted: count + 1,
+            });
+
+            break;
+          }
+          case 'sentence-builder': {
+            const count = user.sentenceBuilderCompleted || 0;
+            authStore.updateUser({
+              sentenceBuilderCompleted: count + 1,
+            });
+
+            break;
+          }
+          case 'multiple-choice': {
+            const count = user.multipleChoiceCompleted || 0;
+            authStore.updateUser({
+              multipleChoiceCompleted: count + 1,
+            });
+
+            break;
+          }
+          default:
+            break;
+        }
+
+
       },
     }),
 

@@ -19,9 +19,5 @@ export default function Index(){
         return <Redirect href={ROUTES.LANGUAGESELECT as never}/>
     }
 
-        //user is authenticated but no selected language
-    if(isAuthenticated && user && !user.currentLanguage){
-            return <Redirect href={ROUTES.LANGUAGESELECT as never}/>
-    }
     return <Redirect href={ROUTES.TABS as never}/>
 }

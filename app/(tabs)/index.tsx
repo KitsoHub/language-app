@@ -13,7 +13,7 @@ import { ROUTES } from "@/utils/constants/routes"
 import { useNewGameStore } from "@/store/game/new-game-store"
 import type { Game } from "@/types"
 import { LinearGradient } from "expo-linear-gradient"
-import { DailyGoal } from "@/components/shared/DailyGoal"
+
 
 // Expanded Fall Guys inspired color palette
 const COLORS = {
@@ -207,45 +207,6 @@ export default function App() {
         </View>
       </LinearGradient>
 
-      {/* Daily Goal Card */}
-      {/* <DailyGoal goal={0} current={0} /> */}
-      {/* <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={styles.dailyGoalCard}>
-        <View style={styles.dailyGoalHeader}>
-          <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={styles.targetIconContainer}>
-            <View style={styles.targetIcon}>
-              <Text style={styles.targetIconText}>🎯</Text>
-            </View>
-          </LinearGradient>
-          <Text style={styles.dailyGoalTitle}>Daily Goal</Text>
-
-
-          <View style={styles.starContainer}>
-            <Star size={16} color={COLORS.secondary} />
-          </View>
-        </View>
-
-        <Text style={styles.dailyGoalMessage}>
-          {goalProgress >= 100
-            ? "Great job! You've reached your daily goal."
-            : `Keep going! ${dailyProgress}/${dailyGoal} XP today.`}
-        </Text>
-
-        <View style={styles.progressBarContainer}>
-          <LinearGradient
-            colors={[COLORS.primary, COLORS.quaternary]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={[styles.progressBar, { width: `${Math.min(goalProgress, 100)}%` }]}
-          >
-
-            {goalProgress >= 100 && (
-              <View style={styles.sparkleContainer}>
-                <Star size={12} color="#FFFFFF" style={styles.sparkle} />
-              </View>
-            )}
-          </LinearGradient>
-        </View>
-      </LinearGradient> */}
 
       {/* Stats Cards */}
       <View style={styles.statsContainer}>

@@ -9,7 +9,12 @@ export interface User{
     level:number;
     joinedAt:string;
     completedChallenges?: string[];
-
+    unlockedAchievements?: string[];
+    completedGameTypes?: string[];
+    wordMatchingCompleted?: number;
+    fillBlankCompleted?: number;
+    multipleChoiceCompleted?: number;
+    sentenceBuilderCompleted?: number;
 }
 
 export interface Language{
@@ -91,9 +96,9 @@ export interface Achievement{
     title: string;
     description: string;
     icon: string;
-    unlocked:boolean;
-    progress: number;
-    total: number;
+    // unlocked:boolean;
+    // progress: number;
+    // total: number;
 }
 
 export interface Skill{
@@ -129,8 +134,6 @@ export interface Challenge {
     badge?: string;
   }
 
-
-//   to add isGameComplete
   export interface Game {
     id: string;
     title: string;
