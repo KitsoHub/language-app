@@ -49,7 +49,7 @@ export const useAuthStore = create(
               level: 1,
               joinedAt: new Date().toISOString(),
               completedChallenges: [],
-              unlockedAchievements: ['first-lesson', 'sign-in'],
+              unlockedAchievements: ['sign-in'],
               wordMatchingCompleted: 0,
               sentenceBuilderCompleted: 0,
               fillBlankCompleted: 0,
@@ -132,6 +132,6 @@ export const useAuthStore = create(
           };
         }),
     }),
-    { name: 'auth-storage-a2', storage: createJSONStorage(() => AsyncStorage) },
+    { name: 'auth-storage-a3', storage: createJSONStorage(() => AsyncStorage) },
   ),
 );

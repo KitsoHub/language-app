@@ -72,4 +72,5 @@ export const COLORS = {
     gray900: '#212529',
     cardBackground: '#F7F7F7',
     mascotBackground: '#FFF4D4',
+    tertiary: '#FFDE00', // Bright yellow
   };

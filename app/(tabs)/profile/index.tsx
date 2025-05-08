@@ -11,10 +11,16 @@ import { ROUTES } from "@/utils/constants/routes";
 import { useProgressStore } from "@/store/progress-store";
 import AchievementCard from "@/components/shared/AchievementCard";
 import ProfileStatsCard from "@/components/shared/ProfileStatsCard";
+import { achievements } from "@/mocks/achievements";
 
 export default function ProfilePage() {
 	const { user, updateUser } = useAuthStore();
-	const { achievements, skills, getCompletedGames } = useProgressStore();
+	// const { skills, getCompletedGames } = useProgressStore();
+
+	const isAchievementUnlocked = (achievementId: string) => {
+		return user?.unlockedAchievements?.includes(achievementId) || false;
+	};
+
 	if (!user) {
 		return null;
 	}
@@ -33,8 +39,8 @@ export default function ProfilePage() {
 	};
 
 	//filter achievement -> unlocked & locked
-	const unlockedAchievements = achievements.filter((item) => item.unlocked);
-	const lockedAchievements = achievements.filter((item) => !item.unlocked);
+	// const unlockedAchievements = achievements.filter((item) => item.unlocked);
+	// const lockedAchievements = achievements.filter((item) => !item.unlocked);
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -55,8 +61,18 @@ export default function ProfilePage() {
 					// onPress={() => setModalVisible(true)}
 				/>
 				<Text style={styles.sectionTitle}>Achievements</Text>
+				<ScrollView
+							showsHorizontalScrollIndicator={true}
+							horizontal
+							style={styles.horizontalScroll}
+						>
+				{achievements.map((achievement) =>{
+					const isUnlocked = isAchievementUnlocked(achievement.id);
+					return(<AchievementCard key={achievement.id} achievement={achievement} status={isUnlocked} />)
+				} )}
+				</ScrollView>
 
-				{unlockedAchievements && (
+				{/* {unlockedAchievements && (
 					<>
 						<Text style={styles.subsectionTitle}>Unlocked</Text>
 						<ScrollView
@@ -69,8 +85,8 @@ export default function ProfilePage() {
 							))}
 						</ScrollView>
 					</>
-				)}
-
+				)} */}
+{/*
 				{lockedAchievements && (
 					<>
 						<Text style={styles.subsectionTitle}>Locked</Text>
@@ -84,7 +100,7 @@ export default function ProfilePage() {
 							))}
 						</ScrollView>
 					</>
-				)}
+				)} */}
 
 				{/* <Modal
           animationType="slide"
