@@ -180,7 +180,7 @@ export default function App() {
           <View style={styles.userInfo}>
             <Text style={styles.greeting}>Hello, {user?.name?.split(" ")[0] || "Friend"}!</Text>
 
-            <View style={styles.statsRow}>
+            {/* <View style={styles.statsRow}>
               <LinearGradient colors={["#FF8C00", "#FF6B00"]} style={styles.statBubble}>
                 <Flame size={20} color="#FFFFFF" />
                 <Text style={styles.statText}>{user?.streak || 0}</Text>
@@ -195,7 +195,7 @@ export default function App() {
                 <Heart size={20} color="#FFFFFF" />
                 <Text style={styles.statText}>{user?.hearts || 5}</Text>
               </LinearGradient>
-            </View>
+            </View> */}
           </View>
 
           {/* User avatar with crown */}

@@ -292,15 +292,7 @@ export const useNewGameStore = create(
         const { user } = authStore;
 
         if (!user) return;
-        //track completed game types
-        //update achievements based on challenge type
-        //Check if all game types have been played
-        // check for word master achievement
-        //check for fill-blank achievement
-        //check for sentence builder achievement
-        //check for multiple choice achievement
 
-        // get challenge type + check if my current type is there else update
         const userCompletedGameTypes = user.completedGameTypes || [];
         if (!userCompletedGameTypes.includes(challengeType)) {
           authStore.updateUser({
@@ -345,7 +337,52 @@ export const useNewGameStore = create(
             break;
         }
 
+        //check achievements
+        if ((user.wordMatchingCompleted || 0) >= 5) {
+          authStore.unlockAchievement('word-master');
+        }
 
+        if ((user.fillBlankCompleted || 0) >= 5) {
+          authStore.unlockAchievement('fill-blank');
+        }
+
+        if ((user.sentenceBuilderCompleted || 0) >= 5) {
+          authStore.unlockAchievement('sentence-builder');
+        }
+
+        if ((user.multipleChoiceCompleted || 0) >= 5) {
+          authStore.unlockAchievement('multiple-choice');
+        }
+
+        // check if all game types have been played
+        const allGameTypes = [
+          'word-matching',
+          'fill-blank',
+          'sentence-builder',
+          'multiple-choice',
+        ];
+        const updatedGameTypes = [...userCompletedGameTypes];
+        if (!updatedGameTypes.includes(challengeType)) {
+          updatedGameTypes.push(challengeType);
+        }
+
+        if (updatedGameTypes.length >= 1) {
+          authStore.unlockAchievement('first-lesson');
+        }
+        if (updatedGameTypes.length === allGameTypes.length) {
+          authStore.unlockAchievement('explorer');
+        }
+
+        if ((user.xp || 0) >= 100) {
+          authStore.unlockAchievement('xp-100');
+        }
+        if ((user.xp || 0) >= 600 && user.xp < 699) {
+          authStore.unlockAchievement('gold-tier-600-699');
+        }
+
+        if ((user.level || 0) >= 10) {
+          authStore.unlockAchievement('level-10');
+        }
       },
     }),
 
