@@ -84,7 +84,6 @@ export default function GamePage() {
 		resetGame();
 	};
 	const handleWordCheck = () => {
-
 		setShowCheck(true);
 		const wordCheckResult = checkAnswer();
 		if (Platform.OS === "web") {

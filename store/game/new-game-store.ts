@@ -152,20 +152,16 @@ export const useNewGameStore = create(
         const currentChallenge = get().getCurrentChallenge();
         const currentGame = get().getCurrentGame();
 
-        if (!currentGame || !currentChallenge || !currentChallenge.correctOrder)
+        if (!currentChallenge) {
+          set({ isCorrect: false, showFeedback: true });
           return false;
-
-        // if (!currentChallenge) {
-        //   set({ isCorrect: false, showFeedback: true });
-        //   return false;
-        // }
+        }
 
         // current challenge = multiple-choice
-        if (currentChallenge.type === 'multiple-choice') {
+        if (currentGame?.type === 'multiple-choice') {
           const { selectedChoice } = get();
 
           const isCorrect = selectedChoice === currentChallenge.correctAnswer;
-          //console.log(`From the store: ${selectedChoice} is ${isCorrect}`, )
 
           set({ isCorrect, showFeedback: true });
 
@@ -177,12 +173,13 @@ export const useNewGameStore = create(
             authStore.addXp(currentChallenge.points || 10);
 
             get().submitAnswer(currentChallenge.id, arrangedWords);
+
             get().updateAchievements(currentGame.type);
           }
           return isCorrect;
         }
         // fill in blank
-        if (currentChallenge.type === 'fill-blank') {
+        if (currentGame?.type === 'fill-blank') {
           const { selectedChoice } = get();
 
           const isCorrect = selectedChoice === currentChallenge.correctAnswer;
@@ -218,7 +215,9 @@ export const useNewGameStore = create(
           authStore.addXp(currentChallenge.points || 10);
 
           get().submitAnswer(currentChallenge.id, arrangedWords);
-          get().updateAchievements(currentGame.type);
+          if (currentGame) {
+            get().updateAchievements(currentGame.type);
+          }
         }
 
         return isCorrect;
@@ -343,7 +342,7 @@ export const useNewGameStore = create(
         }
 
         if ((user.fillBlankCompleted || 0) >= 5) {
-          authStore.unlockAchievement('fill-blank');
+          authStore.unlockAchievement('fill-blanks');
         }
 
         if ((user.sentenceBuilderCompleted || 0) >= 5) {
@@ -387,7 +386,7 @@ export const useNewGameStore = create(
     }),
 
     {
-      name: 'new-game-storage-a5',
+      name: 'new-game-storage-a6',
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),

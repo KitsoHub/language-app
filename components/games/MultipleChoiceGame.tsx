@@ -19,10 +19,6 @@ type MultipleChoiceGameProps = {
 export default function MultipleChoiceGame({
 	challenge,
 }: MultipleChoiceGameProps) {
-	// show options
-	// select option
-	// check option
-  // set correct or incorrect style
 
 	const [selectedOption, setSelectedOption] = useState<string | null>(null);
 	const [showResult, setShowResult] = useState<boolean>(false);
@@ -72,13 +68,12 @@ export default function MultipleChoiceGame({
 	};
 
 	// validate options
-	const isCorretOption = (option: string) => {
-		return option === challenge.correctAnswer;
-	};
-	const isIncorrectSelection = (option: string) => {
-		return selectedOption === option && option !== challenge.correctAnswer
-
-	};
+	// const isCorretOption = (option: string) => {
+	// 	return selectedOption && option === challenge.correctAnswer;
+	// };
+	// const isIncorrectSelection = (option: string) => {
+	// 	return selectedOption === option && option !== challenge.correctAnswer
+	// };
 
 	return (
 		<View style={styles.container}>
@@ -92,8 +87,8 @@ export default function MultipleChoiceGame({
 						style={[
 							styles.optionsButton,
 							selectedOption === option && styles.selectedOption,
-							isCorretOption(option) && styles.correctOption,
-              isIncorrectSelection(option) && styles.incorrectOption,
+			// 				isCorretOption(option) && styles.correctOption,
+            //   isIncorrectSelection(option) && styles.incorrectOption,
 						]}
 						onPress={() => handleSelectOption(option)}
 						// disabled={showResult}
@@ -101,22 +96,22 @@ export default function MultipleChoiceGame({
 						<Text
 							style={[
 								styles.optionText,
-								(isCorretOption(option) || isIncorrectSelection(option) ) && styles.resultOptionText,
+								selectedOption === option && styles.resultOptionText,
 							]}
 						>
 							{option}
 						</Text>
 
-						{isCorretOption(option) && (
+						{selectedOption === option && (
 							<View style={styles.resultIcon}>
 								<Check size={20} color="white" />
 							</View>
 						)}
-						{isIncorrectSelection(option) && (
+						{/* {isIncorrectSelection(option) && (
 							<View style={styles.resultIcon}>
               <X size={20} color="white" />
             </View>
-						)}
+						)} */}
 					</Pressable>
 				))}
 			</View>

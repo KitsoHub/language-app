@@ -32,20 +32,20 @@ export default function FillBlankGame({ challenge }: FillBlankGameProps) {
 
 
 
-	const handleSubmit = useCallback(() => {
-		if (answer) {
-			setSelectedChoice(answer);
+	// const handleSubmit = useCallback(() => {
+	// 	if (answer) {
+	// 		setSelectedChoice(answer);
 
-			setAnswer("");
-		}
-	}, [answer, setSelectedChoice]);
+	// 		setAnswer("");
+	// 	}
+	// }, [answer, setSelectedChoice]);
 
 	const formatSentence = useMemo(() => {
 		if (!challenge.sentence) return null;
 		const regex = /(\s*_\s*)/;
 		const new_regex = /(_)/;
 		const parts = challenge.sentence.split(new_regex);
-		console.log(parts);
+
 
 		return (
 			<>

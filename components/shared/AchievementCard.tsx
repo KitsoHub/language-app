@@ -1,9 +1,11 @@
-import { StyleSheet, Text, View, ViewStyle } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import type { ViewStyle } from "react-native";
 import React from "react";
 import type { Achievement } from "@/types";
 import { Lock, Star } from "lucide-react-native";
 import { colors } from "@/utils/constants/colors";
 import ProgressBar from "./ProgressBar";
+import { useAuthStore } from "@/store/auth-store";
 
 type AchievementCardProps = {
 	achievement: Achievement;
@@ -17,6 +19,8 @@ export default function AchievementCard({
 	status,
 }: AchievementCardProps) {
 	// const achievementTotal = achievement.progress / achievement.total
+	const authStore = useAuthStore()
+	const user = authStore.user
 	return (
 		<View style={[styles.container, status && styles.unlockedContainer, style]}>
 			<View style={styles.header}>
@@ -31,11 +35,14 @@ export default function AchievementCard({
                     <Star size={16} color={colors.tertiary} fill={colors.tertiary} />
                 </View>)}
 
+
+
 			</View>
 
 			{/* title, description, progress */}
 			<Text style={styles.title}>{achievement.title}</Text>
 			<Text style={styles.description}>{achievement.description}</Text>
+			{/* Try adding progress per achievement */}
 			{/* <ProgressBar style={styles.progressBar}
                 progress={achievement.progress}
                 total={achievement.total}

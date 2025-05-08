@@ -49,7 +49,7 @@ export const multipleChoiceChallenges: Challenge[] = [
     id: 'mc-5',
     type: 'multiple-choice',
     instruction: "Choose the correct translation for 'How are you?'",
-    options: ['Dumela', 'Kea leboga', 'O tshogile jang', 'Go jwang'],
+    options: ['Dumela', 'Go rileng', 'O tshogile jang', 'Go jwang'],
     correctAnswer: 'O tshogile jang',
     languageId: 'st',
     isLocked: false,
