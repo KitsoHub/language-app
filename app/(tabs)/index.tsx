@@ -236,7 +236,7 @@ export default function App() {
         <LinearGradient colors={[COLORS.quaternary, COLORS.quaternaryLight]} style={styles.sectionTitleContainer}>
           <Text style={styles.sectionTitle}>Select Game</Text>
         </LinearGradient>
-        <TouchableOpacity style={styles.seeAllButton} onPress={() => router.push(ROUTES.LEARN)}>
+        <TouchableOpacity style={styles.seeAllButton} onPress={() => router.push(ROUTES.GAMESLIST as never)}>
           <LinearGradient colors={[COLORS.primary, COLORS.primaryLight]} style={styles.seeAllGradient}>
             <Text style={styles.seeAllText}>See All</Text>
             <ChevronRight size={16} color="#FFFFFF" />
