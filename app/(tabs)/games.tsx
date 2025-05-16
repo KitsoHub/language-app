@@ -23,6 +23,8 @@ import MultiChoiceGame from "@/components/games/MultipleChoiceGame";
 import MultipleChoiceGame from "@/components/games/MultipleChoiceGame";
 import FillBlankGame from "@/components/games/FillBlankGame";
 import SentenceBuilderGame from "@/components/games/SentenceBuilderGame";
+import EmptyState from "@/components/shared/EmptyState";
+import { ROUTES } from "@/utils/constants/routes";
 
 export default function GamePage() {
 	const router = useRouter();
@@ -112,18 +114,19 @@ export default function GamePage() {
 	};
 
 	if (!currentGame || !currentChallenge) {
+
+		// empty state
 		return (
-			<SafeAreaView style={styles.container}>
-				<Stack.Screen options={{ title: currentGame?.title }} />
-				<View style={styles.centeredContainer}>
-					<Text style={styles.errorText}>{currentGame?.title}</Text>
-					<Button
-						title="Go to Home"
-						onPress={() => router.push("/(tabs)")}
-						style={styles.button}
-					/>
-				</View>
-			</SafeAreaView>
+
+			<EmptyState
+			 title={currentGame?.title}
+			//  icon="inbox"
+			 description="No Game has been selected"
+			 buttonTitle="Back to Home"
+			 onButtonPress={() => router.push(ROUTES.TABS)}
+			 animationSource={require("@/assets/lotties/empty_scroll.json")}
+			   />
+
 		);
 	}
 
