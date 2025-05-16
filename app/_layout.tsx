@@ -11,4 +11,6 @@ export default function RootLayout() {
             <Stack.Screen name="index" options={{ headerShown: false, animation: "fade" }} />
             <Stack.Screen name='course/[id]' options={{ animation:'fade_from_bottom', title:"Lessons"}}/>
             <Stack.Screen name='lesson/[id]' options={{ headerShown: true, animation:'fade_from_bottom'}}/>
+            <Stack.Screen name='game/[id]' options={{ headerShown: true, animation:'fade_from_bottom'}}/>
+            <Stack.Screen name='/games-list' options={{ headerShown: true,title:"Games", animation:'fade_from_bottom'}}/>
         </Stack>)}

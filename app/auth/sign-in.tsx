@@ -1,6 +1,6 @@
 
 import { useAuthStore } from "@/store/auth-store";
-import { COLORS } from "@/utils/constants/colors";
+import { colors, COLORS } from "@/utils/constants/colors";
 import { ROUTES } from "@/utils/constants/routes";
 import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
@@ -56,6 +56,15 @@ export default function SignInScreen() {
         }
     }
 
+
+    // TODO: Remove on production branch
+    const handleDemoLogin = () =>{
+        console.log(" >> Activating Demo ACC >> ")
+        let demoEmail = '';
+        demoEmail = "testuser@example.com"
+        setEmail(demoEmail);
+        setPassword('password');
+    }
     return (
         <SafeAreaView style={styles.container}>
             <Stack.Screen options={{ headerShown: false }} />
@@ -127,6 +136,11 @@ export default function SignInScreen() {
               </TouchableOpacity>
               <TouchableOpacity style={styles.socialButton}>
                 <Text style={styles.socialButtonText}>Facebook</Text>
+              </TouchableOpacity>
+
+              {/* TODO: Remove on production */}
+              <TouchableOpacity style={styles.socialButton} onPress={handleDemoLogin}>
+                <Text style={styles.demoButtonText}>Demo</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -219,4 +233,9 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: COLORS.text,
     },
+
+    demoButtonText:{
+        color:colors.secondary,
+        fontWeight:'500'
+    }
 });

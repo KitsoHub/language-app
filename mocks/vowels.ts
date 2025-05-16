@@ -5,13 +5,7 @@ export const Vowels = [
   { vowel: 'O', audio: require('@/assets/audio/Schwa-What.mp3') },
   { vowel: 'U', audio: require('@/assets/audio/Schwa-What.mp3') },
 ]
-export const greetings = [
-  { vowel: 'dumilani', audio: require('@/assets/audio/kalanga/kalanga_dumilani.aac') },
-  { vowel: 'Rumela', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'Rumela', audio: require('@/assets/audio/Schwa-What.mp3') },
-  { vowel: 'mamuka', audio: require('@/assets/audio/Schwa-What.mp3') },
- 
-]
+
 export const avatars = [
   { name: 'mosimane', image: require('@/assets/avatars/boy.png') }, // Import image just like audio
   { name: 'mosadi', image: require('@/assets/avatars/women.png') },
