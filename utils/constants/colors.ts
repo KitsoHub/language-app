@@ -50,6 +50,9 @@ export const COLORS = {
   quaternary: '#7B61FF', // Purple
   quaternaryLight: '#B4A5FF', // Light Purple
   quaternaryDark: '#5840CC', // Dark Purple
+  primaryPink: '#FF3A89', // Hot pink
+  purpleBackground: '#5A30F0', // Purple background
+  cyanBlue: '#00C8E1', // Cyan blue
 };
 
 export const colors = {
