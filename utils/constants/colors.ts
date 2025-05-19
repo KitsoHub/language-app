@@ -53,6 +53,7 @@ export const COLORS = {
   primaryPink: '#FF3A89', // Hot pink
   purpleBackground: '#5A30F0', // Purple background
   cyanBlue: '#00C8E1', // Cyan blue
+  darkBlue:'#1F33CE', // dark blue
 };
 
 export const colors = {

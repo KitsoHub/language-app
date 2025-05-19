@@ -1,9 +1,15 @@
 import { useAuthStore } from '@/store/auth-store';
 import { Stack } from 'expo-router'
 import React from 'react'
+import { useLoadedFonts } from "@/utils/hooks/useFontFamily";
 
 export default function RootLayout() {
     const { isAuthenticated, user } = useAuthStore();
+    const fontsLoaded = useLoadedFonts();
+
+    if (!fontsLoaded) {
+        return null;
+    }
     return (
         <Stack >
             <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: "fade" }} />

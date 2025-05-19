@@ -15,3 +15,10 @@ export const FONT_WEIGHTS: { [key: string]: TextStyle["fontWeight"] } = {
     medium: "500",
     bold: "bold",
   }
+
+  export const FONT_FAMILY = {
+    regular: "ADLaMDisplay-Regular",
+    medium: "ADLaMDisplay-Medium",
+    bold: "ADLaMDisplay-Bold",
+    light: "ADLaMDisplay-Light",
+  }
