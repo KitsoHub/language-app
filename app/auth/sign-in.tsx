@@ -49,7 +49,7 @@ export default function SignInScreen() {
         if (!validateForm()) return;
         try {
             await login(email, password);
-            router.replace(ROUTES.HOME)
+            router.replace(ROUTES.TABS)
         } catch (error: any) {
             Alert.alert('Sign in failed...', error.message)
 

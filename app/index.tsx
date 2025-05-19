@@ -11,7 +11,8 @@ export default function Index(){
 
     //user is not authenticated
     if (!isAuthenticated){
-        return <Redirect href={ROUTES.SIGNIN as never}/>
+        // return <Redirect href={ROUTES.SIGNIN as never}/>
+        return <Redirect href={ROUTES.WELCOME}/>
     }
 
     //user is authenticated but no selected language

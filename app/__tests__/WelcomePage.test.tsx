@@ -56,7 +56,7 @@ describe("Welcome Page", () => {
   });
 
 	//navigation
-	it("navigates to tabs screen when START button is pressed (auth user)", () => {
+	it("navigates to auth screen when START button is pressed (nonauth user)", () => {
 
         const { getByText } = render(<WelcomePage />);
 
@@ -67,6 +67,6 @@ describe("Welcome Page", () => {
 			jest.advanceTimersByTime(300);
 		});
 
-         expect(mockReplace).toHaveBeenCalledWith(ROUTES.TABS);
+         expect(mockReplace).toHaveBeenCalledWith(ROUTES.SIGNIN);
 	});
 });

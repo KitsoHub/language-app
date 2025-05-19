@@ -21,6 +21,7 @@ import Animated, {
 import { FONT_FAMILY, FONT_SIZES, FONT_WEIGHTS } from '@/utils/constants';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { ROUTES } from '@/utils/constants/routes';
 
 
 const { width, height } = Dimensions.get('window');
@@ -67,14 +68,13 @@ export default function WelcomePage() {
     );
 
     setTimeout(() => {
-      console.log('Navigating to tabs screen');
-      //router.replace("/(tabs)");
+      router.replace(ROUTES.SIGNIN as never);
     }, 300);
   };
 
   return (
     <View style={styles.container}>
-      <StatusBar style="light" />
+      <StatusBar style="light"  />
 
       <Animated.View style={[styles.logoContainer, logoStyle]}>
         <Text style={styles.logoTextTop}>TswaLingo</Text>
@@ -141,8 +141,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: COLORS.white,
     borderWidth: 4,
-    paddingHorizontal: 40,
-    paddingVertical: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
     elevation: 5,
     shadowColor: COLORS.black,
     shadowOpacity: 0.3,
