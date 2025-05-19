@@ -41,6 +41,7 @@ import { avatars } from "@/mocks/vowels";
 import { useNewGameStore } from "@/store/game/new-game-store";
 import { useLanguageStore } from "@/store/language-store";
 import { FONT_SIZES, PADDING } from "@/utils/constants";
+import { ROUTES } from "@/utils/constants/routes";
 
 interface ProfileProps {
 	name: string;
@@ -100,7 +101,8 @@ export default function SettingsContainer({
 	//   add dark mode
 	const handleLogout = () => {
 		logout();
-		router.replace("/auth/sign-in");
+		// router.replace("/auth/sign-in");
+		router.replace(ROUTES.WELCOME as never);
 	};
 
 	const openModal = (content: ContenType) => {

@@ -71,68 +71,6 @@ export default function ProfilePage() {
 					return(<AchievementCard key={achievement.id} achievement={achievement} status={isUnlocked} />)
 				} )}
 				</ScrollView>
-
-				{/* {unlockedAchievements && (
-					<>
-						<Text style={styles.subsectionTitle}>Unlocked</Text>
-						<ScrollView
-							showsHorizontalScrollIndicator={true}
-							horizontal
-							style={styles.horizontalScroll}
-						>
-							{unlockedAchievements.map((item) => (
-								<AchievementCard key={item.id} achievement={item} />
-							))}
-						</ScrollView>
-					</>
-				)} */}
-{/*
-				{lockedAchievements && (
-					<>
-						<Text style={styles.subsectionTitle}>Locked</Text>
-						<ScrollView
-							showsHorizontalScrollIndicator={true}
-							horizontal
-							style={styles.horizontalScroll}
-						>
-							{lockedAchievements.map((item) => (
-								<AchievementCard key={item.id} achievement={item} />
-							))}
-						</ScrollView>
-					</>
-				)} */}
-
-				{/* <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.modalView}>
-            <Input
-              placeholder="Name"
-              value={name}
-              onChangeText={setName}
-            />
-            <Input
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-            />
-            <Input
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-
-            <Button title="Save" onPress={handleSave} />
-            <View style={styles.buttonSpacer} />
-            <Button title="Cancel" onPress={() => setModalVisible(false)} />
-          </View>
-        </Modal> */}
 			</ScrollView>
 		</SafeAreaView>
 	);

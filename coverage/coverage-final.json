@@ -1,0 +1,2 @@
+{"C:\\Users\\samue\\Documents\\dev\\KitsoHub\\language-app\\utils\\MySum.ts": {"path":"C:\\Users\\samue\\Documents\\dev\\KitsoHub\\language-app\\utils\\MySum.ts","statementMap":{"0":{"start":{"line":4,"column":2},"end":{"line":4,"column":15}}},"fnMap":{"0":{"name":"mySum","decl":{"start":{"line":3,"column":24},"end":{"line":3,"column":29}},"loc":{"start":{"line":3,"column":51},"end":{"line":5,"column":1}},"line":3}},"branchMap":{},"s":{"0":1},"f":{"0":1},"b":{},"_coverageSchema":"1a1c01bbd47fc00a2c39e90264f33305004495a9","hash":"7276d07fc0e1c1bd25bbdbe3606da8e5f88e4b45"}
+}

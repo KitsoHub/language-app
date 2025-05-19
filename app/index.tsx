@@ -11,7 +11,8 @@ export default function Index(){
 
     //user is not authenticated
     if (!isAuthenticated){
-        return <Redirect href={ROUTES.SIGNIN as never}/>
+        // return <Redirect href={ROUTES.SIGNIN as never}/>
+        return <Redirect href={ROUTES.WELCOME}/>
     }
 
     //user is authenticated but no selected language
@@ -19,5 +20,9 @@ export default function Index(){
         return <Redirect href={ROUTES.LANGUAGESELECT as never}/>
     }
 
-    return <Redirect href={ROUTES.TABS as never}/>
+
+    //testing welcome page that redirects to select language
+    return <Redirect href={ROUTES.WELCOME as never}/>
+    // TODO: load the subscription page after this
+    // return <Redirect href={ROUTES.TABS as never}/>
 }
