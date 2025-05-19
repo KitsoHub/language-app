@@ -6,9 +6,9 @@ import {
   View,
   Image,
 } from 'react-native';
-import React, { useEffect } from 'react';
+import{ useEffect } from 'react';
 
-import { colors, COLORS } from '@/utils/constants/colors';
+import {COLORS } from '@/utils/constants/colors';
 import { StatusBar } from 'expo-status-bar';
 import Animated, {
   useAnimatedStyle,
@@ -20,7 +20,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { FONT_FAMILY, FONT_SIZES, FONT_WEIGHTS } from '@/utils/constants';
 import { useRouter } from 'expo-router';
-// import { useFonts } from "expo-font";
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 const { width, height } = Dimensions.get('window');
 export default function WelcomePage() {
@@ -71,10 +72,6 @@ export default function WelcomePage() {
     }, 300);
   };
 
-  // 	  const [loaded] = useFonts({
-  //     [FONT_FAMILY.regular]: require('@/assets/fonts/ADLaMDisplay-Regular.ttf'),
-  //   });
-
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -96,7 +93,14 @@ export default function WelcomePage() {
         />
       </View>
 
-      <Animated.View style={[styles.buttonContainer, buttonStyle]}>
+
+			<LinearGradient
+				colors={['rgba(100, 115, 228, 0.05)', 'rgba(54, 48, 223, 0.98)', 'rgba(26, 44, 203, 0.96)']}
+				style={[{zIndex:1},styles.gradientOverlay]}
+				pointerEvents="none"
+			/>
+
+      <Animated.View style={[{zIndex:2},styles.buttonContainer, buttonStyle]}>
         <Pressable
           style={styles.startButtonContainer}
           android_ripple={{ color: 'rgba(255,255,255,0.2)', radius: 120 }}
@@ -127,8 +131,10 @@ const styles = StyleSheet.create({
     color: COLORS.darkBlue,
     fontSize: FONT_SIZES.xl,
     fontWeight: FONT_WEIGHTS.bold,
+
   },
   startButtonContainer: {
+
     width: width * 0.9,
     alignItems: 'center',
     backgroundColor: COLORS.backgroundLight,
@@ -142,10 +148,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 4 },
+
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 80,
+    marginTop: 100,
   },
   logoTextTop: {
     fontFamily: FONT_FAMILY.regular,
@@ -171,9 +178,9 @@ const styles = StyleSheet.create({
     height: 350,
     transform: [
       { rotate: '-3.1deg' },
-      { translateX: -70 },
-      { translateY: 20 },
-      { scale: 1.18 },
+      { translateX: -60 },
+      { translateY: 50 },
+      { scale: 1.26 },
     ],
     zIndex: 1,
   },
@@ -183,8 +190,15 @@ const styles = StyleSheet.create({
     transform: [
       { rotate: '8.57deg' },
       { translateX: -75 },
-      { translateY: 100 },
-      { scale: 0.95 },
+      { translateY: 150 },
+      { scale: 0.87 },
     ],
-  },
+	 },
+      gradientOverlay: {
+        position: 'absolute',
+		bottom: 50,
+        left: 0,
+        right: 0,
+        height: 180,
+    },
 });
