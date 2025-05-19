@@ -54,6 +54,7 @@ export const COLORS = {
   purpleBackground: '#5A30F0', // Purple background
   cyanBlue: '#00C8E1', // Cyan blue
   darkBlue:'#1F33CE', // dark blue
+  darkBackground: '#3A1D9E', // Darker purple
 };
 
 export const colors = {

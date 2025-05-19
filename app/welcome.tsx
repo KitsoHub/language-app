@@ -8,9 +8,10 @@ import {
 } from 'react-native';
 import{ useEffect } from 'react';
 
-import {COLORS } from '@/utils/constants/colors';
+import {colors, COLORS } from '@/utils/constants/colors';
 import { StatusBar } from 'expo-status-bar';
 import Animated, {
+  Easing,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
@@ -41,6 +42,9 @@ export default function WelcomePage() {
     // logo animate
     logoOpacity.value = withTiming(1, { duration: 800 });
     logoScale.value = withSpring(1, { damping: 9 });
+
+    //background animate
+    bgY.value = withTiming(0, { duration: 1000, easing: Easing.out(Easing.exp) });
   }, [buttonOpacity, buttonScale, logoOpacity, logoScale]);
 
   const buttonStyle = useAnimatedStyle(() => {
@@ -56,6 +60,12 @@ export default function WelcomePage() {
       transform: [{ scale: logoScale.value }],
     };
   });
+
+  const bgStyle = useAnimatedStyle(() => {
+    return{
+      transform: [{ translateY: bgY.value }],
+    }
+  })
   const handleStart = () => {
     buttonScale.value = withSequence(
       withTiming(0.9, { duration: 100 }),
@@ -75,6 +85,32 @@ export default function WelcomePage() {
   return (
     <View style={styles.container}>
       <StatusBar style="light"  />
+      <Animated.View style={[styles.bgYStyle, bgStyle]}>
+        <LinearGradient
+        colors={[COLORS.background, COLORS.darkBlue]}
+        style={styles.gradient}
+        >
+          <View style={styles.bgPatternContainer}>
+
+            {Array.from({length:10}).map((_,i)=>(
+              <Text key={i} style={[styles.bgIcon,
+                {
+                  top: Math.random() * height,
+                  left: Math.random() * width,
+                  opacity: 0.1 + Math.random() * 0.2,
+                  transform: [{ rotate: `${Math.random() * 360}deg` }]
+                }
+              ]
+
+              }>
+⭐🏆
+              </Text>
+            ))}
+          </View>
+        </LinearGradient>
+
+
+      </Animated.View>
 
       <Animated.View style={[styles.logoContainer, logoStyle]}>
         <Text style={styles.logoTextTop}>TswaLingo</Text>
@@ -121,6 +157,31 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.darkBlue,
     paddingVertical: 60,
     paddingHorizontal: 20,
+  },
+  bgYStyle:{
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: height * 0.5,
+    backgroundColor: COLORS.darkBlue,
+    borderBottomLeftRadius: 100,
+    borderBottomRightRadius: 100,
+
+  },
+    gradient: {
+    width: '100%',
+    height: '100%',
+  },
+    bgPatternContainer: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+    bgIcon: {
+    position: 'absolute',
+    fontSize: 30,
   },
   buttonContainer: {
     alignItems: 'flex-end',
