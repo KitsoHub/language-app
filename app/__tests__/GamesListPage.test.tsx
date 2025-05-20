@@ -5,6 +5,7 @@ import { act, fireEvent, render } from "@testing-library/react-native";
 import GamesList from "@/app/games-list";
 import { useNewGameStore } from "@/store/game/new-game-store";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { BORDER_RADIUS } from "@/utils/constants";
 
 jest.mock("expo-router", () => {
 	const React = require("react");
@@ -19,9 +20,12 @@ jest.mock("@/store/game/new-game-store", () => ({
 	useNewGameStore: jest.fn(),
 }));
 
+const mockPush = jest.fn();
+const mockSelectGame = jest.fn();
+const mockedUseRouter = useRouter as jest.Mock;
+const mockedUseNewGameStore = useNewGameStore as unknown as jest.Mock;
+
 describe("Games List Page", () => {
-
-
 	const mockPush = jest.fn();
 	const mockedUseRouter = useRouter as jest.Mock;
 	const mockedUseNewGameStore = useNewGameStore as unknown as jest.Mock;
@@ -82,3 +86,32 @@ describe("Games List Page", () => {
 		expect(mockPush).toHaveBeenCalledWith(ROUTES.GAMES as never);
 	});
 });
+
+describe("Component Behaviour", () => {
+	it("uses Flatlist for rendered games when available", () => {
+
+		const sampleGame = { id: "words", gameIcon: "🔤", title: "Words Game" };
+		mockedUseNewGameStore.mockReturnValue({games:[sampleGame], selectGame: mockSelectGame});
+        const {getByTestId} = render(<GamesList/>)
+       expect(getByTestId('games-list')).toBeTruthy();
+	});
+});
+
+describe('UI Elements', () => {
+
+    it("correct style for games card pressables",()=>{
+        const sampleGame = { id: "words", gameIcon: "🔤", title: "Words Game" };
+		mockedUseNewGameStore.mockReturnValue({games:[sampleGame], selectGame: mockSelectGame});
+        const {getByTestId, queryAllByTestId} = render(<GamesList/>)
+
+        expect(queryAllByTestId('games-list').length).toBe(1);
+
+        const card = getByTestId('game-card');
+        const style = card.props.style;
+        expect(style).toEqual(expect.arrayContaining([
+            expect.objectContaining({borderRadius: BORDER_RADIUS.xxl}),
+            expect.objectContaining({overflow:"hidden"})
+        ]))
+    })
+
+})

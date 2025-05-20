@@ -14,6 +14,7 @@ import { useRouter } from "expo-router";
 import { ROUTES } from "@/utils/constants/routes";
 import { useNewGameStore } from "@/store/game/new-game-store";
 import type { Game } from "@/types";
+import { BORDER_RADIUS } from "@/utils/constants";
 
 export default function GamesList() {
 	const router = useRouter();
@@ -28,6 +29,7 @@ export default function GamesList() {
 			<Pressable
 				style={[styles.gameCard]}
 				onPress={() => handleSelectGame(item.id)}
+testID="game-card"
 			>
 				<LinearGradient colors={["#FFFFFF", "#F0F4FF"]}>
 					<View>
@@ -46,6 +48,7 @@ export default function GamesList() {
 					showsVerticalScrollIndicator={false}
 					nestedScrollEnabled
 					contentContainerStyle={styles.gameslist}
+testID="games-list"
 				/>
 			) : (
 				<LinearGradient
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
 		fontWeight: "600",
 	},
 	gameCard: {
-		borderRadius: 24,
+		borderRadius: BORDER_RADIUS.xxl,
 		marginBottom: 20,
 		elevation: 6,
 		shadowColor: "#000",
