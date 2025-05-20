@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import{ useEffect } from 'react';
 
-import {colors, COLORS } from '@/utils/constants/colors';
+import {COLORS } from '@/utils/constants/colors';
 import { StatusBar } from 'expo-status-bar';
 import Animated, {
   Easing,
