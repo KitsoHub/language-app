@@ -17,8 +17,10 @@ export const COLORS = {
   textExtraLight: '#999999',
   border: '#E1E1E1',
   error: '#FF5252',
+  dangerLight: "#FF8A8A", // Light Red
   success: '#4CAF50',
   warning: '#FFC107',
+  warningLight: "#FFD699", // Light Orange
   info: '#2196F3',
   inactive: '#CCCCCC',
   shadow: 'rgba(0, 0, 0, 0.1)',
@@ -33,6 +35,7 @@ export const COLORS = {
   gray900: '#212529',
   green: '#3CA685',
   textOrange: '#FF7E54',
+  orange:'#FF9E00',
   colorCerulean: '#1a759f',
   colorWhite: '#fff',
   colorBlack: '#000',
@@ -56,6 +59,18 @@ export const COLORS = {
   cyanBlue: '#00C8E1', // Cyan blue
   darkBlue:'#1F33CE', // dark blue
   darkBackground: '#3A1D9E', // Darker purple
+  successLight: "#B5F2BA", // Light Green
+  greenTint: '#E3FFF1',
+  greenDark: '#006400',
+  greenCool: '#7AE582',
+  cyanDark:"#003E3E",
+  greenSpring: '#C1FFE3',
+  blueTint: '#C1D9FF',
+  blueTintLight:'#E3EEFF',
+  bluePale:'#F0F4FF',
+  pink:'#FFC1E3',
+  pinkPale:'#FFE3F1',
+  yellowDark:'#664500',
 };
 
 export const colors = {
@@ -85,4 +100,33 @@ export const colors = {
   gray900: '#212529',
   cardBackground: '#F7F7F7',
   mascotBackground: '#FFF4D4',
+};
+
+
+// Game difficulty color schemes
+export const DIFFICULTY_COLORS = {
+	beginner: {
+		primary: COLORS.tertiary,
+		secondary: COLORS.tertiaryLight,
+		text: COLORS.cyanDark,
+		gradient: [COLORS.tertiaryLight, COLORS.tertiary] as const,
+	},
+	easy: {
+		primary: COLORS.success,
+		secondary: COLORS.successLight,
+		text: COLORS.greenDark,
+		gradient: [COLORS.successLight, COLORS.greenCool] as const,
+	},
+	medium: {
+		primary: COLORS.warning,
+		secondary: COLORS.warningLight,
+		text: COLORS.yellowDark,
+		gradient: [COLORS.warningLight, COLORS.orange] as const,
+	},
+	hard: {
+		primary: COLORS.error,
+		secondary: COLORS.dangerLight,
+		text: COLORS.white,
+		gradient: [COLORS.dangerLight, COLORS.error] as const,
+	},
 };

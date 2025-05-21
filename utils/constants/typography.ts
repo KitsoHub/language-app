@@ -14,6 +14,7 @@ export const FONT_WEIGHTS: { [key: string]: TextStyle["fontWeight"] } = {
     regular: "normal",
     medium: "500",
     bold: "bold",
+    xl: '700'
   }
 
   export const FONT_FAMILY = {
