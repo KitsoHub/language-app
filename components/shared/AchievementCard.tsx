@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import type { ViewStyle } from "react-native";
 import React from "react";
 import type { Achievement } from "@/types";
 import { Lock, Star } from "lucide-react-native";
-import { colors } from "@/utils/constants/colors";
+import { COLORS, colors } from "@/utils/constants/colors";
 import ProgressBar from "./ProgressBar";
 import { useAuthStore } from "@/store/auth-store";
 
@@ -11,28 +11,30 @@ type AchievementCardProps = {
 	achievement: Achievement;
 	style?: ViewStyle;
 	status: boolean;
+	onPress: ()=>void;
 };
 
 export default function AchievementCard({
 	achievement,
 	style,
 	status,
+	onPress
 }: AchievementCardProps) {
 	// const achievementTotal = achievement.progress / achievement.total
 	const authStore = useAuthStore()
 	const user = authStore.user
 	return (
-		<View style={[styles.container, status && styles.unlockedContainer, style]}>
+		<TouchableOpacity style={[styles.container, status && styles.unlockedContainer, style]} onPress={onPress}>
 			<View style={styles.header}>
 				<Text style={styles.icon}>{achievement.icon}</Text>
 
 
 				{!status ? (
 					<View style={styles.lockIconContainer}>
-						<Lock size={16} color={colors.white} />
+						<Lock size={16} color={COLORS.white} />
 					</View>
 				):(	<View style={styles.lockIconContainer}>
-                    <Star size={16} color={colors.tertiary} fill={colors.tertiary} />
+                    <Star size={16} color={COLORS.tertiary} fill={COLORS.tertiary} />
                 </View>)}
 
 
@@ -51,7 +53,7 @@ export default function AchievementCard({
 
             />
             <Text style={styles.progressText}>{achievementTotal >= 0 ? achievementTotal : ''}</Text> */}
-		</View>
+		</TouchableOpacity>
 	);
 }
 

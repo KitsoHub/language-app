@@ -71,25 +71,25 @@ const DIFFICULTY_COLORS = {
 		primary: COLORS.tertiary,
 		secondary: COLORS.tertiaryLight,
 		text: "#003E3E",
-		gradient: ["#8EEAE4", "#4ECDC4"],
+		gradient: ["#8EEAE4", "#4ECDC4"] as const,
 	},
 	easy: {
 		primary: COLORS.success,
 		secondary: COLORS.successLight,
 		text: "#006400",
-		gradient: ["#B5F2BA", "#7AE582"],
+		gradient: ["#B5F2BA", "#7AE582"] as const,
 	},
 	medium: {
 		primary: COLORS.warning,
 		secondary: COLORS.warningLight,
 		text: "#664500",
-		gradient: ["#FFD699", "#FF9E00"],
+		gradient: ["#FFD699", "#FF9E00"] as const,
 	},
 	hard: {
 		primary: COLORS.danger,
 		secondary: COLORS.dangerLight,
 		text: "#FFFFFF",
-		gradient: ["#FF8A8A", "#FF5252"],
+		gradient: ["#FF8A8A", "#FF5252"] as const,
 	},
 };
 
@@ -104,15 +104,18 @@ export default function App() {
 	};
 
 	const getDifficultyStyle = (badge: string) => {
-		const difficulty = badge.toLowerCase();
+		const difficulty = badge.toLowerCase() as keyof typeof DIFFICULTY_COLORS;
 		return DIFFICULTY_COLORS[difficulty] || DIFFICULTY_COLORS.beginner;
 	};
 
 	const { selectedLanguage, selectLanguage } = useLanguageStore();
 	const { dailyGoal, dailyProgress } = useProgressStore();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		if (user && user.currentLanguage && !selectedLanguage) {
+
+		// biome-ignore lint/complexity/useOptionalChain: <explanation>
+				if (user && user.currentLanguage && !selectedLanguage) {
 			selectLanguage(user.currentLanguage);
 		}
 	}, []);
@@ -132,10 +135,10 @@ export default function App() {
 		// Alternate card colors for visual variety
 		const cardColors =
 			index % 3 === 0
-				? ["#FFE3F1", "#FFC1E3"]
+				? ["#FFE3F1", "#FFC1E3"] as const
 				: index % 3 === 1
-					? ["#E3EEFF", "#C1D9FF"]
-					: ["#E3FFF1", "#C1FFE3"];
+					? ["#E3EEFF", "#C1D9FF"] as const
+					: ["#E3FFF1", "#C1FFE3"] as const;
 
 		return (
 			<Pressable
@@ -228,22 +231,7 @@ export default function App() {
 							Hello, {user?.name?.split(" ")[0] || "Friend"}!
 						</Text>
 
-						{/* <View style={styles.statsRow}>
-              <LinearGradient colors={["#FF8C00", "#FF6B00"]} style={styles.statBubble}>
-                <Flame size={20} color="#FFFFFF" />
-                <Text style={styles.statText}>{user?.streak || 0}</Text>
-              </LinearGradient>
 
-              <LinearGradient colors={["#FFD700", "#FFC400"]} style={styles.statBubble}>
-                <HandCoins size={20} color="#FFFFFF" />
-                <Text style={styles.statText}>{user?.coins || 0}</Text>
-              </LinearGradient>
-
-              <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={styles.statBubble}>
-                <Heart size={20} color="#FFFFFF" />
-                <Text style={styles.statText}>{user?.hearts || 5}</Text>
-              </LinearGradient>
-            </View> */}
 					</View>
 
 					{/* User avatar with crown */}

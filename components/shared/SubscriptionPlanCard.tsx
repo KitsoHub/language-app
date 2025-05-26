@@ -2,7 +2,7 @@
 
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { SubscriptionPlanType } from '@/types'
+import type { SubscriptionPlanType } from '@/types'
 import { FONT_SIZES } from '@/utils/constants';
 import { Check, Circle } from 'lucide-react-native';
 import { COLORS, colors } from '@/utils/constants/colors';
