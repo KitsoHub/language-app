@@ -1,4 +1,3 @@
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -6,6 +5,7 @@ import { useAuthStore } from './auth-store';
 import { Achievement, Course, Lesson, Skill } from '@/types';
 import { achievements} from '@/mocks/achievements';
 import { courses} from '@/mocks/courses';
+import { useNewGameStore } from './game/new-game-store';
 
 interface ProgressState{
 courses: Course[];
@@ -24,6 +24,7 @@ selectLesson:(lessonId:string)=>void;
 completeLesson:(lessonId:string)=>void;
 getCoursesByLanguage:(languageId:string | undefined)=> Course[];
 updateSkill: (skillId: string, progress: number)=>void;
+getCompletedGames:()=>void;
 
 }
 
@@ -101,10 +102,13 @@ export const useProgressStore = create(
         set((state)=>({
           skills: state.skills.map((skill) => skill.id === skillId ? {...skill, progress}: skill)
         }))
+      },
+
+      getCompletedGames:()=>{
+        const games = useNewGameStore.getState().games
+        return games
       }
 
-
-
-        }),{name:'z', storage: createJSONStorage(()=> AsyncStorage)}
+        }),{name:'a-13', storage: createJSONStorage(()=> AsyncStorage)}
     )
 )

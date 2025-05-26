@@ -1,46 +1,75 @@
-import EmptyState from '@/components/shared/EmptyState'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-
-
+import { ScrollView, StyleSheet, View, Modal, Text } from 'react-native';
+import { useAuthStore } from '@/store/auth-store'; // Import the auth store
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS, colors } from '@/utils/constants/colors';
+import ProfileStateCard from '@/components/shared/ProfileStateCard';
+import { Button } from '@/components/ui/Button'; // Import Button component
+import { Input } from '@/components/ui/Input'; // Import InputForm component
+import { router } from 'expo-router';
+import { ROUTES } from '@/utils/constants/routes';
+import { useProgressStore } from '@/store/progress-store';
+import AchievementCard from '@/components/shared/AchievementCard';
+import ProfileStatsCard from '@/components/shared/ProfileStatsCard';
+import { achievements } from '@/mocks/achievements';
+import EmptyState from '@/components/shared/EmptyState';
+import { LinearGradient } from 'expo-linear-gradient';
+import AchivementList from '@/components/shared/AchivementList';
 
 export default function ProfilePage() {
+  const { updateUser } = useAuthStore();
+          const authStore = useAuthStore.getState();
+        const { user } = authStore;
+
+        if (!user) return;
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [name, setName] = useState(user?.name || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [password, setPassword] = useState('');
+
+  // const handleSave = () => {
+  //   updateUser({ name, email });
+  //   setModalVisible(false);
+  // };
+
+  const handleProfileEdit = () => {
+    router.push(ROUTES.EDITPROFILE);
+  };
+
+  //filter achievement -> unlocked & locked
+  // const unlockedAchievements = achievements.filter((item) => item.unlocked);
+  // const lockedAchievements = achievements.filter((item) => !item.unlocked);
+
   return (
-  <ScrollView>
-      <View style={styles.container}>
-        {/* Fetch data from store and add image */}
-<Text>Test User</Text>
-<Text>user@example.com</Text>
-        {/* TODO: log out, profile details, profile setting, */}
-              <EmptyState
-                title={"No Data..."}
-                description={"App State has not been set try again later."}
-                icon="home"
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
+        <ProfileStatsCard
+          name={user?.name || 'Guest User'}
+          email={user?.email || ''}
+          title="Profile Details"
+          currentLanguage={user?.currentLanguage || 'st'}
+          xp={user?.xp || 0}
+          streak={user?.streak || 0}
+          level={user?.level || 1}
+          icon="user"
+          onPress={handleProfileEdit}
+          // onPress={() => setModalVisible(true)}
+        />
+        <Text style={styles.sectionTitle}>Achievements</Text>
 
-              />
+		<AchivementList/>
 
-
-
-      </View>
-  </ScrollView>
-  )
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-<<<<<<< Updated upstream
-    display: "flex",
-    marginLeft: "auto",
-    marginRight: "auto",
-    maxWidth: 480,
-    width: "100%",
-    paddingTop: 61,
-    flexDirection: "column",
-    overflow: "hidden",
-    alignItems: "center",
-    fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-  },
-})
-=======
     flex: 1,
     backgroundColor: colors.backgroundLight,
   },
@@ -126,4 +155,3 @@ const styles = StyleSheet.create({
 
 
 });
->>>>>>> Stashed changes

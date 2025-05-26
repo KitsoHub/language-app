@@ -11,10 +11,15 @@ export default function AchievementsPage() {
   //get skill, acchievements and checkAchievements states
   // track checkachievements with useEffect
   const { user } = useAuthStore();
-  const { achievements, skills } = useProgressStore();
+  const { achievements, skills, getCompletedGames } = useProgressStore();
   if (!user) {
+
     return null;
   }
+  const games = getCompletedGames();
+
+  console.log(">> Games state >>", games[0].challenges
+  )
 
   //filter achievement -> unlocked & locked
   const unlockedAchievements = achievements.filter((item) => item.unlocked);
@@ -42,13 +47,13 @@ export default function AchievementsPage() {
         </View>
 
         {/* Skills */}
-        <Text style={styles.sectionTitle}>Skills</Text>
+        {/* <Text style={styles.sectionTitle}>Skills</Text> */}
 
-        <View style={styles.skillsContainer}>
+        {/* <View style={styles.skillsContainer}>
           {skills.map((skill) => (
             <SkillProgressContainer key={skill.id} skill={skill} />
           ))}
-        </View>
+        </View> */}
 
         {/* Achievements */}
 

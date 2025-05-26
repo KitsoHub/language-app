@@ -1,13 +1,12 @@
-import { Vowels } from "@/types";
+export const Vowels = [
+  { vowel: 'A', audio: require('@/assets/audio/kalanga/kalanga_dumilani.aac') },
+  { vowel: 'E', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'I', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'O', audio: require('@/assets/audio/Schwa-What.mp3') },
+  { vowel: 'U', audio: require('@/assets/audio/Schwa-What.mp3') },
+]
 
-
-export const vowels: Vowels[] =   
-   [
-    {id:'a', uri: "@/assets/audio/Schwa-What.mp3", },
-    {id:'e', uri: "@/assets/audio/Schwa-What.mp3", },
-    {id:'i', uri: "@/assets/audio/Schwa-What.mp3", },
-    {id:'o', uri: "@/assets/audio/Schwa-What.mp3", },
-    {id:'u', uri: "@/assets/audio/Schwa-What.mp3", },
-   ]
-//         ],
-//       },
+export const avatars = [
+  { name: 'mosimane', image: require('@/assets/avatars/boy.png') }, // Import image just like audio
+  { name: 'mosadi', image: require('@/assets/avatars/women.png') },
+]

@@ -4,9 +4,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { FONT_SIZES, FONT_WEIGHTS } from '@/utils/constants';
 import { COLORS } from '@/utils/constants/colors';
 import AchievementCard from './AchievementCard';
-import { useAchievementsStore } from '@/store/achivement-store';
+
 import { useAuthStore } from '@/store/auth-store';
 import AchivementDetailsModal from '../modals/AchivementDetailsModal';
+import { useAchievementsStore } from '@/store/achivement-store';
+
 
 export default function AchivementList() {
 

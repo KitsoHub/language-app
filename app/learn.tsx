@@ -1,7 +1,7 @@
 
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
-import { COLORS } from '@/utils/constants/colors'
+import { colors, COLORS } from '@/utils/constants/colors'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuthStore } from '@/store/auth-store';
 import { useRouter } from 'expo-router';
@@ -10,6 +10,7 @@ import { useLanguageStore } from '@/store/language-store';
 import CourseCard from '@/components/shared/CourseCard';
 import { DailyGoal } from '@/components/shared/DailyGoal';
 import { ROUTES } from '@/utils/constants/routes';
+import TabScreen from '@/components/shared/TabScreen';
 
 export default function LearnPage() {
     const { user } = useAuthStore();
@@ -37,6 +38,7 @@ export default function LearnPage() {
         router.push(`${ROUTES.COURSE}${course.id}`);
     };
 
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView
@@ -45,12 +47,16 @@ export default function LearnPage() {
             >
                 <View style={styles.header}>
 
-{/* to use daily progress and goal */}
-             <DailyGoal current={2} goal={10} />
-                <Text style={styles.sectionTitle}>Available Courses</Text>
 
-                    {/* courses */}
-                    {availableCourses.length > 0 ? (
+             <DailyGoal current={2} goal={10} />
+
+             <TabScreen/>
+
+
+
+                {/* <Text style={styles.sectionTitle}>Available Courses</Text> */}
+
+                    {/* {availableCourses.length > 0 ? (
                         availableCourses.slice(0, 2).map((course) => (
                             <CourseCard
                                 key={course.id}
@@ -64,7 +70,7 @@ export default function LearnPage() {
                                 No courses available. Please select a different language.
                             </Text>
                         </View>
-                    )}
+                    )} */}
                 </View>
             </ScrollView>
         </SafeAreaView>
