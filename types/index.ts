@@ -1,3 +1,4 @@
+import { translationOption } from './index';
 export interface User{
     id:string;
     name:string;
@@ -132,6 +133,8 @@ export interface Challenge {
     points: number;
     difficulty: 'easy' | 'medium' | 'hard';
     badge?: string;
+    translationOption?: string,
+    hint?: string;
   }
 
   export interface Game {

@@ -119,7 +119,9 @@ export default function App() {
 			selectLanguage(user.currentLanguage);
 		}
 	}, []);
-
+		// const appGames = games?.filter((game) =>
+		// 	game.languageId?.includes(selectedLanguage?.id || ""),
+		// )
 	// Game card renderer with Fall Guys styling
 	const renderGameItem = ({ item, index }: { item: Game; index: number }) => {
 		const completedChallenges = user?.completedChallenges || [];
@@ -299,6 +301,7 @@ export default function App() {
 
 			{/* Games List */}
 			{games && games.length > 0 ? (
+
 				<FlatList
 					data={games}
 					renderItem={renderGameItem}
