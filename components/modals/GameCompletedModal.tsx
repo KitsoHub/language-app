@@ -6,7 +6,7 @@ import {
 	Text,
 	View,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect ,useRef,useState} from "react";
 import { useAuthStore } from "@/store/auth-store";
 import Animated, {
 	useAnimatedStyle,
@@ -19,6 +19,7 @@ import Animated, {
 import { colors } from "@/utils/constants/colors";
 import { Star, Trophy, X } from "lucide-react-native";
 import { Button } from "../ui/Button";
+import LottieView from "lottie-react-native";
 
 interface GameCompletedModalProps {
 	visible: boolean;
@@ -38,12 +39,17 @@ export default function GameCompletedModal({
 	earnedXP,
 }: GameCompletedModalProps) {
 	const { user } = useAuthStore();
+	const [showAnimation, setShowAnimation] = useState(false);
+	const lottieRef = useRef<LottieView>(null);
+	
 
 	// animation state
 	const scale = useSharedValue(0.8);
 	const opacity = useSharedValue(0);
 	const rotate = useSharedValue(0);
 	const starScale = useSharedValue(0);
+	
+	
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
@@ -65,6 +71,7 @@ export default function GameCompletedModal({
 			opacity.value = withTiming(0, { duration: 300 });
 			scale.value = withTiming(0.8, { duration: 300 });
 			starScale.value = withTiming(0, { duration: 200 });
+			setShowAnimation(false);
 		}
 	}, [visible]);
 
@@ -87,6 +94,21 @@ export default function GameCompletedModal({
 		};
 	});
 
+	// Handle Continue button press
+	const handleContinue = () => {
+		setShowAnimation(true); // Show Lottie animation
+		// Trigger Lottie animation
+		if (lottieRef.current) {
+		  lottieRef.current.play();
+		}
+	  };
+	
+	  // Handle animation finish
+	  const handleAnimationFinish = () => {
+		setShowAnimation(false);
+		onContinue(); // Call onContinue when animation completes
+	  };
+
 	return (
 		<Modal
 			visible={visible}
@@ -100,7 +122,21 @@ export default function GameCompletedModal({
 						<X size={24} color={colors.text} />
 					</Pressable>
 
-					{/* trophy */}
+
+					{showAnimation ? (
+					<LottieView
+
+					ref={lottieRef}
+					source={require("../../assets/lotties/coin.json")}
+					autoPlay={true} // Controlled manually via play()
+					loop={false}
+					speed={0.5}
+					style={styles.lottieAnimation}
+					onAnimationFinish={handleAnimationFinish}
+					/>
+					) : (
+						<>
+						{/* trophy */}
 
 					<View style={styles.trophyContainer}>
 						<Trophy size={60} color={colors.secondary} />
@@ -133,9 +169,12 @@ export default function GameCompletedModal({
 
 					<Button
 						title="Continue"
-						onPress={onContinue}
+						//onPress={onContinue}
+						onPress={handleContinue}
 						style={styles.continueButton}
 					/>
+					</>
+					)}
 				</Animated.View>
 			</Animated.View>
 		</Modal>
@@ -147,7 +186,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: "rgba(0, 0, 0, 0.5)",
+		backgroundColor: "rgba(0, 0, 0, 0.24)",
 	},
 	modalContent: {
 		width: width * 0.85,
@@ -227,4 +266,9 @@ const styles = StyleSheet.create({
 	continueButton: {
 		width: "100%",
 	},
+	lottieAnimation: {
+		width: 200,
+		height: 200,
+
+	  },
 });

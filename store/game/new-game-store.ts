@@ -24,7 +24,8 @@ interface NewGameState {
   getCurrentGame: () => Game | null;
   getCurrentChallenge: () => Challenge | null;
   getCurrentWordSelection: () => string | null;
-  //   Challenge Actions
+
+  //Challenge Actions
   addWordToArrangement: (word: string) => void;
   removeWordFromArrangement: (index: number) => void;
   checkAnswer: () => boolean;
@@ -43,7 +44,7 @@ export const useNewGameStore = create(
     (set, get) => ({
       games: [
         {
-          id: 'word-matching',
+          id: 'wm-st',
           title: 'Word Matching',
           description: 'Arrange words in the correct order to form phrases.',
           languageId: 'st',
@@ -56,7 +57,7 @@ export const useNewGameStore = create(
           type: 'word-matching',
         },
         {
-          id: 'multiple-choice',
+          id: 'mc-st',
           title: 'Multiple Choice',
           description:
             'Choose the correct translation for each word or phrase.',
@@ -70,7 +71,7 @@ export const useNewGameStore = create(
           type: 'multiple-choice',
         },
         {
-          id: 'fill-blank',
+          id: 'fb-st',
           title: 'Fill in the Blank',
           description: 'Complete sentences by filling in the missing words.',
           languageId: 'st',
@@ -83,7 +84,7 @@ export const useNewGameStore = create(
           type: 'fill-blank',
         },
         {
-          id: 'sentence-builder',
+          id: 'sb-st',
           title: 'Sentence Builder',
           description: 'Build complete sentences from individual words.',
           languageId: 'st',
@@ -95,6 +96,20 @@ export const useNewGameStore = create(
           gameIcon: '📚',
           type: 'sentence-builder',
         },
+        // kalanga
+        {
+          id: 'word-matching-kl',
+          title: 'Word Matching',
+          description: 'Arrange words in the correct order to form phrases.',
+          languageId: 'kl',
+          challenges: wordMatchingChallenges.filter(
+            (challenge) =>
+              challenge.languageId === 'kl' && challenge.isLocked === false,
+          ),
+          gameBadge: 'Beginner',
+          gameIcon: '🔤',
+          type: 'word-matching',
+        }
       ],
       currentGameId: null,
       currentChallengeIndex: 0,
@@ -386,7 +401,7 @@ export const useNewGameStore = create(
     }),
 
     {
-      name: 'new-game-storage-a6',
+      name: 'oew-game-storage-a6',
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),

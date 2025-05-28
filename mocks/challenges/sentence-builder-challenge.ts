@@ -56,4 +56,16 @@ export const sentenceBuilderChallenges: Challenge[] = [
     points: 25,
     difficulty: 'hard'
   },
+  //kalanga
+  {
+    id: 'sb-6',
+    type: 'sentence-builder',
+    instruction: "Build the sentence: 'I am learning Setswana'",
+    correctOrder: ['Ke', 'ithuta', 'Setswana'],
+    wordBank: ['Setswana', 'Ke', 'ithuta', 'batla', 'go'],
+    languageId: 'kl',
+    isLocked: false,
+    points: 20,
+    difficulty: 'hard'
+  },
 ];

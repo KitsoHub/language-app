@@ -56,4 +56,17 @@ export const fillBlankChallenges: Challenge[] = [
     points: 15,
     difficulty: 'medium'
   },
+  // kalanga
+  {
+    id: 'fb-1',
+    type: 'fill-blank',
+    instruction: "Fill in the blank for greeting",
+    sentence: "Du_",
+    correctAnswer: "milani",
+    languageId: 'kl',
+    isLocked: false,
+    points: 5,
+    difficulty: 'easy'
+  },
+  
 ];
