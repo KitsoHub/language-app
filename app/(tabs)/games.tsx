@@ -29,6 +29,7 @@ import { ROUTES } from "@/utils/constants/routes";
 import Feather from "@expo/vector-icons/Feather";
 import { MARGIN, PADDING } from "@/utils/constants";
 import { Audio, type AVPlaybackSource } from "expo-av";
+import { useAudioPlayer } from "@/utils/hooks/useAudioPlayer";
 
 export default function GamePage() {
 	const router = useRouter();
@@ -133,17 +134,7 @@ export default function GamePage() {
 		);
 	}
 
-	async function playSound(option: string) {
-		try {
-			await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-			const { sound } = await Audio.Sound.createAsync(
-				option as unknown as AVPlaybackSource,
-				{ shouldPlay: true },
-			);
-		} catch (error) {
-			console.log("Error playing sound", error);
-		}
-	}
+	const { play } = useAudioPlayer();
 
 	return (
 		<>
@@ -171,14 +162,19 @@ export default function GamePage() {
 									style={styles.translationButton}
 									hitSlop={20}
 									onPress={() =>
-										playSound(currentChallenge.translationOption || "")
+										play(currentChallenge.translationOption || '')
 									}
 								>
 									<Feather name="volume-2" size={24} color={COLORS.text} />
 								</TouchableOpacity>
 							</>
 						)}
-						<Text style={[ currentChallenge.translationOption && styles.instructionText, styles.instructionTextDefault]}>
+						<Text
+							style={[
+								currentChallenge.translationOption && styles.instructionText,
+								styles.instructionTextDefault,
+							]}
+						>
 							{currentChallenge.instruction}
 						</Text>
 					</View>
@@ -233,11 +229,9 @@ export default function GamePage() {
 					)}
 
 					{showHint && currentChallenge.hint && (
-
-							<View style={styles.hintContainer}>
-								<Text style={styles.hintText}>{currentChallenge.hint}</Text>
-							</View>
-
+						<View style={styles.hintContainer}>
+							<Text style={styles.hintText}>{currentChallenge.hint}</Text>
+						</View>
 					)}
 
 					<View style={styles.buttonContainer}>
@@ -269,14 +263,6 @@ export default function GamePage() {
 					/>
 				</View>
 
-				{/* <View style={styles.centeredContainer}>
-     <Text style={styles.errorText}>No game selected. Please select a game from the home screen.</Text>
-     <Button
-       title="Go to Home"
-       onPress={() => router.push('/(tabs)')}
-       style={styles.button}
-     />
-   </View> */}
 			</SafeAreaView>
 		</>
 	);
@@ -298,7 +284,7 @@ const styles = StyleSheet.create({
 	instructionContainer: {
 		flexDirection: "row",
 		justifyContent: "space-between",
-		alignItems: 'center',
+		alignItems: "center",
 		backgroundColor: colors.mascotBackground,
 		borderRadius: 16,
 		padding: 8,
@@ -307,10 +293,10 @@ const styles = StyleSheet.create({
 	instructionText: {
 		fontSize: 18,
 		fontWeight: "600",
-		right:30,
+		right: 30,
 		color: colors.text,
 	},
-		instructionTextDefault: {
+	instructionTextDefault: {
 		fontSize: 18,
 		fontWeight: "600",
 		color: colors.text,
