@@ -134,6 +134,7 @@ export interface Challenge {
     difficulty: 'easy' | 'medium' | 'hard';
     badge?: string;
     translationOption?: string,
+    hint?: string;
   }
 
   export interface Game {
