@@ -5,6 +5,7 @@ import {
 	ScrollView,
 	StyleSheet,
 	Text,
+	TouchableOpacity,
 	View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -12,7 +13,7 @@ import { Stack, useRouter } from "expo-router";
 import { useNewGameStore } from "@/store/game/new-game-store";
 import { useAuthStore } from "@/store/auth-store";
 import { Button } from "@/components/ui/Button";
-import { colors } from "@/utils/constants/colors";
+import { COLORS, colors } from "@/utils/constants/colors";
 import ScoreDisplay from "@/components/shared/games/ScoreDisplay";
 import WordBank from "@/components/wordMatching/WordBank";
 import WordDropZone from "@/components/wordMatching/WordDropZone";
@@ -25,6 +26,8 @@ import FillBlankGame from "@/components/games/FillBlankGame";
 import SentenceBuilderGame from "@/components/games/SentenceBuilderGame";
 import EmptyState from "@/components/shared/EmptyState";
 import { ROUTES } from "@/utils/constants/routes";
+import Feather from "@expo/vector-icons/Feather";
+import { MARGIN, PADDING } from "@/utils/constants";
 
 export default function GamePage() {
 	const router = useRouter();
@@ -160,6 +163,10 @@ export default function GamePage() {
 								arrangedWords={arrangedWords}
 								onRemoveWord={handleRemoveWord}
 							/>
+							{/* add audio here */}
+							<TouchableOpacity style={styles.translationButton}>
+								<Feather name="volume-2" size={24} color={COLORS.text}/>
+							</TouchableOpacity>
 
 							<WordBank
 								words={currentChallenge.wordBank || []}
@@ -286,4 +293,12 @@ const styles = StyleSheet.create({
 	button: {
 		minWidth: 150,
 	},
+	translationButton:{
+		backgroundColor: COLORS.white,
+		borderRadius: 12,
+		padding: PADDING.md,
+		marginBottom: MARGIN.sm,
+		borderWidth:1,
+		borderColor: COLORS.gray300,
+	}
 });

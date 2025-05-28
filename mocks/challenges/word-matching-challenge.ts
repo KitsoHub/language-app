@@ -1,4 +1,5 @@
 import type { Challenge } from '@/types';
+import { Mosadi } from '@/utils/audio';
 
 export const wordMatchingChallenges: Challenge[] = [
   {
@@ -10,7 +11,8 @@ export const wordMatchingChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 10,
-    difficulty: 'easy'
+    difficulty: 'easy',
+    translationOption: Mosadi,
   },
   {
     id: 'wm-2',
