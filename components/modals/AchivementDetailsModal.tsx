@@ -70,6 +70,7 @@ export default function AchivementDetailsModal() {
 
 	if (!selectedAchivement) return null;
 	const isUnlocked = isAchievementUnlocked(selectedAchivement.id);
+	
 	return (
 		<Modal transparent={true} animationType="none">
 			<Animated.View style={[styles.modalContainer, containerStyle]}>

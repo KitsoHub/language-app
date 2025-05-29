@@ -31,6 +31,8 @@ import { useNewGameStore } from "@/store/game/new-game-store";
 import type { Game } from "@/types";
 import { LinearGradient } from "expo-linear-gradient";
 
+
+
 // Expanded Fall Guys inspired color palette
 const COLORS = {
 	primary: "#FF4D6D", // Pink
@@ -223,6 +225,9 @@ export default function App() {
 				<View style={[styles.patternCircle, styles.patternCircle3]} />
 				<View style={[styles.patternCircle, styles.patternCircle4]} />
 			</View>
+			<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+   
+    </View>
 
 			{/* Header with vibrant gradient background */}
 			{/* <LinearGradient

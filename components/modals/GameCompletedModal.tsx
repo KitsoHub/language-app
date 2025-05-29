@@ -6,7 +6,7 @@ import {
 	Text,
 	View,
 } from "react-native";
-import React, { useEffect ,useRef,useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/auth-store";
 import Animated, {
 	useAnimatedStyle,
@@ -19,7 +19,8 @@ import Animated, {
 import { colors } from "@/utils/constants/colors";
 import { Star, Trophy, X } from "lucide-react-native";
 import { Button } from "../ui/Button";
-import LottieView from "lottie-react-native";
+import LottieView from 'lottie-react-native';
+import { Audio, type AVPlaybackSource } from "expo-av";
 
 interface GameCompletedModalProps {
 	visible: boolean;
@@ -39,17 +40,13 @@ export default function GameCompletedModal({
 	earnedXP,
 }: GameCompletedModalProps) {
 	const { user } = useAuthStore();
-	const [showAnimation, setShowAnimation] = useState(false);
-	const lottieRef = useRef<LottieView>(null);
-	
+	const [playConfetti, setPlayConfetti] = useState(false);
 
 	// animation state
 	const scale = useSharedValue(0.8);
 	const opacity = useSharedValue(0);
 	const rotate = useSharedValue(0);
 	const starScale = useSharedValue(0);
-	
-	
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
@@ -71,7 +68,6 @@ export default function GameCompletedModal({
 			opacity.value = withTiming(0, { duration: 300 });
 			scale.value = withTiming(0.8, { duration: 300 });
 			starScale.value = withTiming(0, { duration: 200 });
-			setShowAnimation(false);
 		}
 	}, [visible]);
 
@@ -94,20 +90,34 @@ export default function GameCompletedModal({
 		};
 	});
 
-	// Handle Continue button press
-	const handleContinue = () => {
-		setShowAnimation(true); // Show Lottie animation
-		// Trigger Lottie animation
-		if (lottieRef.current) {
-		  lottieRef.current.play();
+	// Modify onContinue button press to trigger confetti
+	const handleContinue = async () => {
+		setPlayConfetti(true);
+		// Play sound effect when confetti animation starts
+		await playCoinSound('coin');
+		// Wait for confetti animation to play before continuing
+		setTimeout(() => {
+			onContinue();
+			setPlayConfetti(false);
+		}, 1000);
+	};
+
+	// Play sound effect function
+	async function playCoinSound(option: string) {
+		try {
+			await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+			// Load and play the sound
+			const { sound } = await Audio.Sound.createAsync(
+				option === 'coin'
+					? require('@/assets/audio/coin.mp3')
+					: undefined
+			);
+			await sound.playAsync();
+		} catch (error) {
+			console.error('Error playing sound:', error);
 		}
-	  };
-	
-	  // Handle animation finish
-	  const handleAnimationFinish = () => {
-		setShowAnimation(false);
-		onContinue(); // Call onContinue when animation completes
-	  };
+	}
+
 
 	return (
 		<Modal
@@ -122,28 +132,14 @@ export default function GameCompletedModal({
 						<X size={24} color={colors.text} />
 					</Pressable>
 
-
-					{showAnimation ? (
-					<LottieView
-
-					ref={lottieRef}
-					source={require("../../assets/lotties/coin.json")}
-					autoPlay={true} // Controlled manually via play()
-					loop={false}
-					speed={0.5}
-					style={styles.lottieAnimation}
-					onAnimationFinish={handleAnimationFinish}
-					/>
-					) : (
-						<>
-						{/* trophy */}
+					{/* trophy */}
 
 					<View style={styles.trophyContainer}>
 						<Trophy size={60} color={colors.secondary} />
 					</View>
 
 					{/* Message */}
-					<Text style={styles.congratsText}>Congradulations</Text>
+					<Text style={styles.congratsText}>Congragulations</Text>
 					<Text style={styles.completedText}>You completed {gameTitle}</Text>
 
 					{/* XP */}
@@ -167,14 +163,23 @@ export default function GameCompletedModal({
 						</View>
 					</View>
 
+					{/* Render confetti Lottie when triggered */}
+					{playConfetti && (
+						<LottieView 
+							source={require('@/assets/lotties/coin.json')}
+							autoPlay
+							loop={false}
+							style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1001 }}
+						/>
+						
+					)}
+
 					<Button
 						title="Continue"
-						//onPress={onContinue}
 						onPress={handleContinue}
 						style={styles.continueButton}
 					/>
-					</>
-					)}
+					
 				</Animated.View>
 			</Animated.View>
 		</Modal>
@@ -186,7 +191,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: "rgba(0, 0, 0, 0.24)",
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
 	},
 	modalContent: {
 		width: width * 0.85,
@@ -266,9 +271,4 @@ const styles = StyleSheet.create({
 	continueButton: {
 		width: "100%",
 	},
-	lottieAnimation: {
-		width: 200,
-		height: 200,
-
-	  },
 });

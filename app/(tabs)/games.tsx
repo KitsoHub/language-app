@@ -25,6 +25,7 @@ import FillBlankGame from "@/components/games/FillBlankGame";
 import SentenceBuilderGame from "@/components/games/SentenceBuilderGame";
 import EmptyState from "@/components/shared/EmptyState";
 import { ROUTES } from "@/utils/constants/routes";
+import { Audio } from "expo-av";
 
 export default function GamePage() {
 	const router = useRouter();
@@ -84,6 +85,8 @@ export default function GamePage() {
 		setShowCompletionModal(false);
 		router.back();
 		resetGame();
+	
+	
 	};
 	const handleWordCheck = () => {
 		setShowCheck(true);
@@ -112,6 +115,35 @@ export default function GamePage() {
 			}, 2000);
 		}
 	};
+
+	// Add playSound function
+	async function playSound(option: string) {
+		try {
+			await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+			const { sound } = await Audio.Sound.createAsync(
+				option === 'coin'
+					? require('@/assets/audio/good_job.mp3')
+					: undefined
+			);
+			await sound.playAsync();
+		} catch (error) {
+			console.error('Error playing sound:', error);
+		}
+	}
+
+	// Trigger victory sound when feedback is shown and answer is correct
+	useEffect(() => {
+		if (showFeedback && isCorrect) {
+			playSound("winning");
+		}
+	}, [showFeedback, isCorrect]);
+
+	// Trigger victory sound when completion modal is shown
+	useEffect(() => {
+		if (showCompletionModal) {
+			playSound("winning");
+		}
+	}, [showCompletionModal]);
 
 	if (!currentGame || !currentChallenge) {
 
