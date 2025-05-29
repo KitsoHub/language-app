@@ -175,7 +175,7 @@ export default function GameCompletedModal({
 					)}
 
 					<Button
-						title="Continue"
+						title="Collect Rewards"
 						onPress={handleContinue}
 						style={styles.continueButton}
 					/>
