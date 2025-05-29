@@ -7,7 +7,7 @@ import {
 	Text,
 	View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Stack, useRouter } from "expo-router";
 import { useNewGameStore } from "@/store/game/new-game-store";
 import { useAuthStore } from "@/store/auth-store";
@@ -117,19 +117,43 @@ export default function GamePage() {
 	};
 
 	// Add playSound function
-	async function playSound(option: string) {
-		try {
-			await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-			const { sound } = await Audio.Sound.createAsync(
-				option === 'coin'
-					? require('@/assets/audio/good_job.mp3')
-					: undefined
-			);
-			await sound.playAsync();
-		} catch (error) {
-			console.error('Error playing sound:', error);
+	const sound = useRef(new Audio.Sound());
+
+	const playSound = async () => {
+		console.log("Playing sound");
+
+		const { sound: loadedSound } = await Audio.Sound.createAsync(require("@/assets/audio/good_job.mp3"));
+		sound.current = loadedSound;
+		const checkLoaded = await sound.current.getStatusAsync();
+		if (checkLoaded.isLoaded) {
+			console.log("Sound loaded successfully");
+			await sound.current.playAsync();
 		}
-	}
+		else {
+			console.log("Sound failed to load");
+		}
+	};
+
+	useEffect(() => {
+		return () => {
+			sound.current.unloadAsync();
+		};
+		},
+			[]);
+
+	// async function playSound(option: string) {
+	// 	try {
+	// 		await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+	// 		const { sound } = await Audio.Sound.createAsync(
+	// 			option === 'coin'
+	// 				? require('@/assets/audio/good_job.mp3')
+	// 				: undefined
+	// 		);
+	// 		await sound.playAsync();
+	// 	} catch (error) {
+	// 		console.error('Error playing sound:', error);
+	// 	}
+	// }
 
 	// Trigger victory sound when feedback is shown and answer is correct
 	useEffect(() => {
