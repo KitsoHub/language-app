@@ -401,7 +401,7 @@ export const useNewGameStore = create(
     }),
 
     {
-      name: 'oew-game-storage-a6',
+      name: 'new-game-storage-a7',
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),
