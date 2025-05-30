@@ -147,3 +147,13 @@ export interface Challenge {
     type: 'word-matching' | 'multiple-choice' | 'listening' | 'speaking' | 'sentence-builder'| 'fill-blank';
     languageId?: string;
   }
+
+
+  export interface HapticStore {
+    hapticEnabled: boolean,
+    setHapticEnabled: (values: boolean) => void,
+    toggleHaptics:()=>void,
+  }
+
+//   TODO: add selection types
+  export type HapticPresets = 'light'| 'medium' | 'heavy' | 'success' | 'error' | 'warning';

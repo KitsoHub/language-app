@@ -8,6 +8,7 @@ import { Alert, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleS
 import { Mail, Lock, ArrowRight } from 'lucide-react-native';
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { useHaptics } from "@/utils/hooks/useHaptics";
 
 export default function SignInScreen() {
     const router = useRouter();
@@ -18,6 +19,8 @@ export default function SignInScreen() {
         email: '',
         password: '',
     });
+
+    const { triggerHaptic} = useHaptics();
 
     const validateForm = () => {
         let isValid = true;
@@ -46,8 +49,11 @@ export default function SignInScreen() {
 
     const handleSignIn = async () => {
         // validate form
-        if (!validateForm()) return;
+        if (!validateForm()) {
+            triggerHaptic('error');
+            return};
         try {
+             triggerHaptic('success');
             await login(email, password);
             router.replace(ROUTES.TABS)
         } catch (error: any) {
@@ -62,6 +68,7 @@ export default function SignInScreen() {
         console.log(" >> Activating Demo ACC >> ")
         let demoEmail = '';
         demoEmail = "testuser@example.com"
+        triggerHaptic('success')
         setEmail(demoEmail);
         setPassword('password');
     }
