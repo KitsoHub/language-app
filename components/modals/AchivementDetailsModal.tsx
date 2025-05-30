@@ -86,7 +86,7 @@ export default function AchivementDetailsModal() {
 					{isUnlocked ? (
 						<>
 							<LottieView
-								autoPlay
+								autoPlay={false}
 								source={defaultAnimation}
 								loop
 								style={styles.animation}
