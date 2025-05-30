@@ -29,7 +29,7 @@ export default function LessonPage() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [completedExercises, setCompletedExercises] = useState<string[]>([]);
-  const [showHint, setShowHint] = useState(false);
+  const [showhint, setShowHint] = useState(false);
   const [audioSound, setAudioSound] = useState<unknown>();
   const [droppedLetters, setDroppedLetters] = useState<string[]>([]);
   const [draggingLetter, setDraggingLetter] = useState<string | null>(null);

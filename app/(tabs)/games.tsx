@@ -5,6 +5,7 @@ import {
 	ScrollView,
 	StyleSheet,
 	Text,
+	TouchableOpacity,
 	View,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
@@ -12,7 +13,7 @@ import { Stack, useRouter } from "expo-router";
 import { useNewGameStore } from "@/store/game/new-game-store";
 import { useAuthStore } from "@/store/auth-store";
 import { Button } from "@/components/ui/Button";
-import { colors } from "@/utils/constants/colors";
+import { COLORS, colors } from "@/utils/constants/colors";
 import ScoreDisplay from "@/components/shared/games/ScoreDisplay";
 import WordBank from "@/components/wordMatching/WordBank";
 import WordDropZone from "@/components/wordMatching/WordDropZone";
@@ -25,7 +26,14 @@ import FillBlankGame from "@/components/games/FillBlankGame";
 import SentenceBuilderGame from "@/components/games/SentenceBuilderGame";
 import EmptyState from "@/components/shared/EmptyState";
 import { ROUTES } from "@/utils/constants/routes";
+<<<<<<< HEAD
 import { Audio } from "expo-av";
+=======
+import Feather from "@expo/vector-icons/Feather";
+import { MARGIN, PADDING } from "@/utils/constants";
+import { Audio, type AVPlaybackSource } from "expo-av";
+import { useAudioPlayer } from "@/utils/hooks/useAudioPlayer";
+>>>>>>> d6eddabb35c72d9e0201f2954f4730c4233bb862
 
 export default function GamePage() {
 	const router = useRouter();
@@ -49,6 +57,7 @@ export default function GamePage() {
 	const { user } = useAuthStore();
 	const [showCompletionModal, setShowCompletionModal] = useState(false);
 	const [showCheck, setShowCheck] = useState(false);
+	const [showHint, setShowHint] = useState(false);
 
 	// game state
 	const currentGame = getCurrentGame();
@@ -106,12 +115,13 @@ export default function GamePage() {
 					setShowCheck(false);
 					if (isGameCompleted()) {
 						setShowCompletionModal(true);
-
 					} else {
-
 						nextChallenge();
 					}
-				} else {setShowFeedback(false);setShowCheck(false);}
+				} else {
+					setShowFeedback(false);
+					setShowCheck(false);
+				}
 			}, 2000);
 		}
 	};
@@ -170,21 +180,20 @@ export default function GamePage() {
 	}, [showCompletionModal]);
 
 	if (!currentGame || !currentChallenge) {
-
 		// empty state
 		return (
-
 			<EmptyState
-			 title={currentGame?.title}
-			//  icon="inbox"
-			 description="No Game has been selected"
-			 buttonTitle="Back to Home"
-			 onButtonPress={() => router.push(ROUTES.TABS)}
-			 animationSource={require("@/assets/lotties/empty_scroll.json")}
-			   />
-
+				title={currentGame?.title}
+				//  icon="inbox"
+				description="No Game has been selected"
+				buttonTitle="Back to Home"
+				onButtonPress={() => router.push(ROUTES.TABS)}
+				animationSource={require("@/assets/lotties/empty_scroll.json")}
+			/>
 		);
 	}
+
+	const { play } = useAudioPlayer();
 
 	return (
 		<>
@@ -205,7 +214,26 @@ export default function GamePage() {
 					/>
 
 					<View style={styles.instructionContainer}>
-						<Text style={styles.instructionText}>
+						{currentChallenge.translationOption && (
+							<>
+								{/* add audio here */}
+								<TouchableOpacity
+									style={styles.translationButton}
+									hitSlop={20}
+									onPress={() =>
+										play(currentChallenge.translationOption || '')
+									}
+								>
+									<Feather name="volume-2" size={24} color={COLORS.text} />
+								</TouchableOpacity>
+							</>
+						)}
+						<Text
+							style={[
+								currentChallenge.translationOption && styles.instructionText,
+								styles.instructionTextDefault,
+							]}
+						>
 							{currentChallenge.instruction}
 						</Text>
 					</View>
@@ -246,6 +274,25 @@ export default function GamePage() {
 							visible={showFeedback}
 						/>
 					)}
+					{currentChallenge.hint && (
+						<>
+							{/* hint */}
+							<TouchableOpacity
+								style={styles.hintButton}
+								hitSlop={20}
+								onPress={() => setShowHint(!showHint)}
+							>
+								<Text style={styles.hintButtonText}>Show Hint</Text>
+							</TouchableOpacity>
+						</>
+					)}
+
+					{showHint && currentChallenge.hint && (
+						<View style={styles.hintContainer}>
+							<Text style={styles.hintText}>{currentChallenge.hint}</Text>
+						</View>
+					)}
+
 					<View style={styles.buttonContainer}>
 						<Button
 							title="Reset"
@@ -275,14 +322,6 @@ export default function GamePage() {
 					/>
 				</View>
 
-				{/* <View style={styles.centeredContainer}>
-     <Text style={styles.errorText}>No game selected. Please select a game from the home screen.</Text>
-     <Button
-       title="Go to Home"
-       onPress={() => router.push('/(tabs)')}
-       style={styles.button}
-     />
-   </View> */}
 			</SafeAreaView>
 		</>
 	);
@@ -302,16 +341,25 @@ const styles = StyleSheet.create({
 		padding: 16,
 	},
 	instructionContainer: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
 		backgroundColor: colors.mascotBackground,
 		borderRadius: 16,
-		padding: 16,
+		padding: 8,
 		marginVertical: 8,
 	},
 	instructionText: {
 		fontSize: 18,
 		fontWeight: "600",
-		textAlign: "center",
+		right: 30,
 		color: colors.text,
+	},
+	instructionTextDefault: {
+		fontSize: 18,
+		fontWeight: "600",
+		color: colors.text,
+		padding: 8,
 	},
 	buttonContainer: {
 		flexDirection: "row",
@@ -341,5 +389,32 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		minWidth: 150,
+	},
+	translationButton: {
+		backgroundColor: COLORS.white,
+		borderRadius: 12,
+		padding: PADDING.sm,
+		borderWidth: 1,
+		borderColor: COLORS.gray300,
+	},
+	hintContainer: {
+		backgroundColor: COLORS.secondaryLight,
+		borderRadius: 12,
+		padding: 16,
+		marginBottom: 24,
+		width: "100%",
+	},
+	hintText: {
+		fontSize: 14,
+		color: COLORS.textLight,
+		fontStyle: "italic",
+	},
+	hintButton: {
+		marginTop: 16,
+	},
+	hintButtonText: {
+		fontSize: 14,
+		color: COLORS.primary,
+		fontWeight: "500",
 	},
 });

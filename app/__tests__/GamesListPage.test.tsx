@@ -4,7 +4,7 @@ import { act, fireEvent, render } from "@testing-library/react-native";
 
 import GamesList from "@/app/games-list";
 import { useNewGameStore } from "@/store/game/new-game-store";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+
 import { BORDER_RADIUS } from "@/utils/constants";
 
 jest.mock("expo-router", () => {
