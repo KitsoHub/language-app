@@ -23,11 +23,13 @@ import { FONT_FAMILY, FONT_SIZES, FONT_WEIGHTS } from '@/utils/constants';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ROUTES } from '@/utils/constants/routes';
+import { useHaptics } from '@/utils/hooks/useHaptics';
 
 
 const { width, height } = Dimensions.get('window');
 export default function WelcomePage() {
   const router = useRouter();
+  const { triggerHaptic } = useHaptics();
 
   const buttonScale = useSharedValue(0.8);
   const buttonOpacity = useSharedValue(0);
@@ -67,6 +69,7 @@ export default function WelcomePage() {
     }
   })
   const handleStart = () => {
+    triggerHaptic('heavy')
     buttonScale.value = withSequence(
       withTiming(0.9, { duration: 100 }),
       withTiming(1.1, { duration: 100 }),

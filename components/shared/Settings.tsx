@@ -42,6 +42,8 @@ import { useNewGameStore } from "@/store/game/new-game-store";
 import { useLanguageStore } from "@/store/language-store";
 import { FONT_SIZES, PADDING } from "@/utils/constants";
 import { ROUTES } from "@/utils/constants/routes";
+import { useHapticStore } from "@/store/haptic-store";
+import { useHaptics } from "@/utils/hooks/useHaptics";
 
 interface ProfileProps {
 	name: string;
@@ -95,11 +97,13 @@ export default function SettingsContainer({
 
 	const { appLanguages, selectLanguage } = useLanguageStore();
 
-	const [hapticEnabled, setHapticEnabled] = useState(false);
+	const {hapticEnabled, toggleHaptics} = useHapticStore();
+	const { triggerHaptic} = useHaptics()
 	//   add sound
 	// add notification
 	//   add dark mode
 	const handleLogout = () => {
+		triggerHaptic('medium')
 		logout();
 		// router.replace("/auth/sign-in");
 		router.replace(ROUTES.WELCOME as never);
@@ -111,10 +115,12 @@ export default function SettingsContainer({
 	};
 
 	const handleTermsPress = () => {
+		triggerHaptic('light')
 		router.push("/profile/terms");
 	};
 
 	const handleResetProgress = () => {
+		triggerHaptic('heavy')
 		Alert.alert(
 			"Reset Progress",
 			"Are you sure you want to reset your progress? This action cannot be undone.",
@@ -133,7 +139,9 @@ export default function SettingsContainer({
 		);
 	};
 
-	const handleLanguageChange = (id: string) => {
+
+const handleLanguageChange = (id: string) => {
+	triggerHaptic('light')
 		Alert.alert(
 			"Change Language",
 			"Are you sure you want to change language",
@@ -172,7 +180,7 @@ export default function SettingsContainer({
 					</View>
 					<Switch
 						value={hapticEnabled}
-						onValueChange={setHapticEnabled}
+						onValueChange={toggleHaptics}
 						trackColor={{ false: colors.gray300, true: colors.primary }}
 						thumbColor="white"
 					/>
