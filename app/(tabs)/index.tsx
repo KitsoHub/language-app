@@ -391,6 +391,8 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: COLORS.background,
+		paddingTop: 0,
+		paddingBottom: 76,
 	},
 	backgroundPatterns: {
 		position: "absolute",
