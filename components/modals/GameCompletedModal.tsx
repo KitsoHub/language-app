@@ -40,7 +40,7 @@ export default function GameCompletedModal({
 	earnedXP,
 }: GameCompletedModalProps) {
 	const { user } = useAuthStore();
-	const [playConfetti, setPlayConfetti] = useState(false);
+	// const [playConfetti, setPlayConfetti] = useState(false);
 
 	// animation state
 	const scale = useSharedValue(0.8);
@@ -91,32 +91,32 @@ export default function GameCompletedModal({
 	});
 
 	// Modify onContinue button press to trigger confetti
-	const handleContinue = async () => {
-		setPlayConfetti(true);
-		// Play sound effect when confetti animation starts
-		await playCoinSound('coin');
-		// Wait for confetti animation to play before continuing
-		setTimeout(() => {
-			onContinue();
-			setPlayConfetti(false);
-		}, 1000);
-	};
+	// const handleContinue = async () => {
+	// 	setPlayConfetti(true);
+	// 	// Play sound effect when confetti animation starts
+	// 	await playCoinSound('coin');
+	// 	// Wait for confetti animation to play before continuing
+	// 	setTimeout(() => {
+	// 		onContinue();
+	// 		setPlayConfetti(false);
+	// 	}, 1000);
+	// };
 
 	// Play sound effect function
-	async function playCoinSound(option: string) {
-		try {
-			await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-			// Load and play the sound
-			const { sound } = await Audio.Sound.createAsync(
-				option === 'coin'
-					? require('@/assets/audio/coin.mp3')
-					: undefined
-			);
-			await sound.playAsync();
-		} catch (error) {
-			console.error('Error playing sound:', error);
-		}
-	}
+	// async function playCoinSound(option: string) {
+	// 	try {
+	// 		await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+	// 		// Load and play the sound
+	// 		const { sound } = await Audio.Sound.createAsync(
+	// 			option === 'coin'
+	// 				? require('@/assets/audio/coin.mp3')
+	// 				: undefined
+	// 		);
+	// 		await sound.playAsync();
+	// 	} catch (error) {
+	// 		console.error('Error playing sound:', error);
+	// 	}
+	// }
 
 
 	return (
@@ -163,23 +163,22 @@ export default function GameCompletedModal({
 						</View>
 					</View>
 
-					{/* Render confetti Lottie when triggered */}
-					{playConfetti && (
-						<LottieView 
+					{/* {playConfetti && (
+						<LottieView
 							source={require('@/assets/lotties/coin.json')}
 							autoPlay
 							loop={false}
 							style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1001 }}
 						/>
-						
-					)}
+
+					)} */}
 
 					<Button
 						title="Collect Rewards"
-						onPress={handleContinue}
+						onPress={onContinue}
 						style={styles.continueButton}
 					/>
-					
+
 				</Animated.View>
 			</Animated.View>
 		</Modal>

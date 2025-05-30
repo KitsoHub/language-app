@@ -1,5 +1,5 @@
 import type { Challenge } from '@/types';
-import { Dumela } from '@/utils/audio';
+import { Dumela, WinSound } from '@/utils/audio';
 
 export const wordMatchingChallenges: Challenge[] = [
   {
@@ -24,6 +24,7 @@ export const wordMatchingChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 10,
+    translationOption: WinSound,
     difficulty: 'easy'
   },
   {
