@@ -26,14 +26,10 @@ import FillBlankGame from "@/components/games/FillBlankGame";
 import SentenceBuilderGame from "@/components/games/SentenceBuilderGame";
 import EmptyState from "@/components/shared/EmptyState";
 import { ROUTES } from "@/utils/constants/routes";
-<<<<<<< HEAD
-import { Audio } from "expo-av";
-=======
 import Feather from "@expo/vector-icons/Feather";
 import { MARGIN, PADDING } from "@/utils/constants";
 import { Audio, type AVPlaybackSource } from "expo-av";
 import { useAudioPlayer } from "@/utils/hooks/useAudioPlayer";
->>>>>>> d6eddabb35c72d9e0201f2954f4730c4233bb862
 
 export default function GamePage() {
 	const router = useRouter();
