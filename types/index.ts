@@ -154,3 +154,6 @@ export interface Challenge {
     setHapticEnabled: (values: boolean) => void,
     toggleHaptics:()=>void,
   }
+
+//   TODO: add selection types
+  export type HapticPresets = 'light'| 'medium' | 'heavy' | 'success' | 'error' | 'warning';
