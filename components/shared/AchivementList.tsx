@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import { FONT_SIZES, FONT_WEIGHTS } from '@/utils/constants';
 import { COLORS } from '@/utils/constants/colors';
@@ -8,14 +8,32 @@ import AchievementCard from './AchievementCard';
 import { useAuthStore } from '@/store/auth-store';
 import AchivementDetailsModal from '../modals/AchivementDetailsModal';
 import { useAchievementsStore } from '@/store/achivement-store';
+import { Achievement } from '@/types';
 
 
-export default function AchivementList() {
+  const debounce = (func: Function, wait: number) => {
+    let timeout: NodeJS.Timeout;
+    return function executedFunction(...args: any[]) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  };
+ function AchivementListComponent() {
 
     const {achievements, selectAchivement, isAchievementUnlocked} = useAchievementsStore()
     const user = useAuthStore((state) => state.user);
+if (!user) return null;
 
-        if (!user) return;
+          const debouncedSelect = useCallback(
+            debounce((achievement: Achievement) => {
+              selectAchivement(achievement);
+            }, 300),
+            [selectAchivement],
+          );
 
   return (
     <View>
@@ -26,14 +44,12 @@ export default function AchivementList() {
         >
           {achievements.length > 0 ? (
             achievements.map((achievement) => {
-              //const isUnlocked = isAchievementUnlocked(achievement.id);
               return (
                 <AchievementCard
                   key={achievement.id}
                   achievement={achievement}
                   status={isAchievementUnlocked(achievement.id)}
-                //   add on select achievement
-                onPress={()=>selectAchivement(achievement)}
+                onPress={()=>debouncedSelect(achievement)}
                 />
               );
             })
@@ -80,3 +96,7 @@ const styles = StyleSheet.create({
 		fontWeight: FONT_WEIGHTS.bold,
 	},
 })
+
+const AchivementList = React.memo(AchivementListComponent);
+
+export default AchivementList;

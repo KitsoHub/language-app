@@ -21,8 +21,7 @@ export default function AchievementCard({
 	onPress
 }: AchievementCardProps) {
 	// const achievementTotal = achievement.progress / achievement.total
-	const authStore = useAuthStore()
-	const user = authStore.user
+
 	return (
 		<TouchableOpacity style={[styles.container, status && styles.unlockedContainer, style]} onPress={onPress}>
 			<View style={styles.header}>
