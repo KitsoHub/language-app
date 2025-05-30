@@ -40,7 +40,7 @@ import {
 import { avatars } from "@/mocks/vowels";
 import { useNewGameStore } from "@/store/game/new-game-store";
 import { useLanguageStore } from "@/store/language-store";
-import { FONT_SIZES, PADDING } from "@/utils/constants";
+import { FONT_SIZES, MARGIN, PADDING } from "@/utils/constants";
 import { ROUTES } from "@/utils/constants/routes";
 import { useHapticStore } from "@/store/haptic-store";
 import { useHaptics } from "@/utils/hooks/useHaptics";
@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		color: colors.textMuted,
 		textAlign: "center",
-		marginBottom: 24,
+		marginBottom: MARGIN.xxxl * 4,
 	},
 
 	languageOptions: {

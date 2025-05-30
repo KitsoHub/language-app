@@ -4,34 +4,37 @@ import { Tabs } from "expo-router";
 import Feather from "@expo/vector-icons/build/Feather";
 import { colors, COLORS } from "@/utils/constants/colors";
 import { Gamepad2 } from "lucide-react-native";
+import { useAuthStore } from "@/store/auth-store";
+import { Crown } from "lucide-react-native";
+import TabBar from "@/components/ui/TabBar";
+
 
 export default function MainLayout() {
+	
+const { user } = useAuthStore();
 	return (
 		<Tabs
-			screenOptions={{
-				tabBarActiveTintColor: COLORS.colorCerulean,
-				tabBarShowLabel: false,
-        tabBarInactiveTintColor:'#999',
-        tabBarStyle: {
-          borderWidth:1,
-
-        },
-        headerStyle: {
-          backgroundColor: colors.primary,
-        },
-        headerTintColor: 'white',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-			}}
+		tabBar={props => (<TabBar {...props} />)}
+			
 		>
 			<Tabs.Screen
 				name="index"
+			
 				options={{
-					headerShown: false,
-					tabBarIcon: ({ color, size }) => (
-						<Feather name="home" size={size} color={color} />
-					),
+					
+					title: "Home",
+					headerTitle: `Hello, ${user?.name || "Friend"}!`,
+					headerShown: true,
+					headerStyle: { backgroundColor: COLORS.quaternaryLight ,borderBottomRightRadius: 20, borderBottomLeftRadius: 20 ,height: 120},
+									headerTintColor: COLORS.quaternaryDark,
+					headerTitleStyle: {
+					color: "Black",fontSize: 30, fontWeight: "bold",}	,
+
+
+					headerRight: () => <Crown size={24} color="gold" />,  
+					headerRightContainerStyle: {
+					paddingRight: 20,},
+					
 				}}
 			/>
 
@@ -39,9 +42,7 @@ export default function MainLayout() {
 				name="games"
 				options={{
 					title: "Game",
-					tabBarIcon: ({ color, size }) => (
-						<Gamepad2 size={size} color={color} />
-					),
+					
 				}}
 			/>
 			<Tabs.Screen
@@ -50,9 +51,7 @@ export default function MainLayout() {
 					title: "Profile",
 					headerShown: false,
 					animation: "fade",
-					tabBarIcon: ({ color, size }) => (
-						<Feather name="user" size={size} color={color} />
-					),
+					
 				}}
 			/>
 
@@ -62,9 +61,7 @@ export default function MainLayout() {
 					title: "Settings",
 					headerShown: false,
 					animation: "fade",
-					tabBarIcon: ({ color, size }) => (
-						<Feather name="settings" size={size} color={color} />
-					),
+					
 				}}
 			/>
 		</Tabs>

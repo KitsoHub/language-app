@@ -31,6 +31,8 @@ import { useNewGameStore } from "@/store/game/new-game-store";
 import type { Game } from "@/types";
 import { LinearGradient } from "expo-linear-gradient";
 
+
+
 // Expanded Fall Guys inspired color palette
 const COLORS = {
 	primary: "#FF4D6D", // Pink
@@ -58,6 +60,7 @@ const COLORS = {
 	backgroundAlt: "#E8EFFF", // Alternate background
 	white: "#FFFFFF",
 	black: "#333333",
+	textDark: "#333333",
 	text: "#333333",
 	textLight: "#666666",
 	gray200: "#E5E7EB",
@@ -111,6 +114,10 @@ export default function App() {
 	const { selectedLanguage, selectLanguage } = useLanguageStore();
 	const { dailyGoal, dailyProgress } = useProgressStore();
 
+	// Filter games based on selected language
+	const appGames = games?.filter(
+		(game) => game.languageId?.includes(selectedLanguage?.id || ""
+	),)
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 
@@ -219,40 +226,43 @@ export default function App() {
 				<View style={[styles.patternCircle, styles.patternCircle3]} />
 				<View style={[styles.patternCircle, styles.patternCircle4]} />
 			</View>
+			<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+   
+    </View>
 
 			{/* Header with vibrant gradient background */}
-			<LinearGradient
+			{/* <LinearGradient
 				colors={[COLORS.quaternary, "#9B85FF", COLORS.primaryLight]}
 				start={{ x: 0, y: 0 }}
 				end={{ x: 1, y: 1 }}
 				style={styles.headerGradient}
 			>
-				<View style={styles.header}>
-					<View style={styles.userInfo}>
+				<View style={styles.header}> */}
+					{/* <View style={styles.userInfo}>
 						<Text style={styles.greeting}>
 							Hello, {user?.name?.split(" ")[0] || "Friend"}!
 						</Text>
 
 
-					</View>
+					</View> */}
 
 					{/* User avatar with crown */}
-					<TouchableOpacity style={styles.avatarContainer}>
+					{/* <TouchableOpacity style={styles.avatarContainer}>
 						<LinearGradient
 							colors={[COLORS.secondary, COLORS.secondaryDark]}
 							style={styles.avatar}
 						>
 							<Crown size={24} color="#FFFFFF" />
 						</LinearGradient>
-					</TouchableOpacity>
-				</View>
-			</LinearGradient>
+					</TouchableOpacity> */}
+				{/* </View>
+			</LinearGradient> */}
 
 			{/* Stats Cards */}
 			<View style={styles.statsContainer}>
-				<LinearGradient colors={["#FFFFFF", "#FFE8F0"]} style={styles.statCard}>
+				<LinearGradient colors={[COLORS.primary, COLORS.primary]} style={styles.statCard}>
 					<LinearGradient
-						colors={[COLORS.primaryLight, COLORS.primaryDark]}
+						colors={[COLORS.primaryDark, COLORS.primaryDark]}
 						style={styles.statIconContainer}
 					>
 						<Trophy size={20} color="#FFFFFF" />
@@ -263,9 +273,9 @@ export default function App() {
 					</View>
 				</LinearGradient>
 
-				<LinearGradient colors={["#FFFFFf", "#E8EFFF"]} style={styles.statCard}>
+				<LinearGradient colors={[COLORS.quaternary, COLORS.quaternary]} style={styles.statCard}>
 					<LinearGradient
-						colors={[COLORS.quaternary, COLORS.quaternaryLight]}
+						colors={[COLORS.quaternaryDark, COLORS.quaternaryDark]}
 						style={styles.statIconContainer}
 					>
 						<BookOpen size={20} color="#FFFFFF" />
@@ -280,7 +290,7 @@ export default function App() {
 			{/* Games Section */}
 			<View style={styles.sectionHeader}>
 				<LinearGradient
-					colors={[COLORS.quaternary, COLORS.quaternaryLight]}
+					colors={[COLORS.quaternaryDark, COLORS.quaternaryDark]}
 					style={styles.sectionTitleContainer}
 				>
 					<Text style={styles.sectionTitle}>Select Game</Text>
@@ -290,10 +300,10 @@ export default function App() {
 					onPress={() => router.push(ROUTES.GAMESLIST as never)}
 				>
 					<LinearGradient
-						colors={[COLORS.primary, COLORS.primaryLight]}
+						colors={[COLORS.primaryDark, COLORS.primaryDark]}
 						style={styles.seeAllGradient}
 					>
-						<Text style={styles.seeAllText}>See All</Text>
+						<Text style={styles.sectionTitle}>See All</Text>
 						<ChevronRight size={16} color="#FFFFFF" />
 					</LinearGradient>
 				</TouchableOpacity>
@@ -323,7 +333,7 @@ export default function App() {
 			{/* Language Section */}
 			<View style={styles.sectionHeader}>
 				<LinearGradient
-					colors={[COLORS.tertiary, COLORS.tertiaryLight]}
+					colors={[COLORS.tertiaryDark, COLORS.tertiaryDark]}
 					style={styles.sectionTitleContainer}
 				>
 					<Text style={styles.sectionTitle}>Your Language</Text>
@@ -333,7 +343,7 @@ export default function App() {
 					onPress={() => router.push(ROUTES.SETTINGS)}
 				>
 					<LinearGradient
-						colors={[COLORS.tertiary, COLORS.tertiaryLight]}
+						colors={[COLORS.tertiaryDark, COLORS.tertiaryDark]}
 						style={styles.seeAllGradient}
 					>
 						<Text style={styles.seeAllText}>Change</Text>
@@ -348,7 +358,7 @@ export default function App() {
 				style={styles.languageCard}
 			>
 				<LinearGradient
-					colors={[COLORS.tertiary, COLORS.tertiaryLight]}
+					colors={[COLORS.tertiary, COLORS.tertiary]}
 					style={styles.languageFlag}
 				>
 					<Globe size={24} color="#FFFFFF" />
@@ -364,7 +374,7 @@ export default function App() {
 
 				{/* Language level indicator */}
 				<LinearGradient
-					colors={[COLORS.tertiary, COLORS.tertiaryLight]}
+					colors={[COLORS.tertiary, COLORS.tertiary]}
 					style={styles.languageLevelContainer}
 				>
 					<Text style={styles.languageLevel}>Beginner</Text>
@@ -383,6 +393,8 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: COLORS.background,
+		paddingTop: 0,
+		paddingBottom: 76,
 	},
 	backgroundPatterns: {
 		position: "absolute",
@@ -439,6 +451,7 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		alignItems: "center",
 		paddingHorizontal: 20,
+		
 	},
 	userInfo: {
 		flex: 1,
@@ -576,7 +589,7 @@ const styles = StyleSheet.create({
 	statLabel: {
 		fontSize: 13,
 		fontWeight: "600",
-		color: COLORS.textLight,
+		color: COLORS.textDark,
 	},
 	sectionHeader: {
 		flexDirection: "row",

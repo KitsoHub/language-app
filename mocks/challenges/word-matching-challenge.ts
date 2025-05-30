@@ -1,5 +1,5 @@
 import type { Challenge } from '@/types';
-import { Dumela } from '@/utils/audio';
+import { Dumela, WinSound } from '@/utils/audio';
 
 export const wordMatchingChallenges: Challenge[] = [
   {
@@ -24,6 +24,7 @@ export const wordMatchingChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 10,
+    translationOption: WinSound,
     difficulty: 'easy'
   },
   {
@@ -47,5 +48,17 @@ export const wordMatchingChallenges: Challenge[] = [
     isLocked: false,
     points: 20,
     difficulty: 'hard'
+  },
+  // kalanga
+  {
+    id: 'wm-5',
+    type: 'word-matching',
+    instruction: "Form the greeting 'dumilani'",
+    correctOrder: ['du', 'mi', 'la', 'ni'],
+    wordBank: ['mi', 'du', 'la', 'ni'],
+    languageId: 'kl',
+    isLocked: false,
+    points: 10,
+    difficulty: 'easy'
   },
 ];

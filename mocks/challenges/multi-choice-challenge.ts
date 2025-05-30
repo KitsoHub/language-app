@@ -56,4 +56,16 @@ export const multipleChoiceChallenges: Challenge[] = [
     points: 10,
     difficulty: 'medium'
   },
+  //kalanga
+  {
+    id: 'mc-1',
+    type: 'multiple-choice',
+    instruction: "What does 'dumela' mean?",
+    options: ['Hello', 'Goodbye', 'Thank you', 'Please'],
+    correctAnswer: 'Hello',
+    languageId: 'st',
+    isLocked: false,
+    points: 5,
+    difficulty: 'easy'
+  },
 ];
