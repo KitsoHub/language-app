@@ -1,72 +1,128 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Platform, StyleSheet, Text, View, Image } from "react-native";
 import { Tabs } from "expo-router";
-import Feather from "@expo/vector-icons/build/Feather";
 import { colors, COLORS } from "@/utils/constants/colors";
-import { Gamepad2 } from "lucide-react-native";
 import { useAuthStore } from "@/store/auth-store";
-import { Crown } from "lucide-react-native";
 import TabBar from "@/components/ui/TabBar";
 
-
 export default function MainLayout() {
-	
-const { user } = useAuthStore();
+	const { user } = useAuthStore();
+  
+  // Helper to get initials from user name
+  const getInitials = (name: string) =>
+		name
+			.split(" ")
+			.map((word) => word.charAt(0))
+			.join("")
+			.toUpperCase();
+
 	return (
-		<Tabs
-		tabBar={props => (<TabBar {...props} />)}
+		<>
+			{/* Set status bar background to black on the index page */}
 			
-		>
-			<Tabs.Screen
-				name="index"
-			
-				options={{
-					
-					title: "Home",
-					headerTitle: `Hello, ${user?.name || "Friend"}!`,
-					headerShown: true,
-					headerStyle: { backgroundColor: COLORS.quaternaryLight ,borderBottomRightRadius: 20, borderBottomLeftRadius: 20 ,height: 120},
-									headerTintColor: COLORS.quaternaryDark,
-					headerTitleStyle: {
-					color: "Black",fontSize: 30, fontWeight: "bold",}	,
+			<Tabs tabBar={props => (<TabBar {...props} />)}>
+				<Tabs.Screen
+					name="index"
+					options={{
+						// Replace headerTitle with a custom component:
+						headerTitle: () => (
+							<View style={styles.headerTitleContainer}>
+								<Text style={styles.headerTitle}>Hi, {user?.name || "Friend"}</Text>
+								<Text style={styles.headerSubTitle}>Welcome</Text>
+							</View>
+						),
+						headerShown: true,
+						headerStyle: { backgroundColor: COLORS.background, height: 100, shadowColor: "transparent" },
+						// Remove the previous headerTitleStyle:
+						// headerTitleStyle: { color: "Black", fontSize: 30, fontWeight: "bold" },
+						headerRight: () =>
+							user?.avatar ? (
+								<Image
+									source={{ uri: user.avatar || user.image }}
+									style={styles.avatarImage}
+								/>
+							) : user?.name ? (
+								<View style={styles.initialsContainer}>
+									<Text style={styles.initialsText}>
+										{getInitials(user.name)}
+									</Text>
+								</View>
+							) : (
+								<Text style={styles.fallbackText}>PD</Text>
+							),
+					}}
+				/>
 
-
-					headerRight: () => <Crown size={24} color="gold" />,  
-					headerRightContainerStyle: {
-					paddingRight: 20,},
-					
-				}}
-			/>
-
-			<Tabs.Screen
-				name="games"
-				options={{
-					title: "Game",
-					
-				}}
-			/>
-			<Tabs.Screen
-				name="profile"
-				options={{
-					title: "Profile",
-					headerShown: false,
-					animation: "fade",
-					
-				}}
-			/>
+				<Tabs.Screen
+					name="games"
+					options={{
+						title: "Game",
+						
+					}}
+				/>
+				<Tabs.Screen
+					name="profile"
+					options={{
+						title: "Profile",
+						headerShown: false,
+						animation: "fade",
+						
+					}}
+				/>
 
       			<Tabs.Screen
-				name="settings"
-				options={{
-					title: "Settings",
-					headerShown: false,
-					animation: "fade",
-					
-				}}
-			/>
-		</Tabs>
-
+					name="settings"
+					options={{
+						title: "Settings",
+						headerShown: false,
+						animation: "fade",
+						
+					}}
+				/>
+			</Tabs>
+		</>
 	);
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	avatarImage: { 
+		width: 40, 
+		height: 40, 
+		borderRadius: 20, 
+		marginRight: 20 
+	},
+	initialsContainer: { 
+		width: 40,
+		height: 40,
+		borderRadius: 20,
+		backgroundColor: "white",
+		justifyContent: "center",
+		alignItems: "center",
+		marginRight: 20,
+	},
+	initialsText: { 
+		color: "#000", 
+		fontWeight: "bold" 
+	},
+	fallbackText: { 
+		marginRight: 20 
+	},
+	// New styles for the custom header title:
+	headerTitleContainer: {
+		flex: 1,
+		justifyContent: "center",
+	},
+	headerTitle: {
+		color: "Black",
+		fontSize: 30,
+		fontWeight: "bold",
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		textShadowColor: "#737373",
+	},
+	headerSubTitle: {
+		color: "grey",
+		fontSize: 12,
+	},
+});
