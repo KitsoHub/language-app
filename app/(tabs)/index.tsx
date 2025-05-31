@@ -8,6 +8,7 @@ import {
 	Text,
 	TouchableOpacity,
 	View,
+	Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -20,16 +21,21 @@ import {
 	Globe,
 	Crown,
 	Star,
+	Coins,
+	Settings2,
+	Grid,
 } from "lucide-react-native";
 import { useAuthStore } from "@/store/auth-store";
 import { useRouter } from "expo-router";
 import { useLanguageStore } from "@/store/language-store";
 import { useProgressStore } from "@/store/progress-store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ROUTES } from "@/utils/constants/routes";
 import { useNewGameStore } from "@/store/game/new-game-store";
 import type { Game } from "@/types";
 import { LinearGradient } from "expo-linear-gradient";
+import { Filter, Line } from "react-native-svg";
+import { Button } from "@/components/ui/Button";
 
 
 
@@ -100,7 +106,10 @@ export default function App() {
 	const { user } = useAuthStore();
 	const router = useRouter();
 	const { games, selectGame } = useNewGameStore();
-
+	
+	// Add state to toggle view mode
+	const [isGridView, setIsGridView] = useState(false);
+	
 	const handleSelectGame = (gameId: string) => {
 		selectGame(gameId);
 		router.push(ROUTES.GAMES);
@@ -142,34 +151,42 @@ export default function App() {
 		const difficultyStyle = getDifficultyStyle(item.gameBadge);
 
 		// Alternate card colors for visual variety
-		const cardColors =
-			index % 3 === 0
-				? ["#FFE3F1", "#FFC1E3"] as const
-				: index % 3 === 1
-					? ["#E3EEFF", "#C1D9FF"] as const
-					: ["#E3FFF1", "#C1FFE3"] as const;
+		const cardColors = ["#FFFFFF", "#F5F5F5"] as const;
+
+		// Apply additional styling for grid view
+		const cardStyles = [
+			styles.gameCard,
+			{ transform: [{ translateY: index % 2 === 0 ? 0 : 8 }] },
+			isGridView && styles.gridGameCard, // { changed code }
+		];
 
 		return (
 			<Pressable
-				style={[
-					styles.gameCard,
-					{ transform: [{ translateY: index % 2 === 0 ? 0 : 8 }] },
-				]}
+				style={cardStyles}
 				onPress={() => handleSelectGame(item.id)}
 			>
-				<LinearGradient colors={cardColors} style={styles.gameCardGradient}>
-					<View
-						style={[
-							styles.gameIconContainer,
-							{ backgroundColor: difficultyStyle.secondary },
-						]}
-					>
-						<Text style={styles.gameIcon}>{item.gameIcon}</Text>
-					</View>
+				<View style={styles.gameCardGradient}>
+					
 					<View style={styles.gameInfo}>
 						<Text style={styles.gameTitle}>{item.title}</Text>
 						<Text style={styles.gameDescription}>{item.description}</Text>
-						<View style={styles.progressContainer}>
+						<Text style={[styles.gameDescription, { color: difficultyStyle.text }]}>{totalChallenges} challenges</Text>
+						
+					</View>
+					<View
+					style={styles.gameIconContainer}
+					>
+						<Text style={[styles.gameIcon, { color: difficultyStyle.primary }]}>
+							{item.gameIcon
+							}
+							</Text>
+					</View>
+					
+
+					{/* Decorative elements */}
+					{/*  */}
+				</View>
+				<View style={styles.progressContainer}>
 							<View style={styles.progressBarContainer}>
 								<LinearGradient
 									colors={difficultyStyle.gradient}
@@ -182,32 +199,6 @@ export default function App() {
 								{completedCount}/{totalChallenges}
 							</Text>
 						</View>
-					</View>
-					<LinearGradient
-						colors={difficultyStyle.gradient}
-						style={styles.badgeContainer}
-					>
-						<Text style={[styles.badgeText, { color: difficultyStyle.text }]}>
-							{item.gameBadge}
-						</Text>
-					</LinearGradient>
-
-					{/* Decorative elements */}
-					<View
-						style={[
-							styles.decorCircle,
-							styles.decorCircle1,
-							{ backgroundColor: difficultyStyle.secondary },
-						]}
-					/>
-					<View
-						style={[
-							styles.decorCircle,
-							styles.decorCircle2,
-							{ backgroundColor: difficultyStyle.secondary },
-						]}
-					/>
-				</LinearGradient>
 			</Pressable>
 		);
 	};
@@ -217,104 +208,71 @@ export default function App() {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<StatusBar style="light" />
-
-			{/* Colorful background patterns */}
-			<View style={styles.backgroundPatterns}>
-				<View style={[styles.patternCircle, styles.patternCircle1]} />
-				<View style={[styles.patternCircle, styles.patternCircle2]} />
-				<View style={[styles.patternCircle, styles.patternCircle3]} />
-				<View style={[styles.patternCircle, styles.patternCircle4]} />
-			</View>
+			<StatusBar style="dark" />
 			<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
    
     </View>
 
-			{/* Header with vibrant gradient background */}
-			{/* <LinearGradient
-				colors={[COLORS.quaternary, "#9B85FF", COLORS.primaryLight]}
-				start={{ x: 0, y: 0 }}
-				end={{ x: 1, y: 1 }}
-				style={styles.headerGradient}
-			>
-				<View style={styles.header}> */}
-					{/* <View style={styles.userInfo}>
-						<Text style={styles.greeting}>
-							Hello, {user?.name?.split(" ")[0] || "Friend"}!
-						</Text>
-
-
-					</View> */}
-
-					{/* User avatar with crown */}
-					{/* <TouchableOpacity style={styles.avatarContainer}>
-						<LinearGradient
-							colors={[COLORS.secondary, COLORS.secondaryDark]}
-							style={styles.avatar}
-						>
-							<Crown size={24} color="#FFFFFF" />
-						</LinearGradient>
-					</TouchableOpacity> */}
-				{/* </View>
-			</LinearGradient> */}
-
 			{/* Stats Cards */}
 			<View style={styles.statsContainer}>
-				<LinearGradient colors={[COLORS.primary, COLORS.primary]} style={styles.statCard}>
-					<LinearGradient
-						colors={[COLORS.primaryDark, COLORS.primaryDark]}
-						style={styles.statIconContainer}
-					>
-						<Trophy size={20} color="#FFFFFF" />
-					</LinearGradient>
+				<View style={styles.statCard}>
+					<View style={styles.statIconContainer}>
+						<Image
+							source={require('@/assets/images/coins.png')}
+							style={{ width: 40, height: 40 }}
+							resizeMode="contain"
+						/>
+					</View>
 					<View>
+						<Text style={styles.statLabel}>Points</Text>
 						<Text style={styles.statValue}>{user?.xp || 0}</Text>
-						<Text style={styles.statLabel}>Total XP</Text>
 					</View>
-				</LinearGradient>
+				</View>
 
-				<LinearGradient colors={[COLORS.quaternary, COLORS.quaternary]} style={styles.statCard}>
-					<LinearGradient
-						colors={[COLORS.quaternaryDark, COLORS.quaternaryDark]}
-						style={styles.statIconContainer}
-					>
-						<BookOpen size={20} color="#FFFFFF" />
-					</LinearGradient>
-					<View>
-						<Text style={styles.statValue}>{user?.level || 1}</Text>
-						<Text style={styles.statLabel}>Level</Text>
+				{/* Vertical Divider */}
+				<View style={styles.Divider} />
+
+				<View style={styles.statCard}>
+					<View style={styles.statIconContainer}>
+						<Image
+							source={require('@/assets/images/trophy1.png')}
+							style={{ width: 50, height: 45 }}
+							resizeMode="contain"
+						/>
 					</View>
-				</LinearGradient>
+					<View>
+						<Text style={styles.statLabel}>Level</Text>
+						<Text style={styles.statValue}>{user?.level || 1}</Text>
+					</View>
+				</View>
 			</View>
 
 			{/* Games Section */}
 			<View style={styles.sectionHeader}>
-				<LinearGradient
-					colors={[COLORS.quaternaryDark, COLORS.quaternaryDark]}
+				<View
+				
 					style={styles.sectionTitleContainer}
 				>
-					<Text style={styles.sectionTitle}>Select Game</Text>
-				</LinearGradient>
+					<Text style={styles.sectionTitle}>Let's Play</Text>
+				</View>
 				<TouchableOpacity
-					style={styles.seeAllButton}
-					onPress={() => router.push(ROUTES.GAMESLIST as never)}
+					style={styles.filterButton}
+					onPress={() => setIsGridView(prev => !prev)} // { changed code }
 				>
-					<LinearGradient
-						colors={[COLORS.primaryDark, COLORS.primaryDark]}
-						style={styles.seeAllGradient}
-					>
-						<Text style={styles.sectionTitle}>See All</Text>
-						<ChevronRight size={16} color="#FFFFFF" />
-					</LinearGradient>
+					<Text style={styles.seeAllText}>
+						{isGridView ? "List" : "Grid"}
+					</Text>
+					<Settings2 size={24} color={COLORS.textDark} />
 				</TouchableOpacity>
 			</View>
 
 			{/* Games List */}
 			{games && games.length > 0 ? (
-
 				<FlatList
+					key={isGridView ? "grid" : "list"} // { changed code }
 					data={games}
 					renderItem={renderGameItem}
+					numColumns={isGridView ? 2 : 1} // { changed code }
 					showsVerticalScrollIndicator={false}
 					nestedScrollEnabled
 					contentContainerStyle={styles.gamesList}
@@ -332,58 +290,51 @@ export default function App() {
 
 			{/* Language Section */}
 			<View style={styles.sectionHeader}>
-				<LinearGradient
-					colors={[COLORS.tertiaryDark, COLORS.tertiaryDark]}
-					style={styles.sectionTitleContainer}
-				>
-					<Text style={styles.sectionTitle}>Your Language</Text>
-				</LinearGradient>
-				<TouchableOpacity
-					style={styles.seeAllButton}
-					onPress={() => router.push(ROUTES.SETTINGS)}
-				>
-					<LinearGradient
-						colors={[COLORS.tertiaryDark, COLORS.tertiaryDark]}
-						style={styles.seeAllGradient}
-					>
-						<Text style={styles.seeAllText}>Change</Text>
-						<ChevronRight size={16} color="#FFFFFF" />
-					</LinearGradient>
-				</TouchableOpacity>
+				
+					<Text style={styles.sectionTitle}>Current Language</Text>
+			
+				
 			</View>
 
 			{/* Language Card */}
 			<LinearGradient
-				colors={["#FFFFFF", "#E8FFF8"]}
+				colors={["#FFFFFF", "#ffffff"]}
 				style={styles.languageCard}
 			>
-				<LinearGradient
-					colors={[COLORS.tertiary, COLORS.tertiary]}
-					style={styles.languageFlag}
-				>
-					<Globe size={24} color="#FFFFFF" />
-				</LinearGradient>
+
 				<View style={styles.languageInfo}>
 					<Text style={styles.languageName}>
 						{selectedLanguage?.name || "Setswana"}
 					</Text>
-					<Text style={styles.languageNative}>
-						{selectedLanguage?.nativeName || "Setswana"}
-					</Text>
+				
 				</View>
 
 				{/* Language level indicator */}
-				<LinearGradient
-					colors={[COLORS.tertiary, COLORS.tertiary]}
-					style={styles.languageLevelContainer}
+				<TouchableOpacity
+					onPress={() => router.push(ROUTES.SETTINGS)}
+					style={{
+						...styles.sectionTitleContainer,
+						backgroundColor: COLORS.white,
+						borderColor: COLORS.gray400,
+						borderWidth: 1,
+						paddingVertical: 4,
+						paddingHorizontal: 8,
+					}}
 				>
-					<Text style={styles.languageLevel}>Beginner</Text>
-				</LinearGradient>
+					<Text
+						style={{
+							color: COLORS.textLight,
+							fontSize: 12,
+							textAlign: "center",
+							fontWeight: "600",
+						}}
+					>
+						Change
+					</Text>
+				</TouchableOpacity>
 
 				{/* Decorative elements */}
-				<View style={[styles.decorDot, styles.decorDot1]} />
-				<View style={[styles.decorDot, styles.decorDot2]} />
-				<View style={[styles.decorDot, styles.decorDot3]} />
+				{/*  */}
 			</LinearGradient>
 		</SafeAreaView>
 	);
@@ -394,7 +345,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: COLORS.background,
 		paddingTop: 0,
-		paddingBottom: 76,
+		paddingBottom: 100,
+	},
+	Divider: {
+		alignContent: "center",
+		alignSelf: "center",
+		width: 1,
+		height: "90%",
+		backgroundColor: COLORS.gray200,
 	},
 	backgroundPatterns: {
 		position: "absolute",
@@ -553,42 +511,35 @@ const styles = StyleSheet.create({
 	},
 	statsContainer: {
 		flexDirection: "row",
+		justifyContent: "space-between",
+		backgroundColor: "white",
 		marginHorizontal: 16,
-		marginBottom: 24,
-		gap: 12,
+		borderRadius: 16,
+		elevation: 4,
+		
 	},
 	statCard: {
 		flex: 1,
 		flexDirection: "row",
 		alignItems: "center",
-		borderRadius: 20,
 		padding: 16,
-		elevation: 4,
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.1,
-		shadowRadius: 4,
-		borderWidth: 2,
-		borderColor: "rgba(255, 255, 255, 0.6)",
+		
 	},
 	statIconContainer: {
 		width: 44,
 		height: 44,
-		borderRadius: 22,
 		justifyContent: "center",
 		alignItems: "center",
 		marginRight: 12,
-		borderWidth: 2,
-		borderColor: "rgba(255, 255, 255, 0.6)",
 	},
 	statValue: {
-		fontSize: 22,
-		fontWeight: "800",
-		color: COLORS.text,
+		fontSize: 24,
+		fontWeight: "900",
+		color: COLORS.tertiaryDark,
 	},
 	statLabel: {
-		fontSize: 13,
-		fontWeight: "600",
+		fontSize: 15,
+		fontWeight: "800",
 		color: COLORS.textDark,
 	},
 	sectionHeader: {
@@ -596,24 +547,33 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		alignItems: "center",
 		marginHorizontal: 16,
-		marginBottom: 16,
+		marginBottom: 10,
+		marginTop: 10,
 	},
 	sectionTitleContainer: {
-		borderRadius: 16,
-		paddingHorizontal: 14,
-		paddingVertical: 8,
+		shadowColor: "rgba(149, 145, 145, 0.58)",
+		shadowRadius:14,
+		borderRadius: 5,
+		marginRight: 9,
+		overflow: "hidden",
+		paddingVertical: 5,
+		borderColor: "rgba(0, 0, 0, 0.6)",
+		paddingTop: 8,
 	},
 	sectionTitle: {
 		fontSize: 18,
 		fontWeight: "800",
-		color: COLORS.white,
+		color: COLORS.textDark,
 		textShadowColor: "rgba(0, 0, 0, 0.2)",
 		textShadowOffset: { width: 1, height: 1 },
 		textShadowRadius: 1,
+		borderColor: "rgba(255, 255, 255, 0.6)",
 	},
-	seeAllButton: {
-		borderRadius: 16,
+	filterButton: {
+		flexDirection: "row",
 		overflow: "hidden",
+		borderRadius: 16,
+		backgroundColor: "rgba(255, 255, 255, 0.1)",
 	},
 	seeAllGradient: {
 		flexDirection: "row",
@@ -621,44 +581,63 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 12,
 		paddingVertical: 8,
 	},
+	currentDiv: {
+		flexDirection: "row",
+		alignItems: "center",
+		borderRadius: 16,
+		paddingHorizontal: 12,
+		paddingVertical: 8,
+		backgroundColor: "rgba(255, 255, 255, 0.1)",
+		marginRight: 8,
+	},
 	seeAllText: {
 		fontSize: 14,
-		color: COLORS.white,
+		color: COLORS.textDark,
 		marginRight: 4,
 		fontWeight: "700",
+		borderBlockColor: "rgba(255, 255, 255, 0.6)",
+		
 	},
 	gamesList: {
 		paddingHorizontal: 16,
-		paddingBottom: 24,
+		paddingBottom: 25,
 	},
 	gameCard: {
-		borderRadius: 24,
+		borderRadius: 15,
 		marginBottom: 20,
 		elevation: 6,
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 3 },
-		shadowOpacity: 0.15,
-		shadowRadius: 6,
 		overflow: "hidden",
-		borderWidth: 2,
-		borderColor: "rgba(255, 255, 255, 0.6)",
+		padding:10,
+		backgroundColor: COLORS.white,
+	},
+	// New grid style adjustments:
+	gridGameCard: { // { changed code }
+		flex: 1,
+		flexDirection: "column",
+		margin:5,
+		padding:5,
+		overflow: "hidden",
+		marginBottom: 12,
+		marginTop: 2,
+	
 	},
 	gameCardGradient: {
+		
 		flexDirection: "row",
-		padding: 16,
+		padding: 10,
 		borderRadius: 24,
-		overflow: "hidden",
+		paddingBottom: 1,
+		
 	},
 	gameIconContainer: {
 		width: 64,
 		height: 64,
-		borderRadius: 32,
+		
 		justifyContent: "center",
 		alignItems: "center",
-		marginRight: 16,
-		borderWidth: 3,
-		borderColor: "rgba(255, 255, 255, 0.8)",
-		elevation: 4,
+		
+		paddingLeft: 7,
+		
 	},
 	gameIcon: {
 		fontSize: 32,
@@ -668,13 +647,13 @@ const styles = StyleSheet.create({
 		zIndex: 1,
 	},
 	gameTitle: {
-		fontSize: 20,
+		fontSize: 15,
 		fontWeight: "800",
 		color: COLORS.text,
 		marginBottom: 4,
 	},
 	gameDescription: {
-		fontSize: 14,
+		fontSize: 12,
 		color: COLORS.textLight,
 		marginBottom: 12,
 		fontWeight: "500",
@@ -682,16 +661,19 @@ const styles = StyleSheet.create({
 	progressContainer: {
 		flexDirection: "row",
 		alignItems: "center",
+		justifyContent: "space-between",
+		paddingHorizontal: 10,
 	},
 	progressBarContainer: {
 		flex: 1,
 		height: 12,
-		backgroundColor: "rgba(255, 255, 255, 0.5)",
+		backgroundColor: "#DFF2FA",
 		borderRadius: 6,
 		marginRight: 8,
 		overflow: "hidden",
 		borderWidth: 1,
 		borderColor: "rgba(0, 0, 0, 0.05)",
+		marginTop: 1,
 	},
 	progressBar: {
 		height: "100%",
@@ -765,18 +747,16 @@ const styles = StyleSheet.create({
 	languageCard: {
 		flexDirection: "row",
 		alignItems: "center",
-		borderRadius: 24,
-		padding: 16,
 		marginHorizontal: 16,
-		marginBottom: 24,
-		elevation: 4,
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.1,
-		shadowRadius: 4,
-		borderWidth: 2,
-		borderColor: "rgba(78, 205, 196, 0.2)",
-		overflow: "hidden",
+		marginBottom: 16,
+		borderRadius: 13,
+		backgroundColor: COLORS.white,
+		borderColor: COLORS.gray400,
+		borderWidth: 1,
+		paddingVertical: 14,
+		paddingHorizontal: 8,
+		marginTop: 6,
+		paddingLeft: 16,
 	},
 	languageFlag: {
 		width: 52,
@@ -792,7 +772,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	languageName: {
-		fontSize: 20,
+		fontSize: 15,
 		fontWeight: "800",
 		color: COLORS.text,
 		marginBottom: 4,

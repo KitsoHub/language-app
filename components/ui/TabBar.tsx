@@ -4,14 +4,19 @@ import { Feather, House, Gamepad2, User, Settings } from 'lucide-react-native';
 import { JSX } from 'react/jsx-runtime';
 
 const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
-    const primarycolor = '#77777'; // You can change this to your desired primary color
-    const secondarycolor = '#737373'; // You can change this to your desired secondary color
+    // { changed code } Hide tabbar when on settings screen
+    if (state.routes[state.index].name === "settings") {
+        return null;
+    }
+
+    const primarycolor = 'black'; // You can change this to your desired primary color
+    const secondarycolor = 'black'; // You can change this to your desired secondary color
 
     const icons = {
-        index: (props) => <House {...props} name="home" size={27} color={secondarycolor} />,
-        games: (props) => <Gamepad2 {...props} name="games" size={27} color={secondarycolor} />,
-        profile: (props) => <User {...props} name="profile" size={27} color={secondarycolor} />,
-        settings: (props) => <Settings {...props} name="settings" size={27} color={secondarycolor} />,
+        index: (props) => <House {...props} size={27} />,
+        games: (props) => <Gamepad2 {...props} size={27} />,
+        profile: (props) => <User {...props} size={27} />,
+        settings: (props) => <Settings {...props} size={27} />,
     };
 
     return (
