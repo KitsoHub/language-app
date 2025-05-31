@@ -156,49 +156,62 @@ export default function App() {
 		// Apply additional styling for grid view
 		const cardStyles = [
 			styles.gameCard,
-			{ transform: [{ translateY: index % 2 === 0 ? 0 : 8 }] },
-			isGridView && styles.gridGameCard, // { changed code }
+			{ transform: [{ translateY: isGridView ? 0 : (index % 2 === 0 ? 0 : 8) }] }, // disable offset in grid mode
+			isGridView && styles.gridGameCard,
 		];
-
+  
 		return (
-			<Pressable
-				style={cardStyles}
-				onPress={() => handleSelectGame(item.id)}
-			>
-				<View style={styles.gameCardGradient}>
-					
-					<View style={styles.gameInfo}>
-						<Text style={styles.gameTitle}>{item.title}</Text>
-						<Text style={styles.gameDescription}>{item.description}</Text>
-						<Text style={[styles.gameDescription, { color: difficultyStyle.text }]}>{totalChallenges} challenges</Text>
-						
-					</View>
-					<View
-					style={styles.gameIconContainer}
-					>
-						<Text style={[styles.gameIcon, { color: difficultyStyle.primary }]}>
-							{item.gameIcon
-							}
-							</Text>
-					</View>
-					
-
+			<Pressable style={cardStyles} onPress={() => handleSelectGame(item.id)}>
+				<View style={[styles.gameCardGradient, isGridView && styles.gameCardGradientGrid]}>
+					{isGridView ? (
+						<>
+							<View style={styles.gameIconContainer}>
+								<Text style={[styles.gameIcon, { color: difficultyStyle.primary }]}>
+									{item.gameIcon}
+								</Text>
+							</View>
+							<View style={styles.gameInfo}>
+								<Text style={styles.gameTitle}>{item.title}</Text>
+								<Text style={styles.gameDescription}>{item.description}</Text>
+								<Text style={[styles.gameDescription, { color: difficultyStyle.text }]}>
+									{totalChallenges} challenges
+								</Text>
+							</View>
+						</>
+					) : (
+						<>
+							<View style={styles.gameInfo}>
+								<Text style={styles.gameTitle}>{item.title}</Text>
+								<Text style={styles.gameDescription}>{item.description}</Text>
+								<Text style={[styles.gameDescription, { color: difficultyStyle.text }]}>
+									{totalChallenges} challenges
+								</Text>
+							</View>
+							<View style={styles.gameIconContainer}>
+								<Text style={[styles.gameIcon, { color: difficultyStyle.primary }]}>
+									{item.gameIcon}
+								</Text>
+							</View>
+						</>
+					)}
 					{/* Decorative elements */}
 					{/*  */}
 				</View>
-				<View style={styles.progressContainer}>
-							<View style={styles.progressBarContainer}>
-								<LinearGradient
-									colors={difficultyStyle.gradient}
-									start={{ x: 0, y: 0 }}
-									end={{ x: 1, y: 0 }}
-									style={[styles.progressBar, { width: `${progress}%` }]}
-								/>
-							</View>
-							<Text style={styles.progressText}>
-								{completedCount}/{totalChallenges}
-							</Text>
+				{!isGridView && ( // { changed code }
+					<View style={styles.progressContainer}>
+						<View style={styles.progressBarContainer}>
+							<LinearGradient
+								colors={difficultyStyle.gradient}
+								start={{ x: 0, y: 0 }}
+								end={{ x: 1, y: 0 }}
+								style={[styles.progressBar, { width: `${progress}%` }]}
+							/>
 						</View>
+						<Text style={styles.progressText}>
+							{completedCount}/{totalChallenges}
+						</Text>
+					</View>
+				)}
 			</Pressable>
 		);
 	};
@@ -352,7 +365,7 @@ const styles = StyleSheet.create({
 		alignSelf: "center",
 		width: 1,
 		height: "90%",
-		backgroundColor: COLORS.gray200,
+		backgroundColor: "grey",
 	},
 	backgroundPatterns: {
 		position: "absolute",
@@ -601,6 +614,7 @@ const styles = StyleSheet.create({
 	gamesList: {
 		paddingHorizontal: 16,
 		paddingBottom: 25,
+		paddingTop: 10,
 	},
 	gameCard: {
 		borderRadius: 15,
@@ -615,32 +629,36 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: "column",
 		margin:5,
-		padding:5,
+		padding:1,
 		overflow: "hidden",
 		marginBottom: 12,
-		marginTop: 2,
+		marginTop: 19,
+		paddingTop: 10,
 	
 	},
 	gameCardGradient: {
-		
 		flexDirection: "row",
 		padding: 10,
 		borderRadius: 24,
 		paddingBottom: 1,
-		
+		paddingTop: 1,
+	},
+	// New style to stack items vertically on grid mode:
+	gameCardGradientGrid: {
+		flexDirection: "column",
+		alignItems: "center",
 	},
 	gameIconContainer: {
 		width: 64,
 		height: 64,
-		
 		justifyContent: "center",
 		alignItems: "center",
-		
-		paddingLeft: 7,
-		
+		// Remove paddingLeft to center the icon:
+		// paddingLeft: 7,
 	},
 	gameIcon: {
 		fontSize: 32,
+		textAlign: "center",
 	},
 	gameInfo: {
 		flex: 1,
