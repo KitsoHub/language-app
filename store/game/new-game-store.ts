@@ -96,20 +96,61 @@ export const useNewGameStore = create(
           gameIcon: '📚',
           type: 'sentence-builder',
         },
-        // kalanga
+
+        // sekgalagari
         {
-          id: 'word-matching-kl',
+          id: 'word-matching-kr',
           title: 'Word Matching',
           description: 'Arrange words in the correct order to form phrases.',
-          languageId: 'kl',
+          languageId: 'kr',
           challenges: wordMatchingChallenges.filter(
             (challenge) =>
-              challenge.languageId === 'kl' && challenge.isLocked === false,
+              challenge.languageId === 'kr' && challenge.isLocked === false,
           ),
           gameBadge: 'Beginner',
           gameIcon: '🔤',
           type: 'word-matching',
-        }
+        },
+        {
+          id: 'mc-kr',
+          title: 'Multiple Choice',
+          description:
+            'Choose the correct translation for each word or phrase.',
+          languageId: 'kr',
+          challenges: multipleChoiceChallenges.filter(
+            (challenge) =>
+              challenge.languageId === 'kr' && challenge.isLocked === false,
+          ),
+          gameBadge: 'Easy',
+          gameIcon: '✅',
+          type: 'multiple-choice',
+        },
+        {
+          id: 'fb-kr',
+          title: 'Fill in the Blank',
+          description: 'Complete sentences by filling in the missing words.',
+          languageId: 'kr',
+          challenges: fillBlankChallenges.filter(
+            (challenge) =>
+              challenge.languageId === 'kr' && challenge.isLocked === false,
+          ),
+          gameBadge: 'Medium',
+          gameIcon: '📝',
+          type: 'fill-blank',
+        },
+        {
+          id: 'sb-kr',
+          title: 'Sentence Builder',
+          description: 'Build complete sentences from individual words.',
+          languageId: 'kr',
+          challenges: sentenceBuilderChallenges.filter(
+            (challenge) =>
+              challenge.languageId === 'kr' && challenge.isLocked === false,
+          ),
+          gameBadge: 'Hard',
+          gameIcon: '📚',
+          type: 'sentence-builder',
+        },
       ],
       currentGameId: null,
       currentChallengeIndex: 0,
@@ -402,7 +443,8 @@ export const useNewGameStore = create(
 
     {
 
-      name: 'new-game-storage-a10',
+      name: 'new-game-storage-a16', // unique name for the storage
+      version: 1, // version of the storage schema
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),

@@ -68,4 +68,71 @@ export const multipleChoiceChallenges: Challenge[] = [
     points: 5,
     difficulty: 'easy'
   },
+  // sekgalagari
+  {
+    id: 'mc-kr-1',
+    type: 'multiple-choice',
+    instruction: "What does 'dumela' mean?",
+    options: ['Hello', 'Goodbye', 'Thank you', 'Please'],
+    correctAnswer: 'Rumela',
+    languageId: 'kr',
+    isLocked: false,
+    points: 5,
+    difficulty: 'easy'
+  },
+  {
+    id: 'mc-kr-2',
+    type: 'multiple-choice',
+    instruction: "What does 'mosadi' mean?",
+    options: ['Man', 'Woman', 'Child', 'Friend'],
+    correctAnswer: 'Mosari',
+    languageId: 'kr',
+    isLocked: false,
+    points: 5,
+    difficulty: 'easy'
+  },
+  {
+    id: 'mc-kr-3',
+    type: 'multiple-choice',
+    instruction: "What does 'pula' mean?",
+    options: ['Rain', 'Sun', 'Wind', 'Cloud'],
+    correctAnswer: 'Pula',
+    languageId: 'kr',
+    isLocked: false,
+    points: 5,
+    difficulty: 'easy'
+  },
+  {
+    id: 'mc-kr-4',
+    type: 'multiple-choice',
+    instruction: "Choose the correct translation for 'Thank you'",
+    options: ['Dumela', 'Kea leboga', 'Ke lebogago', 'Tsamaya'],
+    correctAnswer: 'Ke lebogago',
+    languageId: 'kr',
+    isLocked: false,
+    points: 10,
+    difficulty: 'medium'
+  },
+  {
+    id: 'mc-kr-5',
+    type: 'multiple-choice',
+    instruction: "Choose the correct translation for 'How are you?'",
+    options: ['Dumela', 'Go rileng', 'O tsogile jang', 'O zoshile jhwang'],
+    correctAnswer: 'O zoshile jhwang',
+    languageId: 'kr',
+    isLocked: false,
+    points: 10,
+    difficulty: 'medium'
+  },
+  {
+    id: 'mc-kr-6',
+    type: 'multiple-choice',
+    instruction: "What does 'dumela' mean?",
+    options: ['Hello', 'Goodbye', 'Thank you', 'Please'],
+    correctAnswer: 'Rumela',
+    languageId: 'kr',
+    isLocked: false,
+    points: 5,
+    difficulty: 'easy'
+  },
 ];

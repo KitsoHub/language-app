@@ -75,6 +75,7 @@ export default function MainLayout() {
 						title: "Settings",
 						headerShown: false,
 						animation: "fade",
+						lazy: false,
 						
 					}}
 				/>

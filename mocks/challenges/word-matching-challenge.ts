@@ -61,4 +61,49 @@ export const wordMatchingChallenges: Challenge[] = [
     points: 10,
     difficulty: 'easy'
   },
+  // sekgalagari
+  {
+    id: 'wm-6',
+    type: 'word-matching',
+    instruction: "Form the greeting 'rumela'",
+    correctOrder: ['ru', 'me', 'la'],
+    wordBank: ['me', 'ru', 'la'],
+    languageId: 'kr',
+    isLocked: false,
+    points: 10,
+    difficulty: 'easy'
+  },
+  {
+    id: 'wm-kr-2',
+    type: 'word-matching',
+    instruction: "Form the word 'pula'",
+    correctOrder: ['pu', 'la'],
+    wordBank: ['la', 'pu'],
+    languageId: 'kr',
+    isLocked: false,
+    points: 10,
+    difficulty: 'easy'
+  },
+  {
+    id: 'wm-kr-3',
+    type: 'word-matching',
+    instruction: "Form the word 'mosari'",
+    correctOrder: ['mo', 'sa', 'ri'],
+    wordBank: ['ri', 'mo', 'sa'],
+    languageId: 'kr',
+    isLocked: false,
+    points: 15,
+    difficulty: 'medium'
+  },
+  {
+    id: 'wm-kr-4',
+    type: 'word-matching',
+    instruction: "Form the phrase 'rumela mosari'",
+    correctOrder: ['ru', 'me', 'la', 'mo', 'sa', 'ri'],
+    wordBank: ['mo', 'ru', 'sa', 'me', 'ri', 'la'],
+    languageId: 'kr',
+    isLocked: false,
+    points: 20,
+    difficulty: 'hard'
+  },
 ];
