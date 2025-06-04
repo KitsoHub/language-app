@@ -51,3 +51,6 @@ yarn.lock
 package-lock.json
 bun.lock
 bun.lockb
+
+google-services.json
+android/app/google-services.json
