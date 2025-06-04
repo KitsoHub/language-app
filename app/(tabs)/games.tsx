@@ -124,59 +124,7 @@ export default function GamePage() {
     }
   };
 
-  // Add playSound function
-  // const sound = useRef(new Audio.Sound());
-
-  // const playSound = async () => {
-  // 	console.log("Playing sound");
-
-  // 	const { sound: loadedSound } = await Audio.Sound.createAsync(require("@/assets/audio/good_job.mp3"));
-  // 	sound.current = loadedSound;
-  // 	const checkLoaded = await sound.current.getStatusAsync();
-  // 	if (checkLoaded.isLoaded) {
-  // 		console.log("Sound loaded successfully");
-  // 		await sound.current.playAsync();
-  // 	}
-  // 	else {
-  // 		console.log("Sound failed to load");
-  // 	}
-  // };
-
-  // useEffect(() => {
-  // 	return () => {
-  // 		sound.current.unloadAsync();
-  // 	};
-  // 	},
-  // 		[]);
-
-  // async function playSound(option: string) {
-  // 	try {
-  // 		await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-  // 		const { sound } = await Audio.Sound.createAsync(
-  // 			option === 'coin'
-  // 				? require('@/assets/audio/good_job.mp3')
-  // 				: undefined
-  // 		);
-  // 		await sound.playAsync();
-  // 	} catch (error) {
-  // 		console.error('Error playing sound:', error);
-  // 	}
-  // }
-
-  // Trigger victory sound when feedback is shown and answer is correct
-  // useEffect(() => {
-  // 	if (showFeedback && isCorrect) {
-  // 		playSound("winning");
-  // 	}
-  // }, [showFeedback, isCorrect]);
-
-  // Trigger victory sound when completion modal is shown
-  // useEffect(() => {
-  // 	if (showCompletionModal) {
-  // 		playSound("winning");
-  // 	}
-  // }, [showCompletionModal]);
-
+  // if no game or challenge is selected, show empty state
   if (!currentGame || !currentChallenge) {
     // empty state
     return (

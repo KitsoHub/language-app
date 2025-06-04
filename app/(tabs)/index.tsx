@@ -106,6 +106,7 @@ export default function App() {
 	const { user } = useAuthStore();
 	const router = useRouter();
 	const { games, selectGame } = useNewGameStore();
+	const { selectedLanguage } = useLanguageStore();
 	
 	// Add state to toggle view mode
 	const [isGridView, setIsGridView] = useState(false);
@@ -120,7 +121,6 @@ export default function App() {
 		return DIFFICULTY_COLORS[difficulty] || DIFFICULTY_COLORS.beginner;
 	};
 
-	const { selectedLanguage, selectLanguage } = useLanguageStore();
 	const { dailyGoal, dailyProgress } = useProgressStore();
 
 	// Filter games based on selected language
@@ -283,7 +283,7 @@ export default function App() {
 			{games && games.length > 0 ? (
 				<FlatList
 					key={isGridView ? "grid" : "list"} // { changed code }
-					data={games}
+					data={appGames}
 					renderItem={renderGameItem}
 					numColumns={isGridView ? 2 : 1} // { changed code }
 					showsVerticalScrollIndicator={false}
