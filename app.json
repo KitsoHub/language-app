@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "language-app",
-    "slug": "language-app",
-    "scheme": "language-app",
+    "name": "TswaLingo",
+    "slug": "tswalingo",
+    "scheme": "tswalingo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,7 +11,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#171616"
     },
     "jsEngine": "hermes",
     "ios": {
@@ -22,7 +22,13 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.language-app"
+      "package": "com.anonymous.tswalingo",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,10 +36,23 @@
     "plugins": [
       "expo-router",
       "expo-audio",
-      "expo-font"
+      "expo-font",
+      "expo-build-properties"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e37bb74c-f2ba-44f0-8e49-de9c3e30546f"
+      }
+    },
+    "owner": "samkabelo3",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e37bb74c-f2ba-44f0-8e49-de9c3e30546f"
     }
   }
 }
