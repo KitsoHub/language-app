@@ -7,6 +7,7 @@ import { wordMatchingChallenges } from '@/mocks/challenges/word-matching-challen
 import { fillBlankChallenges } from '@/mocks/challenges/fill-blank-challenge';
 import { sentenceBuilderChallenges } from '@/mocks/challenges/sentence-builder-challenge';
 import { useAuthStore } from '../auth-store';
+import { familyChallenges } from '@/mocks/challenges/family-challenge';
 
 interface NewGameState {
   games: Game[];
@@ -96,7 +97,20 @@ export const useNewGameStore = create(
           gameIcon: '📚',
           type: 'sentence-builder',
         },
-
+        {
+          id: 'fc-st',
+          title: 'Family',
+          description:
+            'Choose the correct translation for each image.',
+          languageId: 'st',
+          challenges: familyChallenges.filter(
+            (challenge) =>
+              challenge.languageId === 'st' && challenge.isLocked === false,
+          ),
+          gameBadge: 'Easy',
+          gameIcon: '✅',
+          type: 'family-matching',
+        },
         // sekgalagari
         {
           id: 'word-matching-kr',
@@ -415,6 +429,7 @@ export const useNewGameStore = create(
           'fill-blank',
           'sentence-builder',
           'multiple-choice',
+          'family-matching',
         ];
         const updatedGameTypes = [...userCompletedGameTypes];
         if (!updatedGameTypes.includes(challengeType)) {
@@ -443,8 +458,8 @@ export const useNewGameStore = create(
 
     {
 
-      name: 'new-game-storage-a16', // unique name for the storage
-      version: 1, // version of the storage schema
+      name: 'new-game-storage-a18',
+      version: 1,
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),

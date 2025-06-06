@@ -1,6 +1,7 @@
 import {
   Alert,
   Platform,
+  Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -31,6 +32,9 @@ import { MARGIN, PADDING } from '@/utils/constants';
 import { Audio, type AVPlaybackSource } from 'expo-av';
 import { useAudioPlayer } from '@/utils/hooks/useAudioPlayer';
 import { CoinSound } from '@/utils/audio';
+import FamilyMatchingGame from '@/components/games/FamilyMatchingGame';
+import { useHaptics } from '@/utils/hooks/useHaptics';
+import { HelpCircle } from 'lucide-react-native';
 
 export default function GamePage() {
   const router = useRouter();
@@ -55,6 +59,12 @@ export default function GamePage() {
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
   const [showHint, setShowHint] = useState(false);
+
+    const { triggerHaptic } = useHaptics();
+        const handleToggleHint = () => {
+      triggerHaptic('light');
+      setShowHint(!showHint);
+    };
 
   // game state
   const currentGame = getCurrentGame();
@@ -212,30 +222,36 @@ export default function GamePage() {
             <SentenceBuilderGame challenge={currentChallenge} />
           )}
 
+          {/* Family matching */}
+          {
+            currentChallenge.type === 'family-matching' && (
+
+              <FamilyMatchingGame challenge={currentChallenge}/>
+            )
+          }
+
           {showFeedback && (
             <MascotAlert
               isCorrect={isCorrect ?? undefined}
               visible={showFeedback}
             />
           )}
-          {currentChallenge.hint && (
+          {/* {currentChallenge.hint && (
             <>
-              {/* hint */}
-              <TouchableOpacity
-                style={styles.hintButton}
-                hitSlop={20}
-                onPress={() => setShowHint(!showHint)}
-              >
-                <Text style={styles.hintButtonText}>Show Hint</Text>
-              </TouchableOpacity>
+                <Pressable
+          style={styles.hintButton}
+          onPress={handleToggleHint}
+        >
+          <HelpCircle size={24} color={COLORS.white} />
+        </Pressable>
             </>
-          )}
-
-          {showHint && currentChallenge.hint && (
-            <View style={styles.hintContainer}>
-              <Text style={styles.hintText}>{currentChallenge.hint}</Text>
-            </View>
-          )}
+          )} */}
+{/*
+             {showHint && (
+               <View style={styles.hintContainer}>
+                 <Text style={styles.hintText}>{currentChallenge.hint}</Text>
+               </View>
+             )} */}
 
           <View style={styles.buttonContainer}>
             <Button
@@ -340,24 +356,35 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.gray300,
   },
+  hintButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: COLORS.success,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'white',
+  },
   hintContainer: {
-    backgroundColor: COLORS.secondaryLight,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 24,
-    width: '100%',
+    position: 'absolute',
+    top: 60,
+    right: 10,
+    backgroundColor: COLORS.secondary,
+    padding: 10,
+    borderRadius: 10,
+    maxWidth: 150,
+    borderWidth: 2,
+    borderColor: 'white',
   },
   hintText: {
+    color: 'white',
     fontSize: 14,
-    color: COLORS.textLight,
-    fontStyle: 'italic',
-  },
-  hintButton: {
-    marginTop: 16,
-  },
-  hintButtonText: {
-    fontSize: 14,
-    color: COLORS.primary,
-    fontWeight: '500',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 1,
   },
 });

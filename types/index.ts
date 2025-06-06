@@ -120,11 +120,12 @@ export type SubscriptionPlanType = {
 
 export interface Challenge {
     id: number | string;
-    type: "word-matching" |"multiple-choice"| 'fill-blank'| 'sentence-builder';
+    type: "word-matching" |"multiple-choice"| 'fill-blank'| 'sentence-builder'| 'family-matching';
     instruction: string;
     correctOrder?: string[];
     wordBank?: string[];
     options?: string[];
+    image?: string;
     correctAnswer?: string;
     sentence?: string;
     blanks?: number[];
@@ -144,7 +145,7 @@ export interface Challenge {
     challenges: Challenge[],
     gameBadge: string;
     gameIcon?: string;
-    type: 'word-matching' | 'multiple-choice' | 'listening' | 'speaking' | 'sentence-builder'| 'fill-blank';
+    type: 'word-matching' | 'multiple-choice' | 'listening' | 'speaking' | 'sentence-builder'| 'fill-blank'| 'family-matching';
     languageId?: string;
   }
 

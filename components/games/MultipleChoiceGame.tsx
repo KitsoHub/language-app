@@ -31,39 +31,6 @@ export default function MultipleChoiceGame({
 
     const selection = getCurrentWordSelection()
     console.log(" >>> My option >>>", selection)
-      //     setTimeout(() => {
-      //       console.log(">> Game Component from store >> ",selectedChoice)
-      // }, 1000);
-		// setShowResult(true);
-
-		// check isCorrect answer
-		//const isCorrect = option === challenge.correctAnswer;
-
-		//console.log(">> Result >> ", isCorrect);
-
-		// if (isCorrect) {
-    //   // setShowResult(false);
-
-		// 	submitAnswer(challenge.id, [option]);
-    //   setShowFeedback(true);
-    //   setShowResult(true);
-
-    //   setTimeout(() => {
-    //     setShowFeedback(false);
-    //     setShowResult(false);
-    //     setSelectedOption(null);
-    //   }, 2000);
-		// }else{
-    //   setShowFeedback(true);
-    //   setShowResult(false);
-
-
-    //   setTimeout(() => {
-    //     setShowFeedback(false);
-    //     setShowResult(false);
-    //     setSelectedOption(null);
-    //   }, 2000);
-    // }
 
 	};
 
