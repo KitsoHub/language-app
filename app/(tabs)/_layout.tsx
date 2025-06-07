@@ -80,9 +80,13 @@ export default function MainLayout() {
 					name="settings"
 					options={{
 						title: "Settings",
-						headerShown: false,
+						headerShown: true,
 						animation: "fade",
-						lazy: true,
+						headerLeft: () => (
+													<Pressable onPress={() => router.back()} style={{ paddingLeft: 10 }}>
+													  <ArrowLeft size={24} color={COLORS.primaryDark} />
+													</Pressable>
+												),
 						
 					}}
 				/>

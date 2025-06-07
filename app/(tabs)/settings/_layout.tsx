@@ -7,11 +7,7 @@ import { COLORS } from '@/utils/constants/colors'
 export default function Layout() {
   return (
   <Stack>
-    <Stack.Screen name="index" options={{title:"Settings",	headerLeft: () => (
-                            <Pressable onPress={() => router.back()} style={{ paddingLeft: 10 }}>
-                              <ArrowLeft size={24} color={COLORS.primaryDark} />
-                            </Pressable>
-                        ),}}>
+    <Stack.Screen name="index" options={{title:"Settings",headerShown:false	}}>
     </Stack.Screen>
 
   </Stack>
