@@ -49,7 +49,7 @@ export default function TermsPage() {
             <View style={styles.header}>
                 <Text style={styles.headerSubtitle}>AGREEMENT</Text>
                 <Text style={styles.headerTitle}>Terms of Service</Text>
-                <Text style={styles.headerDate}>Last updated on 05/15/2023</Text>
+                <Text style={styles.headerDate}>Last updated on 05/15/2025</Text>
             </View>
 
 

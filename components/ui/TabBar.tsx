@@ -11,7 +11,7 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     if (state.routes[state.index].name === "games") {
         return null;
     }
-    if (state.routes[state.index].name === "terms") {
+    if (state.routes[state.index].name === "profile") {
         return null;
     }
 

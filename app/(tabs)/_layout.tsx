@@ -70,11 +70,17 @@ export default function MainLayout() {
 					name="profile"
 					options={{
 						title: "Profile",
-						headerShown: false,
+						headerShown: true,
 						animation: "fade",
+							headerLeft: () => (
+													<Pressable onPress={() => router.back()} style={{ paddingLeft: 10 }}>
+													  <ArrowLeft size={24} color={COLORS.primaryDark} />
+													</Pressable>
+												),
 						
 					}}
 				/>
+
 
       			<Tabs.Screen
 					name="settings"
