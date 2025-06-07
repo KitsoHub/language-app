@@ -7,6 +7,7 @@ import { wordMatchingChallenges } from '@/mocks/challenges/word-matching-challen
 import { fillBlankChallenges } from '@/mocks/challenges/fill-blank-challenge';
 import { sentenceBuilderChallenges } from '@/mocks/challenges/sentence-builder-challenge';
 import { useAuthStore } from '../auth-store';
+import { familyChallenges } from '@/mocks/challenges/family-challenge';
 
 interface NewGameState {
   games: Game[];
@@ -96,7 +97,20 @@ export const useNewGameStore = create(
           gameIcon: '📚',
           type: 'sentence-builder',
         },
-
+        {
+          id: 'fc-st',
+          title: 'Family',
+          description:
+            'Choose the correct translation for each image.',
+          languageId: 'st',
+          challenges: familyChallenges.filter(
+            (challenge) =>
+              challenge.languageId === 'st' && challenge.isLocked === false,
+          ),
+          gameBadge: 'Easy',
+          gameIcon: '✅',
+          type: 'family-matching',
+        },
         // sekgalagari
         {
           id: 'word-matching-kr',
@@ -215,6 +229,27 @@ export const useNewGameStore = create(
 
         // current challenge = multiple-choice
         if (currentGame?.type === 'multiple-choice') {
+          const { selectedChoice } = get();
+
+          const isCorrect = selectedChoice === currentChallenge.correctAnswer;
+
+          set({ isCorrect, showFeedback: true });
+
+          if (isCorrect) {
+            const authStore = useAuthStore.getState();
+            if (!authStore.user) return false;
+
+            authStore.addCompletedChallenge(currentChallenge.id);
+            authStore.addXp(currentChallenge.points || 10);
+
+            get().submitAnswer(currentChallenge.id, arrangedWords);
+
+            get().updateAchievements(currentGame.type);
+          }
+          return isCorrect;
+        }
+        // current challenge = family-matching
+        if (currentGame?.type === 'family-matching') {
           const { selectedChoice } = get();
 
           const isCorrect = selectedChoice === currentChallenge.correctAnswer;
@@ -388,6 +423,14 @@ export const useNewGameStore = create(
 
             break;
           }
+            case 'family-matching': {
+            const count = user.familyMatchingCompleted || 0;
+            authStore.updateUser({
+              familyMatchingCompleted: count + 1,
+            });
+
+            break;
+            }
           default:
             break;
         }
@@ -415,6 +458,7 @@ export const useNewGameStore = create(
           'fill-blank',
           'sentence-builder',
           'multiple-choice',
+          'family-matching',
         ];
         const updatedGameTypes = [...userCompletedGameTypes];
         if (!updatedGameTypes.includes(challengeType)) {
@@ -443,8 +487,8 @@ export const useNewGameStore = create(
 
     {
 
-      name: 'new-game-storage-a16', // unique name for the storage
-      version: 1, // version of the storage schema
+      name: 'new-game-storage-a24',
+      version: 1,
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),

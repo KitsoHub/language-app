@@ -6,7 +6,7 @@ import { colors } from '@/utils/constants/colors';
 import ProfileStateCard from '@/components/shared/ProfileStateCard';
 import {Button} from '@/components/ui/Button'; // Import Button component
 import {Input} from '@/components/ui/Input'; // Import InputForm component
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { ROUTES } from '@/utils/constants/routes';
 import SettingsContainer from '@/components/shared/Settings';
 
@@ -28,6 +28,7 @@ export default function SettingsPage() {
 
   return (
     <SafeAreaView style={styles.container}>
+ 
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}

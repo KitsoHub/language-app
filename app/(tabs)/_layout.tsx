@@ -1,8 +1,9 @@
-import { Platform, StyleSheet, Text, View, Image } from "react-native";
-import { Tabs } from "expo-router";
+import { Platform, StyleSheet, Text, View, Image, Pressable } from "react-native";
+import { router, Tabs } from "expo-router";
 import { colors, COLORS } from "@/utils/constants/colors";
 import { useAuthStore } from "@/store/auth-store";
 import TabBar from "@/components/ui/TabBar";
+import { ArrowLeft } from "lucide-react-native";
 
 export default function MainLayout() {
 	const { user } = useAuthStore();
@@ -56,6 +57,12 @@ export default function MainLayout() {
 					name="games"
 					options={{
 						title: "Game",
+						headerShown: true,  
+						headerLeft: () => (
+                            <Pressable onPress={() => router.back()} style={{ paddingLeft: 16 }}>
+								<ArrowLeft size={24} color={'white'} />
+                            </Pressable>
+                        ),
 						
 					}}
 				/>
@@ -63,19 +70,29 @@ export default function MainLayout() {
 					name="profile"
 					options={{
 						title: "Profile",
-						headerShown: false,
+						headerShown: true,
 						animation: "fade",
+							headerLeft: () => (
+													<Pressable onPress={() => router.back()} style={{ paddingLeft: 10 }}>
+													  <ArrowLeft size={24} color={COLORS.primaryDark} />
+													</Pressable>
+												),
 						
 					}}
 				/>
+
 
       			<Tabs.Screen
 					name="settings"
 					options={{
 						title: "Settings",
-						headerShown: false,
+						headerShown: true,
 						animation: "fade",
-						lazy: false,
+						headerLeft: () => (
+													<Pressable onPress={() => router.back()} style={{ paddingLeft: 10 }}>
+													  <ArrowLeft size={24} color={COLORS.primaryDark} />
+													</Pressable>
+												),
 						
 					}}
 				/>

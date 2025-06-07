@@ -8,6 +8,12 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     if (state.routes[state.index].name === "settings") {
         return null;
     }
+    if (state.routes[state.index].name === "games") {
+        return null;
+    }
+    if (state.routes[state.index].name === "profile") {
+        return null;
+    }
 
     const primarycolor = 'black'; // You can change this to your desired primary color
     const secondarycolor = 'black'; // You can change this to your desired secondary color

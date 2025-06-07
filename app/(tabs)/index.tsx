@@ -131,8 +131,8 @@ export default function App() {
 	useEffect(() => {
 
 		// biome-ignore lint/complexity/useOptionalChain: <explanation>
-				if (user && user.currentLanguage && !selectedLanguage) {
-			selectLanguage(user.currentLanguage);
+				if (user && user.currentLanguage && typeof selectedLanguage === "function") {
+			selectedLanguage(user.currentLanguage);
 		}
 	}, []);
 		// const appGames = games?.filter((game) =>
