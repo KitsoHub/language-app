@@ -253,20 +253,22 @@ export default function GamePage() {
                </View>
              )} */}
 
-          <View style={styles.buttonContainer}>
-            <Button
+            <View style={styles.buttonContainer}>
+            {currentChallenge.type !== 'family-matching' && (
+              <Button
               title="Reset"
               onPress={handleResetLevel}
               variant="outline"
               style={styles.resetButton}
-            />
+              />
+            )}
             <Button
               title="Check"
               onPress={handleWordCheck}
               disabled={showCheck}
               style={styles.checkButton}
             />
-          </View>
+            </View>
         </View>
 
         <View style={styles.content}>

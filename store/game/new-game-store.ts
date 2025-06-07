@@ -248,6 +248,27 @@ export const useNewGameStore = create(
           }
           return isCorrect;
         }
+        // current challenge = family-matching
+        if (currentGame?.type === 'family-matching') {
+          const { selectedChoice } = get();
+
+          const isCorrect = selectedChoice === currentChallenge.correctAnswer;
+
+          set({ isCorrect, showFeedback: true });
+
+          if (isCorrect) {
+            const authStore = useAuthStore.getState();
+            if (!authStore.user) return false;
+
+            authStore.addCompletedChallenge(currentChallenge.id);
+            authStore.addXp(currentChallenge.points || 10);
+
+            get().submitAnswer(currentChallenge.id, arrangedWords);
+
+            get().updateAchievements(currentGame.type);
+          }
+          return isCorrect;
+        }
         // fill in blank
         if (currentGame?.type === 'fill-blank') {
           const { selectedChoice } = get();
@@ -402,6 +423,14 @@ export const useNewGameStore = create(
 
             break;
           }
+            case 'family-matching': {
+            const count = user.familyMatchingCompleted || 0;
+            authStore.updateUser({
+              familyMatchingCompleted: count + 1,
+            });
+
+            break;
+            }
           default:
             break;
         }
@@ -458,7 +487,7 @@ export const useNewGameStore = create(
 
     {
 
-      name: 'new-game-storage-a18',
+      name: 'new-game-storage-a24',
       version: 1,
       storage: createJSONStorage(() => AsyncStorage),
     },
