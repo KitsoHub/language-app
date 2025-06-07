@@ -7,7 +7,7 @@ import { ArrowLeft } from "lucide-react-native";
 
 export default function MainLayout() {
 	const { user } = useAuthStore();
-  
+
   // Helper to get initials from user name
   const getInitials = (name: string) =>
 		name
@@ -19,7 +19,7 @@ export default function MainLayout() {
 	return (
 		<>
 			{/* Set status bar background to black on the index page */}
-			
+
 			<Tabs tabBar={props => (<TabBar {...props} />)}>
 				<Tabs.Screen
 					name="index"
@@ -57,13 +57,13 @@ export default function MainLayout() {
 					name="games"
 					options={{
 						title: "Game",
-						headerShown: true,  
+						headerShown: true,
 						headerLeft: () => (
                             <Pressable onPress={() => router.back()} style={{ paddingLeft: 16 }}>
 								<ArrowLeft size={24} color={'white'} />
                             </Pressable>
                         ),
-						
+
 					}}
 				/>
 				<Tabs.Screen
@@ -77,7 +77,7 @@ export default function MainLayout() {
 													  <ArrowLeft size={24} color={COLORS.primaryDark} />
 													</Pressable>
 												),
-						
+
 					}}
 				/>
 
@@ -93,7 +93,7 @@ export default function MainLayout() {
 													  <ArrowLeft size={24} color={COLORS.primaryDark} />
 													</Pressable>
 												),
-						
+
 					}}
 				/>
 			</Tabs>
@@ -102,13 +102,13 @@ export default function MainLayout() {
 }
 
 const styles = StyleSheet.create({
-	avatarImage: { 
-		width: 40, 
-		height: 40, 
-		borderRadius: 20, 
-		marginRight: 20 
+	avatarImage: {
+		width: 40,
+		height: 40,
+		borderRadius: 20,
+		marginRight: 20
 	},
-	initialsContainer: { 
+	initialsContainer: {
 		width: 40,
 		height: 40,
 		borderRadius: 20,
@@ -117,12 +117,12 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		marginRight: 20,
 	},
-	initialsText: { 
-		color: "#000", 
-		fontWeight: "bold" 
+	initialsText: {
+		color: "#000",
+		fontWeight: "bold"
 	},
-	fallbackText: { 
-		marginRight: 20 
+	fallbackText: {
+		marginRight: 20
 	},
 	// New styles for the custom header title:
 	headerTitleContainer: {
