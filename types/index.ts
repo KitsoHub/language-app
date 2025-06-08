@@ -140,6 +140,10 @@ export interface Challenge {
   }
 
   export interface Game {
+    categoryId: string;
+    isLocked: boolean;
+    requiresSubscription: boolean;
+    progress: number;
     id: string;
     title: string;
     description: string;

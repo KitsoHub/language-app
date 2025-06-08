@@ -247,7 +247,7 @@ export default function App() {
  const { categories } = useCategoriesStore();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar style="dark" />
       <Stack.Screen options={{ headerShown: false }} />
       <LinearGradient colors={['#E0F7FA', '#E8F5E9', '#FFF8E1']}>
@@ -273,7 +273,7 @@ export default function App() {
 
         </ScrollView>
       </LinearGradient>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
     paddingTop: 0,
-    paddingBottom: 100,
+
   },
   gradient: {
     flex: 1,

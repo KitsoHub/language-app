@@ -1,39 +1,42 @@
-import { StyleSheet, Text, View, ScrollView, Platform, Pressable, ViewStyle, Image } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
-import { LessonCategory, LessonGame } from '@/utils/constants/categories';
+import { LessonCategory } from '@/utils/constants/categories';
 import { useNewGameStore } from '@/store/game/new-game-store';
-import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
-import { Book, Star, Lock } from 'lucide-react-native';
-import CircularProgress from './games/CircularProgress';
-import { COLORS } from '@/utils/constants/colors';
+import { useLanguageStore } from '@/store/language-store';
 import { useHaptics } from '@/utils/hooks/useHaptics';
 import GameTile from './GameTile';
 import { router } from 'expo-router';
 import { ROUTES } from '@/utils/constants/routes';
-
+import { COLORS } from '@/utils/constants/colors';
 
 interface SectionProps {
   category: LessonCategory;
 }
-export default function Section({category}: SectionProps) {
-    const {selectGame} = useNewGameStore()
-      const { triggerHaptic } = useHaptics();
 
-      const handleSelectGame = (game: LessonGame) => {
-    if (game.isLocked || category.isLocked) {
+export default function Section({ category }: SectionProps) {
+  const { games, selectGame } = useNewGameStore();
+  const { selectedLanguage } = useLanguageStore();
+  const { triggerHaptic } = useHaptics();
 
-        return};
+  // Filter games by selected language and category only
+  const filteredGames = games.filter(
+    (game) =>
+      game.languageId === selectedLanguage?.id &&
+      game.categoryId === category.id
+  );
+
+  const handleSelectGame = (game) => {
+    if (game.isLocked || category.isLocked) return;
+    triggerHaptic('light');
     selectGame(game.id);
-		router.push(ROUTES.GAMES);
-        console.log('Selected game:', game.id);
+    router.push(ROUTES.GAMES);
   };
 
-
   return (
-<View style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.titleContainer}>
         <View style={styles.line} />
-        <Text style={[styles.title, { color: '#999'}]}>{category.title}</Text>
+        <Text style={[styles.title, { color: '#999' }]}>{category.title}</Text>
         <View style={styles.line} />
       </View>
 
@@ -42,7 +45,7 @@ export default function Section({category}: SectionProps) {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.tilesContainer}
       >
-        {category.games.map((game) => (
+        {filteredGames.map((game) => (
           <GameTile
             key={game.id}
             game={game}
@@ -52,16 +55,14 @@ export default function Section({category}: SectionProps) {
             progress={game.progress}
             onPress={() => handleSelectGame(game)}
           />
-
-
         ))}
       </ScrollView>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
+  container: {
     marginBottom: 32,
   },
   titleContainer: {
@@ -81,8 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.backgroundDark,
   },
   tilesContainer: {
-    marginTop:10,
-    paddingHorizontal: 20
+    marginTop: 10,
+    paddingHorizontal: 20,
   },
-
-})
+});
