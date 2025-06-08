@@ -39,7 +39,7 @@ export const lessonCategories: LessonCategory[] = [
     requiresSubscription: false,
     games: [
               {
-        id: 'word-matching',
+        id: 'wm-st',
         title: 'Word Matching',
         description: 'Arrange words in the correct order to form greetings.',
         icon: '🔤',
@@ -52,7 +52,7 @@ export const lessonCategories: LessonCategory[] = [
         requiresSubscription: false,
       },
             {
-        id: 'multiple-choice',
+        id: 'mc-st',
         title: 'Multiple Choice',
         description: 'Choose the correct translation for each greeting.',
         icon: '✅',
@@ -76,7 +76,7 @@ export const lessonCategories: LessonCategory[] = [
     requiresSubscription: true,
     games: [
       {
-        id: 'fill-blank',
+        id: 'fb-st',
         title: 'Fill in the Blank',
         description: 'Complete sentences with the correct numbers.',
         icon: '📝',
@@ -99,7 +99,7 @@ export const lessonCategories: LessonCategory[] = [
     requiresSubscription: false,
     games: [
       {
-        id: 'family-matching',
+        id: 'fc-st',
         title: 'Family Matching',
         description: 'Match family member images with their correct translations.',
         icon: '👪',
@@ -112,7 +112,7 @@ export const lessonCategories: LessonCategory[] = [
         requiresSubscription: false,
       },
       {
-        id: 'sentence-builder',
+        id: 'sb-st',
         title: 'Sentence Builder',
         description: 'Build sentences about family members.',
         icon: '📚',
