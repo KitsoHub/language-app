@@ -20,6 +20,8 @@ export default function SignInScreen() {
         password: '',
     });
 
+    const [loading, setLoading] = useState(false);
+
     const { triggerHaptic} = useHaptics();
 
     const validateForm = () => {
