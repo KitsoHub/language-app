@@ -6,7 +6,7 @@ import {
   Platform,
   Dimensions,
 } from 'react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Challenge } from '@/types';
 import Animated, {
   useAnimatedStyle,
@@ -26,28 +26,15 @@ type FamilyMatchingProps = {
 
 const { width } = Dimensions.get('window');
 export default function FamilyMatchingGame({ challenge }: FamilyMatchingProps) {
+
+
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [showHint, setShowHint] = useState(false);
   const { triggerHaptic } = useHaptics();
-      const handleToggleHint = () => {
-    triggerHaptic('light');
-    setShowHint(!showHint);
-  };
-  const {
-    submitAnswer,
-    setShowFeedback,
-    setSelectedChoice,
-    getCurrentWordSelection,
-  } = useNewGameStore();
-  const handleSelectOption = (option: string) => {
-    setSelectedChoice(option);
-    setSelectedOption(option);
 
-    const selection = getCurrentWordSelection();
-    console.log(' >>> My option >>>', selection);
-  };
-  const renderOptions = (option: string, index: number) => {
-    const scale = useSharedValue(1);
+
+      const scale = useSharedValue(1);
+
     const animatedStyle = useAnimatedStyle(() => {
       if (Platform.OS === 'web') {
         return {};
@@ -57,6 +44,22 @@ export default function FamilyMatchingGame({ challenge }: FamilyMatchingProps) {
         transform: [{ scale: scale.value }],
       };
     });
+      const handleToggleHint = () => {
+    triggerHaptic('light');
+    setShowHint(!showHint);
+  };
+  const {
+
+    setSelectedChoice,
+
+  } = useNewGameStore();
+  const handleSelectOption = (option: string) => {
+    setSelectedChoice(option);
+    setSelectedOption(option);
+
+  };
+  const renderOptions = (option: string, index: number) => {
+
     const OptionComponent = Platform.OS === 'web' ? View : Animated.View;
 
     return (

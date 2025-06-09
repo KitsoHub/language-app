@@ -8,6 +8,7 @@ export const COLORS = {
   secondaryLight: '#FFC66D',
   background: '#F5F7FA',
   backgroundLight: '#F8F9FA',
+  backgroundDark: '#D0D0D0',
   white: '#FFFFFF',
   pale:"#F0F4FF",
   black: '#000000',
@@ -56,14 +57,15 @@ export const COLORS = {
   quaternaryDark: '#5840CC', // Dark Purple
   primaryPink: '#FF3A89', // Hot pink
   purpleBackground: '#5A30F0', // Purple background
-  cyanBlue: '#00C8E1', // Cyan blue
-  darkBlue:'#1F33CE', // dark blue
+  cyanBlue: '#00C8E1',
+  darkBlue:'#1F33CE',
   darkBackground: '#3A1D9E', // Darker purple
   successLight: "#B5F2BA", // Light Green
   greenTint: '#E3FFF1',
   greenDark: '#006400',
   greenCool: '#7AE582',
   cyanDark:"#003E3E",
+  cyanLight:"#E0F7FA",
   greenSpring: '#C1FFE3',
   blueTint: '#C1D9FF',
   blueTintLight:'#E3EEFF',
