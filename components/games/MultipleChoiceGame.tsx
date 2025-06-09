@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import type { Challenge } from "@/types";
-import { Check, Container, X } from "lucide-react-native";
+import { Check } from "lucide-react-native";
 import {
 	BORDER_RADIUS,
 	FONT_SIZES,
@@ -10,7 +10,6 @@ import {
 	PADDING,
 } from "@/utils/constants";
 import { colors } from "@/utils/constants/colors";
-import { useGameStore } from "@/store/game-store";
 import { useNewGameStore } from "@/store/game/new-game-store";
 
 type MultipleChoiceGameProps = {
@@ -21,26 +20,17 @@ export default function MultipleChoiceGame({
 }: MultipleChoiceGameProps) {
 
 	const [selectedOption, setSelectedOption] = useState<string | null>(null);
-	const [showResult, setShowResult] = useState<boolean>(false);
-	const { submitAnswer, setShowFeedback, setSelectedChoice, getCurrentWordSelection } = useNewGameStore();
+
+	const { setSelectedChoice } = useNewGameStore();
 
 	const handleSelectOption = (option: string) => {
-		// setSelectedOption(option);
+
     setSelectedChoice(option);
     setSelectedOption(option)
 
-    const selection = getCurrentWordSelection()
-    console.log(" >>> My option >>>", selection)
+
 
 	};
-
-	// validate options
-	// const isCorretOption = (option: string) => {
-	// 	return selectedOption && option === challenge.correctAnswer;
-	// };
-	// const isIncorrectSelection = (option: string) => {
-	// 	return selectedOption === option && option !== challenge.correctAnswer
-	// };
 
 	return (
 		<View style={styles.container}>
@@ -54,8 +44,7 @@ export default function MultipleChoiceGame({
 						style={[
 							styles.optionsButton,
 							selectedOption === option && styles.selectedOption,
-			// 				isCorretOption(option) && styles.correctOption,
-            //   isIncorrectSelection(option) && styles.incorrectOption,
+
 						]}
 						onPress={() => handleSelectOption(option)}
 						// disabled={showResult}
@@ -74,11 +63,7 @@ export default function MultipleChoiceGame({
 								<Check size={20} color="white" />
 							</View>
 						)}
-						{/* {isIncorrectSelection(option) && (
-							<View style={styles.resultIcon}>
-              <X size={20} color="white" />
-            </View>
-						)} */}
+
 					</Pressable>
 				))}
 			</View>
