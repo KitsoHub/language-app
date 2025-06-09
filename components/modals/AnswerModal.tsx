@@ -22,8 +22,8 @@ export const ANSWER_SOUNDS = {
   incorrect: IncorrectAnswerSound,
 } as const;
 
-const { width, height } = Dimensions.get('window');
-export default function AnswerModal({ isCorrect, visible }: AnswerAlertProps) {
+
+function AnswerModal({ isCorrect, visible }: AnswerAlertProps) {
   const opacity = useSharedValue(0);
   const iconScale = useSharedValue(0.8);
   const { play } = useAudioPlayer();
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
     opacity: 0.5,
   },
   modalContent: {
@@ -107,6 +107,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.backgroundDark,
   },
 });
-// export default React.memo(AnswerModal, (prev, next) =>
-//   prev.visible === next.visible && prev.isCorrect === next.isCorrect
-// )
+export default React.memo(AnswerModal, (prev, next) =>
+  prev.visible === next.visible && prev.isCorrect === next.isCorrect
+)
