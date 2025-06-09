@@ -1,12 +1,13 @@
 import { Platform, Pressable, StyleSheet, Text, View, Image, ViewStyle } from 'react-native'
-import React from 'react'
 import { LessonGame } from '@/utils/constants/categories';
 import { useHaptics } from '@/utils/hooks/useHaptics';
 import { COLORS } from '@/utils/constants/colors';
 import CircularProgress from './games/CircularProgress';
 import { Star,Lock } from 'lucide-react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
-
+import { useNewGameStore } from '@/store/game/new-game-store';
+import { router } from 'expo-router';
+import { ROUTES } from '@/utils/constants/routes';
 
 interface GameTileProps {
   game: LessonGame;
@@ -23,7 +24,12 @@ export default function GameTile({  game,categoryColor, isLocked, requiresSubscr
     const scale = useSharedValue(1);
     const rotate = useSharedValue(0);
 
-      const handlePressOut = () => {
+    // store
+      const {
+selectGame
+      } = useNewGameStore();
+
+    const handlePressOut = () => {
       if (isLocked || requiresSubscription) return;
       scale.value = withSequence(
         withTiming(1.05, { duration: 150 }),
@@ -48,6 +54,9 @@ export default function GameTile({  game,categoryColor, isLocked, requiresSubscr
       }
 
         triggerHaptic('success');
+        selectGame(game.id);
+    router.push(ROUTES.GAMES);
+        console.log('Selected game:', game.id);
         onPress()
     }
    const animatedStyle = useAnimatedStyle(() => {
@@ -97,7 +106,7 @@ export default function GameTile({  game,categoryColor, isLocked, requiresSubscr
 
 
   return (
-<View style={styles.wrapper} key={game.id}>
+<View style={styles.wrapper}>
       <TileComponent style={[animatedStyle]}>
 <Pressable
  onPress={handlePress}
@@ -106,24 +115,25 @@ onPressIn={Platform.OS !== 'web' ? handlePressIn : undefined}
        style={({ pressed }) => [
             styles.tileContainer,
             getContainerStyle(),
-            Platform.OS === 'web' && pressed && !game.isLocked && { transform: [{ scale: 0.95 }] }
+            Platform.OS === 'web' && pressed && !isLocked && { transform: [{ scale: 0.95 }] }
           ]}
           disabled={isLocked}>
 
-        {game.progress > 0 && !game.isLocked && (
+        {progress > 0 && !isLocked && (
             <CircularProgress
-              progress={game.progress}
+            progress={progress}
               size={80}
               strokeWidth={5}
               color="#4A90E2"
               bgColor="rgba(255,255,255,0.3)"
+
             />
           )}
 
 <View style={styles.iconContainer}>
             {renderIcon()}
           </View>
-         {game.progress === 0 && !game.isLocked && (
+         {progress === 0 && !isLocked && (
             <View style={styles.startBadge}>
               <Text style={styles.startText}>START</Text>
             </View>

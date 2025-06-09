@@ -1,31 +1,17 @@
-import { StyleSheet, Text, View, ScrollView, Platform, Pressable, ViewStyle, Image } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { LessonCategory, LessonGame } from '@/utils/constants/categories';
-import { useNewGameStore } from '@/store/game/new-game-store';
-import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
-import { Book, Star, Lock } from 'lucide-react-native';
-import CircularProgress from './games/CircularProgress';
 import { COLORS } from '@/utils/constants/colors';
-import { useHaptics } from '@/utils/hooks/useHaptics';
 import GameTile from './GameTile';
-import { router } from 'expo-router';
-import { ROUTES } from '@/utils/constants/routes';
 
 
 interface SectionProps {
   category: LessonCategory;
 }
 export default function Section({category}: SectionProps) {
-    const {selectGame} = useNewGameStore()
-      const { triggerHaptic } = useHaptics();
 
-      const handleSelectGame = (game: LessonGame) => {
+    const handleSelectGame = (game: LessonGame) => {
     if (game.isLocked || category.isLocked) {
-
         return};
-    selectGame(game.id);
-		router.push(ROUTES.GAMES);
-        console.log('Selected game:', game.id);
   };
 
 

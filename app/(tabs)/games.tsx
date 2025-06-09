@@ -1,15 +1,13 @@
 import {
   Alert,
   Platform,
-  Pressable,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { useNewGameStore } from '@/store/game/new-game-store';
 import { useAuthStore } from '@/store/auth-store';
@@ -21,20 +19,19 @@ import WordDropZone from '@/components/wordMatching/WordDropZone';
 import WordMatchProgressBar from '@/components/wordMatching/WordMatchProgressBar';
 import MascotAlert from '@/components/wordMatching/MascotAlert';
 import GameCompletedModal from '@/components/modals/GameCompletedModal';
-import MultiChoiceGame from '@/components/games/MultipleChoiceGame';
 import MultipleChoiceGame from '@/components/games/MultipleChoiceGame';
 import FillBlankGame from '@/components/games/FillBlankGame';
 import SentenceBuilderGame from '@/components/games/SentenceBuilderGame';
 import EmptyState from '@/components/shared/EmptyState';
 import { ROUTES } from '@/utils/constants/routes';
 import Feather from '@expo/vector-icons/Feather';
-import { MARGIN, PADDING } from '@/utils/constants';
-import { Audio, type AVPlaybackSource } from 'expo-av';
+import {PADDING } from '@/utils/constants';
+
 import { useAudioPlayer } from '@/utils/hooks/useAudioPlayer';
 import { CoinSound } from '@/utils/audio';
 import FamilyMatchingGame from '@/components/games/FamilyMatchingGame';
 import { useHaptics } from '@/utils/hooks/useHaptics';
-import { HelpCircle } from 'lucide-react-native';
+import { useCategoriesStore } from '@/store/game/categories-store';
 
 export default function GamePage() {
   const router = useRouter();
@@ -54,6 +51,17 @@ export default function GamePage() {
     resetGame,
     selectedChoice,
   } = useNewGameStore();
+  // game state
+  const currentGame = getCurrentGame();
+  const currentChallenge = getCurrentChallenge();
+  // category store
+const  {categories, updateGameProgress} = useCategoriesStore();
+
+ const categoryWithGame = categories.find(category =>
+    category.games.some(game => game.id === currentGame?.id)
+  );
+
+  const gameInCategory = categoryWithGame?.games.find(game => game.id === currentGame?.id);
 
   const { user } = useAuthStore();
   const [showCompletionModal, setShowCompletionModal] = useState(false);
@@ -66,9 +74,7 @@ export default function GamePage() {
       setShowHint(!showHint);
     };
 
-  // game state
-  const currentGame = getCurrentGame();
-  const currentChallenge = getCurrentChallenge();
+
 
   useEffect(() => {
     if (isGameCompleted() && !showCompletionModal) {
@@ -76,16 +82,22 @@ export default function GamePage() {
     }
   }, [isGameCompleted, showCompletionModal]);
 
+    useEffect(() => {
+    if (currentGame && categoryWithGame && gameInCategory) {
+      const totalChallenges = currentGame.challenges.length;
+      const currentIndex = currentGame.challenges.indexOf(currentChallenge || currentGame.challenges[0]);
+      const progress = totalChallenges > 0 ? (currentIndex + 1) / totalChallenges : 0;
+
+      updateGameProgress(categoryWithGame.id, gameInCategory.id, progress);
+    }
+  }, [currentChallenge]);
+
   const handleRemoveWord = (index: number) => {
     removeWordFromArrangement(index);
   };
 
   const handleWordSelect = (word: string) => {
     addWordToArrangement(word);
-  };
-
-  const handleGameReset = () => {
-    resetGame();
   };
 
   const handleResetLevel = () => {
@@ -97,13 +109,13 @@ export default function GamePage() {
     setTimeout(() => {
       setShowCompletionModal(false);
       router.back();
-      resetGame();
+      // resetGame();
     }, 400);
   };
   const handleCloseCompletedModal = () => {
     setShowCompletionModal(false);
     router.back();
-    resetGame();
+    // resetGame();
   };
   const handleWordCheck = () => {
     setShowCheck(true);
@@ -134,9 +146,9 @@ export default function GamePage() {
     }
   };
 
-  // if no game or challenge is selected, show empty state
+
   if (!currentGame || !currentChallenge) {
-    // empty state
+
     return (
       <EmptyState
         title={currentGame?.title}
@@ -166,7 +178,7 @@ export default function GamePage() {
         <View style={{ padding: 16 }}>
           <WordMatchProgressBar
             currentLevel={currentGame.challenges.indexOf(currentChallenge)}
-            totalLevels={currentGame.challenges.length - 1}
+            totalLevels={currentGame.challenges.length -1 }
           />
 
           <View style={styles.instructionContainer}>
@@ -236,23 +248,6 @@ export default function GamePage() {
               visible={showFeedback}
             />
           )}
-          {/* {currentChallenge.hint && (
-            <>
-                <Pressable
-          style={styles.hintButton}
-          onPress={handleToggleHint}
-        >
-          <HelpCircle size={24} color={COLORS.white} />
-        </Pressable>
-            </>
-          )} */}
-{/*
-             {showHint && (
-               <View style={styles.hintContainer}>
-                 <Text style={styles.hintText}>{currentChallenge.hint}</Text>
-               </View>
-             )} */}
-
             <View style={styles.buttonContainer}>
             {currentChallenge.type !== 'family-matching' && (
               <Button

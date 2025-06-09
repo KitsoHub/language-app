@@ -140,10 +140,7 @@ export default function App() {
       selectedLanguage(user.currentLanguage);
     }
   }, []);
-  // const appGames = games?.filter((game) =>
-  // 	game.languageId?.includes(selectedLanguage?.id || ""),
-  // )
-  // Game card renderer with Fall Guys styling
+
   const renderGameItem = ({ item, index }: { item: Game; index: number }) => {
     const completedChallenges = user?.completedChallenges || [];
     const totalChallenges = item.challenges.length;
@@ -240,14 +237,10 @@ export default function App() {
     );
   };
 
-  // Calculate daily goal progress
-  const goalProgress = dailyGoal > 0 ? (dailyProgress / dailyGoal) * 100 : 0;
-
-//   categories data
  const { categories } = useCategoriesStore();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar style="dark" />
       <Stack.Screen options={{ headerShown: false }} />
       <LinearGradient colors={['#E0F7FA', '#E8F5E9', '#FFF8E1']}>
@@ -273,16 +266,14 @@ export default function App() {
 
         </ScrollView>
       </LinearGradient>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
-    paddingTop: 0,
-    paddingBottom: 100,
+    marginTop: 40,
   },
   gradient: {
     flex: 1,
@@ -516,9 +507,8 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: COLORS.white,
   },
-  // New grid style adjustments:
-  gridGameCard: {
-    // { changed code }
+    gridGameCard: {
+
     flex: 1,
     flexDirection: 'column',
     margin: 5,
@@ -535,7 +525,7 @@ const styles = StyleSheet.create({
     paddingBottom: 1,
     paddingTop: 1,
   },
-  // New style to stack items vertically on grid mode:
+
   gameCardGradientGrid: {
     flexDirection: 'column',
     alignItems: 'center',
@@ -545,8 +535,7 @@ const styles = StyleSheet.create({
     height: 64,
     justifyContent: 'center',
     alignItems: 'center',
-    // Remove paddingLeft to center the icon:
-    // paddingLeft: 7,
+
   },
   gameIcon: {
     fontSize: 32,
