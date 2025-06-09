@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "38293796538",
+    "project_id": "tswalingo",
+    "storage_bucket": "tswalingo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38293796538:android:7df7ab1e12a78d249cb483",
+        "android_client_info": {
+          "package_name": "com.anonymous.tswalingo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38293796538-4ge8dbuausf1lbk0qd5locejn5jocqmr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anonymous.tswalingo",
+            "certificate_hash": "e1a67b35eaa8a22295eeebc0de452455f004e787"
+          }
+        },
+        {
+          "client_id": "38293796538-uvoingf7rtduvndeorou5irebp8a8l1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVdWutU59Cfhyyiy7twqszwG00YhtGAqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38293796538-uvoingf7rtduvndeorou5irebp8a8l1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

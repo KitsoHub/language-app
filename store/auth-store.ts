@@ -2,7 +2,7 @@ import type { User } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-// import auth from '@react-native-firebase/auth'
+import auth from '@react-native-firebase/auth'
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
@@ -56,8 +56,8 @@ export const useAuthStore = create(
               multipleChoiceCompleted: 0,
             };
 
-            // await auth().createUserWithEmailAndPassword(email, password);
-            // await auth().signInWithEmailAndPassword(email, password);
+            await auth().createUserWithEmailAndPassword(email, password);
+            await auth().signInWithEmailAndPassword(email, password);
 
             set({ user: mockUser, isAuthenticated: true, isLoading: false });
           } else {
