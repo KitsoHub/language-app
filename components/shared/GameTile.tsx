@@ -56,7 +56,7 @@ selectGame
         triggerHaptic('success');
         selectGame(game.id);
     router.push(ROUTES.GAMES);
-        console.log('Selected game:', game.id);
+
         onPress()
     }
    const animatedStyle = useAnimatedStyle(() => {

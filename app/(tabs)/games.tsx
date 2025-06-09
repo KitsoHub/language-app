@@ -25,13 +25,15 @@ import SentenceBuilderGame from '@/components/games/SentenceBuilderGame';
 import EmptyState from '@/components/shared/EmptyState';
 import { ROUTES } from '@/utils/constants/routes';
 import Feather from '@expo/vector-icons/Feather';
-import {PADDING } from '@/utils/constants';
+import { PADDING } from '@/utils/constants';
 
 import { useAudioPlayer } from '@/utils/hooks/useAudioPlayer';
 import { CoinSound } from '@/utils/audio';
 import FamilyMatchingGame from '@/components/games/FamilyMatchingGame';
 import { useHaptics } from '@/utils/hooks/useHaptics';
 import { useCategoriesStore } from '@/store/game/categories-store';
+import AnswerModal from '@/components/modals/AnswerModal';
+import AchivementDetailsModal from '@/components/modals/AchivementDetailsModal';
 
 export default function GamePage() {
   const router = useRouter();
@@ -55,26 +57,26 @@ export default function GamePage() {
   const currentGame = getCurrentGame();
   const currentChallenge = getCurrentChallenge();
   // category store
-const  {categories, updateGameProgress} = useCategoriesStore();
+  const { categories, updateGameProgress } = useCategoriesStore();
 
- const categoryWithGame = categories.find(category =>
-    category.games.some(game => game.id === currentGame?.id)
+  const categoryWithGame = categories.find((category) =>
+    category.games.some((game) => game.id === currentGame?.id),
   );
 
-  const gameInCategory = categoryWithGame?.games.find(game => game.id === currentGame?.id);
+  const gameInCategory = categoryWithGame?.games.find(
+    (game) => game.id === currentGame?.id,
+  );
 
   const { user } = useAuthStore();
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
   const [showHint, setShowHint] = useState(false);
 
-    const { triggerHaptic } = useHaptics();
-        const handleToggleHint = () => {
-      triggerHaptic('light');
-      setShowHint(!showHint);
-    };
-
-
+  const { triggerHaptic } = useHaptics();
+  const handleToggleHint = () => {
+    triggerHaptic('light');
+    setShowHint(!showHint);
+  };
 
   useEffect(() => {
     if (isGameCompleted() && !showCompletionModal) {
@@ -82,11 +84,14 @@ const  {categories, updateGameProgress} = useCategoriesStore();
     }
   }, [isGameCompleted, showCompletionModal]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (currentGame && categoryWithGame && gameInCategory) {
       const totalChallenges = currentGame.challenges.length;
-      const currentIndex = currentGame.challenges.indexOf(currentChallenge || currentGame.challenges[0]);
-      const progress = totalChallenges > 0 ? (currentIndex + 1) / totalChallenges : 0;
+      const currentIndex = currentGame.challenges.indexOf(
+        currentChallenge || currentGame.challenges[0],
+      );
+      const progress =
+        totalChallenges > 0 ? (currentIndex + 1) / totalChallenges : 0;
 
       updateGameProgress(categoryWithGame.id, gameInCategory.id, progress);
     }
@@ -119,6 +124,7 @@ const  {categories, updateGameProgress} = useCategoriesStore();
   };
   const handleWordCheck = () => {
     setShowCheck(true);
+    setShowFeedback(true);
     const wordCheckResult = checkAnswer();
     if (Platform.OS === 'web') {
       if (wordCheckResult) {
@@ -133,6 +139,7 @@ const  {categories, updateGameProgress} = useCategoriesStore();
       setTimeout(() => {
         if (wordCheckResult) {
           setShowCheck(false);
+
           if (isGameCompleted()) {
             setShowCompletionModal(true);
           } else {
@@ -146,9 +153,7 @@ const  {categories, updateGameProgress} = useCategoriesStore();
     }
   };
 
-
   if (!currentGame || !currentChallenge) {
-
     return (
       <EmptyState
         title={currentGame?.title}
@@ -178,7 +183,7 @@ const  {categories, updateGameProgress} = useCategoriesStore();
         <View style={{ padding: 16 }}>
           <WordMatchProgressBar
             currentLevel={currentGame.challenges.indexOf(currentChallenge)}
-            totalLevels={currentGame.challenges.length -1 }
+            totalLevels={currentGame.challenges.length - 1}
           />
 
           <View style={styles.instructionContainer}>
@@ -235,26 +240,17 @@ const  {categories, updateGameProgress} = useCategoriesStore();
           )}
 
           {/* Family matching */}
-          {
-            currentChallenge.type === 'family-matching' && (
-
-              <FamilyMatchingGame challenge={currentChallenge}/>
-            )
-          }
-
-          {showFeedback && (
-            <MascotAlert
-              isCorrect={isCorrect ?? undefined}
-              visible={showFeedback}
-            />
+          {currentChallenge.type === 'family-matching' && (
+            <FamilyMatchingGame challenge={currentChallenge} />
           )}
-            <View style={styles.buttonContainer}>
+
+          <View style={styles.buttonContainer}>
             {currentChallenge.type !== 'family-matching' && (
               <Button
-              title="Reset"
-              onPress={handleResetLevel}
-              variant="outline"
-              style={styles.resetButton}
+                title="Reset"
+                onPress={handleResetLevel}
+                variant="outline"
+                style={styles.resetButton}
               />
             )}
             <Button
@@ -263,7 +259,7 @@ const  {categories, updateGameProgress} = useCategoriesStore();
               disabled={showCheck}
               style={styles.checkButton}
             />
-            </View>
+          </View>
         </View>
 
         <View style={styles.content}>
@@ -279,11 +275,34 @@ const  {categories, updateGameProgress} = useCategoriesStore();
           />
         </View>
       </SafeAreaView>
+      <View>
+        {showFeedback && (
+          <AnswerModal
+            visible={showFeedback}
+            isCorrect={isCorrect ?? undefined}
+          />
+        )}
+      </View>
+      {showHint && (
+        <View style={styles.hintContainer}>
+          <Text style={styles.hintText}>
+            {currentChallenge.hint || 'No hint available'}
+          </Text>
+        </View>
+      )}
+      <TouchableOpacity
+        style={styles.hintButton}
+        onPress={handleToggleHint}
+        activeOpacity={0.7}
+      >
+        <Feather name="help-circle" size={24} color="white" />
+      </TouchableOpacity>
     </>
   );
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     backgroundColor: colors.background,

@@ -90,33 +90,7 @@ export default function GameCompletedModal({
 		};
 	});
 
-	// Modify onContinue button press to trigger confetti
-	// const handleContinue = async () => {
-	// 	setPlayConfetti(true);
-	// 	// Play sound effect when confetti animation starts
-	// 	await playCoinSound('coin');
-	// 	// Wait for confetti animation to play before continuing
-	// 	setTimeout(() => {
-	// 		onContinue();
-	// 		setPlayConfetti(false);
-	// 	}, 1000);
-	// };
 
-	// Play sound effect function
-	// async function playCoinSound(option: string) {
-	// 	try {
-	// 		await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-	// 		// Load and play the sound
-	// 		const { sound } = await Audio.Sound.createAsync(
-	// 			option === 'coin'
-	// 				? require('@/assets/audio/coin.mp3')
-	// 				: undefined
-	// 		);
-	// 		await sound.playAsync();
-	// 	} catch (error) {
-	// 		console.error('Error playing sound:', error);
-	// 	}
-	// }
 
 
 	return (

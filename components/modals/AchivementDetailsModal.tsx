@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   modalContent: {
-    width: width * 0.75,
+
     maxWidth: 400,
     backgroundColor: 'white',
     borderRadius: 20,
