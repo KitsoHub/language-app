@@ -1,14 +1,10 @@
-import {Modal, Pressable, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, ViewStyle, Image ,ScrollView} from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text,  TouchableOpacity, View, ViewStyle } from 'react-native'
+
 import Feather from '@expo/vector-icons/build/Feather';
 import { colors, COLORS } from '@/utils/constants/colors';
-import { useAuthStore } from '@/store/auth-store'; // Import the auth store
-import { Redirect, useRouter } from 'expo-router'; // Import the router
-import Avatar from './Avatar';
-import {Button} from '@/components/ui/Button';
-import { Bell, Bookmark, BookMarked, BookOpen, ChevronRight, FileQuestion, GlobeLockIcon, Info, LogOut, PenIcon, Share2, ShieldClose, Star } from 'lucide-react-native';
-import { avatars } from '@/mocks/vowels';
+import { useAuthStore } from '@/store/auth-store';
 
+import Avatar from './Avatar';
 interface ProfileProps {
   name: string,
   avatar: string,
@@ -25,17 +21,6 @@ interface ProfileProps {
   style?: ViewStyle;
 }
 
-const modalContents = {
-  // 'Help': 'If you need assistance, please contact our support team at support@example.com. We are available to help you with any issues related to using the app, whether it’s account access, subscription problems, or questions about learning Setswana. Don’t hesitate to reach out!',
-
-  'Privacy': 'Your privacy is important to us. We do not share your personal information with third parties without your consent. Your data is securely stored and only used to improve your learning experience. If you want to learn more about how we protect your data, please read our full privacy policy.',
-
-  'TCs': 'By using this app, you agree to our terms and conditions. These include:\n\n Using the app in a responsible manner for learning purposes only. Not copying, sharing, or reselling any learning materials without permission.Following community guidelines if interacting with other learners.Ensuring that your account credentials remain confidential and not shared with others.Acknowledging that the app reserves the right to modify content, pricing, and features as needed.Understanding that the app is provided "as is," and the developers are not responsible for any data loss or service interruptions.Agreeing that any misuse of the app, including attempts to exploit its services, may result in suspension or termination of access.If you do not agree with these terms, please discontinue using the app. Read the full terms and conditions to understand your rights and responsibilities.',
-
-  // 'FAQs': 'Frequently Asked Questions:\n\n1. How do I reset my password?\n   - Go to your account settings and select "Reset Password." Follow the instructions to create a new password. If you have trouble accessing your account, please contact support for further assistance.\n\n2. How do I change my email address?\n   - In your account settings, select "Change Email," enter your new email, and confirm the change. You will receive a verification email to complete the update. If you do not receive the email, check your spam folder or contact support.\n\n3. How do I contact support?\n   - You can reach us at ogaufimokopakgosi3@gmail.com or use the "Help" section in the app to send us a message. Our support team typically responds within 24-48 hours.\n\n4. Is the app free to use?\n   - The app offers a free version with basic features. To access premium lessons, advanced exercises, and personalized tutoring, you can subscribe to a paid plan.\n\n5. Can I use the app offline?\n   - Yes! Some lessons and features are available offline. However, certain interactive elements, such as live tutoring and community discussions, require an internet connection.\n\n6. How do I report a bug or suggest a feature?\n   - If you encounter a bug or have a feature request, please send us an email at support@example.com with detailed information. We appreciate your feedback and strive to improve your experience!\n\n7. Can I delete my account?\n   - Yes, if you wish to delete your account permanently, go to account settings and select "Delete Account." Please note that this action is irreversible, and all your data will be lost.',
-
-  'About Us': 'You can contact us at contact@example.com for any inquiries, feedback, or support requests. We value your input and are here to make your experience better. If you have suggestions or questions, we’d love to hear from you!',
-};
 
 export default function ProfileStatsCard({
   name,
@@ -43,18 +28,12 @@ export default function ProfileStatsCard({
   xp,
   level,
   streak,
-  currentLanguage,
-  title,
-  description,
-  icon = "inbox",
-  buttonTitle,
-  onPress,
-  style,
-  avatar
-}: ProfileProps) {
-  const router = useRouter(); // Get the router
-  const { user} = useAuthStore();
 
+  onPress,
+
+}: ProfileProps) {
+
+  const { user} = useAuthStore();
 
   return (
     <>

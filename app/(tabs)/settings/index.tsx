@@ -28,7 +28,7 @@ export default function SettingsPage() {
 
   return (
     <SafeAreaView style={styles.container}>
- 
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}

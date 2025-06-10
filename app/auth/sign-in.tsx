@@ -5,7 +5,7 @@ import { ROUTES } from "@/utils/constants/routes";
 import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity, } from "react-native";
-import { Mail, Lock, ArrowRight } from 'lucide-react-native';
+import { Mail, Lock, ArrowRight, User } from 'lucide-react-native';
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useHaptics } from "@/utils/hooks/useHaptics";
@@ -13,18 +13,25 @@ import { useHaptics } from "@/utils/hooks/useHaptics";
 export default function SignInScreen() {
     const router = useRouter();
     const { isLoading, login } = useAuthStore();
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({
+        username: '',
         email: '',
         password: '',
     });
+
+    const [loading, setLoading] = useState(false);
 
     const { triggerHaptic} = useHaptics();
 
     const validateForm = () => {
         let isValid = true;
-        const newErrors = { email: '', password: '' };
+        const newErrors = {username:'', email: '', password: '' };
+
+        if (!username) {
+            newErrors.username = 'Username is required';}
 
         if (!email) {
             newErrors.email = 'Email is required';
@@ -54,7 +61,7 @@ export default function SignInScreen() {
             return};
         try {
              triggerHaptic('success');
-            await login(email, password);
+            await login(username, email, password);
             router.replace(ROUTES.TABS)
         } catch (error: any) {
             Alert.alert('Sign in failed...', error.message)
@@ -92,6 +99,17 @@ export default function SignInScreen() {
                     </View>
 
                     <View style={styles.form}>
+            <Input
+              label="User Name"
+              placeholder="Enter your username"
+            keyboardType="default"
+              autoCapitalize="none"
+              leftIcon={<User size={20} color={COLORS.gray500} />}
+              value={username}
+              onChangeText={setUsername}
+              error={errors.username}
+            />
+
             <Input
               label="Email Address"
               placeholder="Enter your email address"

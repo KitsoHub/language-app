@@ -1,11 +1,11 @@
-import { translationOption } from './index';
+
 export interface User{
     familyMatchingCompleted: number;
     id:string;
     name:string;
     email:string;
     avatar?: string | number;
-    currentLanguage:string;
+    currentLanguage?:string;
     streak:number;
     xp:number;
     level:number;
