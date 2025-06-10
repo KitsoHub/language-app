@@ -9,6 +9,7 @@ import { Mail, Lock, ArrowRight, User } from 'lucide-react-native';
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useHaptics } from "@/utils/hooks/useHaptics";
+import { supabase } from "@/utils/supabase";
 
 export default function SignInScreen() {
     const router = useRouter();
@@ -28,11 +29,9 @@ export default function SignInScreen() {
 
     const validateForm = () => {
         let isValid = true;
-        const newErrors = {username:'', email: '', password: '' };
+        const newErrors = { username: '', email: '', password: '' };
 
-        if (!username) {
-            newErrors.username = 'Username is required';}
-
+        
         if (!email) {
             newErrors.email = 'Email is required';
             isValid = false;
@@ -56,29 +55,42 @@ export default function SignInScreen() {
 
     const handleSignIn = async () => {
         // validate form
-        if (!validateForm()) {
-            triggerHaptic('error');
-            return};
-        try {
-             triggerHaptic('success');
-            await login(username, email, password);
-            router.replace(ROUTES.TABS)
-        } catch (error: any) {
-            Alert.alert('Sign in failed...', error.message)
+       setLoading(true)
+       try{
+        triggerHaptic('success');
+        await login(email,password);
+        router.replace(ROUTES.TABS)
+       }
+       catch (error: any) {Alert.alert('sign in failed',error.message)
 
-        }
+       }
+  
+    }
+    async function handleSignUp() {
+        setLoading(true)
+        const{
+            data: {session},
+            error,
+        } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+        })
+        if (error) Alert.alert(error.message)
+            if(!session) Alert.alert('please check your inbox for email verfication!')
+                setLoading(false)
+        
     }
 
 
     // TODO: Remove on production branch
-    const handleDemoLogin = () =>{
-        console.log(" >> Activating Demo ACC >> ")
-        let demoEmail = '';
-        demoEmail = "testuser@example.com"
-        triggerHaptic('success')
-        setEmail(demoEmail);
-        setPassword('password');
-    }
+    // const handleDemoLogin = () =>{
+    //     console.log(" >> Activating Demo ACC >> ")
+    //     let demoEmail = '';
+    //     demoEmail = "testuser@example.com"
+    //     triggerHaptic('success')
+    //     setEmail(demoEmail);
+    //     setPassword('password');
+    // }
     return (
         <SafeAreaView style={styles.container}>
             <Stack.Screen options={{ headerShown: false }} />
@@ -99,17 +111,7 @@ export default function SignInScreen() {
                     </View>
 
                     <View style={styles.form}>
-            <Input
-              label="User Name"
-              placeholder="Enter your username"
-            keyboardType="default"
-              autoCapitalize="none"
-              leftIcon={<User size={20} color={COLORS.gray500} />}
-              value={username}
-              onChangeText={setUsername}
-              error={errors.username}
-            />
-
+           
             <Input
               label="Email Address"
               placeholder="Enter your email address"
@@ -148,7 +150,7 @@ export default function SignInScreen() {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Don't have an account?</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleSignUp}>
               <Text style={styles.signUpText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
@@ -164,7 +166,7 @@ export default function SignInScreen() {
               </TouchableOpacity>
 
               {/* TODO: Remove on production */}
-              <TouchableOpacity style={styles.socialButton} onPress={handleDemoLogin}>
+              <TouchableOpacity style={styles.socialButton} >
                 <Text style={styles.demoButtonText}>Demo</Text>
               </TouchableOpacity>
             </View>

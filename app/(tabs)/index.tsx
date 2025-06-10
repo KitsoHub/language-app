@@ -2,28 +2,44 @@
 
 import { StatusBar } from 'expo-status-bar';
 import {
+  FlatList,
   Pressable,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
+  Image,
   ScrollView,
 } from 'react-native';
-
-
+import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  BookOpen,
+  ChevronRight,
+  Flame,
+  Trophy,
+  HandCoins,
+  Heart,
+  Globe,
+  Crown,
+  Star,
+  Coins,
+  Settings2,
+  Grid,
+} from 'lucide-react-native';
 import { useAuthStore } from '@/store/auth-store';
 import { Stack, useRouter } from 'expo-router';
 import { useLanguageStore } from '@/store/language-store';
-
+import { useProgressStore } from '@/store/progress-store';
 import { useEffect, useState } from 'react';
 import { ROUTES } from '@/utils/constants/routes';
 import { useNewGameStore } from '@/store/game/new-game-store';
 import type { Game } from '@/types';
 import { LinearGradient } from 'expo-linear-gradient';
-
+import { Filter, Line } from 'react-native-svg';
+import { Button } from '@/components/ui/Button';
 import Header from '@/components/shared/Header';
 import Section from '@/components/shared/Section';
 import { useCategoriesStore } from '@/store/game/categories-store';
-import auth from '@react-native-firebase/auth'
 
 // Expanded Fall Guys inspired color palette
 const COLORS = {
@@ -93,8 +109,7 @@ export default function App() {
   const router = useRouter();
   const { games, selectGame } = useNewGameStore();
   const { selectedLanguage } = useLanguageStore();
-  const auth_user = auth().currentUser;
-console.log("User object:", auth_user);
+
   // Add state to toggle view mode
   const [isGridView, setIsGridView] = useState(false);
 
@@ -108,6 +123,12 @@ console.log("User object:", auth_user);
     return DIFFICULTY_COLORS[difficulty] || DIFFICULTY_COLORS.beginner;
   };
 
+  const { dailyGoal, dailyProgress } = useProgressStore();
+
+  // Filter games based on selected language
+  const appGames = games?.filter((game) =>
+    game.languageId?.includes(selectedLanguage?.id || ''),
+  );
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // biome-ignore lint/complexity/useOptionalChain: <explanation>
@@ -252,10 +273,11 @@ console.log("User object:", auth_user);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 40,
+    
   },
   gradient: {
     flex: 1,
+    
   },
 
     scrollContent: {

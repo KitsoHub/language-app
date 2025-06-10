@@ -17,8 +17,7 @@
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.tswalingo",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "bundleIdentifier": "com.anonymous.tswalingo"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,8 +30,7 @@
         "android.permission.MODIFY_AUDIO_SETTINGS",
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS"
-      ],
-      "googleServicesFile": "./google-services.json"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -50,9 +48,7 @@
         "ios": {
           "useFrameworks": "static"
         }
-      }],
-      "@react-native-firebase/app",
-			"@react-native-firebase/auth"
+      }]
 
     ],
     "experiments": {
