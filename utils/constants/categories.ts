@@ -5,6 +5,7 @@ import { multipleChoiceChallenges } from "@/mocks/challenges/multi-choice-challe
 import { sentenceBuilderChallenges } from "@/mocks/challenges/sentence-builder-challenge";
 import { familyChallenges } from "@/mocks/challenges/family-challenge";
 import { fillBlankChallenges } from "@/mocks/challenges/fill-blank-challenge";
+import { numberLesson } from "@/mocks/challenges/lesson-numbers";
 
 
 
@@ -13,7 +14,7 @@ export interface LessonGame {
   title: string;
   description: string;
   icon: string;
-  type: 'word-matching' | 'multiple-choice' | 'fill-blank' | 'sentence-builder' | 'family-matching';
+  type: 'word-matching' | 'multiple-choice' | 'fill-blank' | 'sentence-builder' | 'family-matching' | 'lesson-numbers';
   challenges: Challenge[];
   progress: number;
   isLocked: boolean;
@@ -76,17 +77,17 @@ export const lessonCategories: LessonCategory[] = [
     requiresSubscription: true,
     games: [
       {
-        id: 'fb-st',
-        title: 'Fill in the Blank',
-        description: 'Complete sentences with the correct numbers.',
+        id: 'nl-st',
+        title: 'Learn Numbers',
+        description: 'Complete the lesson',
         icon: '📝',
-        type: 'fill-blank',
-        challenges: fillBlankChallenges.filter(
+        type: 'lesson-numbers',
+        challenges: numberLesson.filter(
           (challenge) => challenge.languageId === 'st' && !challenge.isLocked
         ),
         progress: 0,
-        isLocked: true,
-        requiresSubscription: true,
+        isLocked: false,
+        requiresSubscription: false,
       }
     ]
   },

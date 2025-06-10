@@ -121,8 +121,8 @@ export type SubscriptionPlanType = {
 
 export interface Challenge {
     id: number | string;
-    type: "word-matching" |"multiple-choice"| 'fill-blank'| 'sentence-builder'| 'family-matching';
-    instruction: string;
+    type: "word-matching" |"multiple-choice"| 'fill-blank'| 'sentence-builder'| 'family-matching'|'lesson-numbers';
+    instruction?: string;
     correctOrder?: string[];
     wordBank?: string[];
     options?: string[];
@@ -146,7 +146,7 @@ export interface Challenge {
     challenges: Challenge[],
     gameBadge: string;
     gameIcon?: string;
-    type: 'word-matching' | 'multiple-choice' | 'listening' | 'speaking' | 'sentence-builder'| 'fill-blank'| 'family-matching';
+    type: 'word-matching' | 'multiple-choice' | 'listening' | 'speaking' | 'sentence-builder'| 'fill-blank'| 'family-matching'|'lesson-numbers';
     languageId?: string;
   }
 

@@ -8,6 +8,7 @@ import { fillBlankChallenges } from '@/mocks/challenges/fill-blank-challenge';
 import { sentenceBuilderChallenges } from '@/mocks/challenges/sentence-builder-challenge';
 import { useAuthStore } from '../auth-store';
 import { familyChallenges } from '@/mocks/challenges/family-challenge';
+import { numberLesson } from '@/mocks/challenges/lesson-numbers';
 
 interface NewGameState {
   games: Game[];
@@ -111,6 +112,20 @@ export const useNewGameStore = create(
           gameIcon: '✅',
           type: 'family-matching',
         },
+        // numbers
+             {
+                id: 'nl-st',
+                title: 'Learn Numbers',
+                description: 'Complete the lesson',
+languageId: 'st',
+                challenges: numberLesson.filter(
+                  (challenge) => challenge.languageId === 'st' && !challenge.isLocked
+                ),
+ gameBadge: 'Beginner',
+                      gameIcon: '📝',
+          type: 'lesson-numbers',
+              } ,
+
         // sekgalagari
         {
           id: 'word-matching-kr',
