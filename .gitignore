@@ -52,5 +52,6 @@ package-lock.json
 bun.lock
 bun.lockb
 
-# google-services.json
-# android/app/google-services.json
+google-services.json
+GoogleService-Info.plist
+android/app/google-services.json

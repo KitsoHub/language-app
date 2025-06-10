@@ -14,7 +14,7 @@ interface AuthState {
   //actions
   logout: () => void;
   clearError: () => void;
-  login: (email: string, password: string) => Promise<void>;
+  login: (username:string,email: string, password: string) => Promise<void>;
   // register: (userData: Partial<User>, password: string) => Promise<void>;
   updateUser: (userData: Partial<User>) => void;
   // setSelectedRole: (role: UserRole | null) => void;
@@ -34,16 +34,23 @@ export const useAuthStore = create(
       isLoading: false,
       error: null,
       isSubscribed: false,
-      login: async (email, password) => {
+      login: async (usernname, email, password) => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         try {
           if (email && password) {
-            //set mock
+
+
+            await auth().createUserWithEmailAndPassword(email, password);
+            await auth().signInWithEmailAndPassword(email, password);
+            const userCredential = auth().currentUser;
+            //set default user
+
+            // update user details
+
             const mockUser: User = {
-              id: '1',
-              name: 'Paul Doe',
+              id: userCredential?.uid || `mock-id-${Date.now()}-email-${email}`,
+              name: usernname,
               email,
-              currentLanguage: 'st',
               streak: 1,
               xp: 0,
               level: 1,
@@ -54,10 +61,12 @@ export const useAuthStore = create(
               sentenceBuilderCompleted: 0,
               fillBlankCompleted: 0,
               multipleChoiceCompleted: 0,
+              familyMatchingCompleted: 0,
             };
 
-            await auth().createUserWithEmailAndPassword(email, password);
-            await auth().signInWithEmailAndPassword(email, password);
+
+
+          // get user details
 
             set({ user: mockUser, isAuthenticated: true, isLoading: false });
           } else {
@@ -73,6 +82,7 @@ export const useAuthStore = create(
         }
       },
       logout: () => {
+        // auth().signOut();
         set({ user: null, isAuthenticated: false });
       },
       updateUser: (userData) => {
@@ -135,6 +145,6 @@ export const useAuthStore = create(
           };
         }),
     }),
-    { name: 'auth-storage-a3', storage: createJSONStorage(() => AsyncStorage) },
+    { name: 'auth-storage-a5', storage: createJSONStorage(() => AsyncStorage) },
   ),
 );

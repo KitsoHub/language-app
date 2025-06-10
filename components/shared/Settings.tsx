@@ -15,8 +15,8 @@ import {
 import React, { useState } from "react";
 import type Feather from "@expo/vector-icons/build/Feather";
 import { colors, COLORS } from "@/utils/constants/colors";
-import { useAuthStore } from "@/store/auth-store"; // Import the auth store
-import { Redirect, useRouter } from "expo-router"; // Import the router
+import { useAuthStore } from "@/store/auth-store";
+import { Redirect, useRouter } from "expo-router";
 import Avatar from "./Avatar";
 import { Button } from "@/components/ui/Button";
 import {
@@ -44,6 +44,7 @@ import { FONT_SIZES, MARGIN, PADDING } from "@/utils/constants";
 import { ROUTES } from "@/utils/constants/routes";
 import { useHapticStore } from "@/store/haptic-store";
 import { useHaptics } from "@/utils/hooks/useHaptics";
+import auth from '@react-native-firebase/auth';
 
 interface ProfileProps {
 	name: string;
