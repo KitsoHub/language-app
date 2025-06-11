@@ -502,7 +502,7 @@ languageId: 'st',
 
     {
 
-      name: 'new-game-storage-a24',
+      name: 'new-game-storage-a25',
       version: 1,
       storage: createJSONStorage(() => AsyncStorage),
     },

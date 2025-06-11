@@ -34,6 +34,7 @@ import { useHaptics } from '@/utils/hooks/useHaptics';
 import { useCategoriesStore } from '@/store/game/categories-store';
 import AnswerModal from '@/components/modals/AnswerModal';
 import AchivementDetailsModal from '@/components/modals/AchivementDetailsModal';
+import LessonNumbersGame from '@/components/games/LessonNumbers';
 
 export default function GamePage() {
   const router = useRouter();
@@ -242,6 +243,12 @@ export default function GamePage() {
           {/* Family matching */}
           {currentChallenge.type === 'family-matching' && (
             <FamilyMatchingGame challenge={currentChallenge} />
+          )}
+
+          {/* lessons */}
+
+          {currentChallenge.type === 'lesson-numbers' && (
+            <LessonNumbersGame challenge={currentChallenge} />
           )}
 
           <View style={styles.buttonContainer}>
