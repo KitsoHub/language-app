@@ -65,6 +65,7 @@ export default function GamePage() {
   );
 
   const gameInCategory = categoryWithGame?.games.find(
+
     (game) => game.id === currentGame?.id,
   );
 
@@ -115,13 +116,11 @@ export default function GamePage() {
     setTimeout(() => {
       setShowCompletionModal(false);
       router.back();
-      // resetGame();
     }, 400);
   };
   const handleCloseCompletedModal = () => {
     setShowCompletionModal(false);
-    router.back();
-    // resetGame();
+    router.navigate(ROUTES.HOME);
   };
   const handleWordCheck = () => {
     setShowCheck(true);
@@ -140,7 +139,6 @@ export default function GamePage() {
       setTimeout(() => {
         if (wordCheckResult) {
           setShowCheck(false);
-
           if (isGameCompleted()) {
             setShowCompletionModal(true);
           } else {
@@ -154,6 +152,26 @@ export default function GamePage() {
     }
   };
 
+
+  const handleLessonNext = () => {
+    setShowCheck(true);
+    const wordCheckResult = checkAnswer();
+   setTimeout(() => {
+        if (wordCheckResult) {
+          setShowCheck(false);
+
+          if (isGameCompleted()) {
+            setShowCompletionModal(true);
+          } else {
+            nextChallenge();
+          }
+        } else {
+          setShowCheck(false);
+        }
+      }, 2000);
+  }
+
+
   if (!currentGame || !currentChallenge) {
     return (
       <EmptyState
@@ -166,6 +184,11 @@ export default function GamePage() {
       />
     );
   }
+
+  // validations
+  const isLessonChallenge =
+  typeof currentChallenge.type === 'string' &&
+  currentChallenge.type.toLowerCase().includes('lesson');
 
   const { play } = useAudioPlayer();
 
@@ -252,7 +275,20 @@ export default function GamePage() {
           )}
 
           <View style={styles.buttonContainer}>
-            {currentChallenge.type !== 'family-matching' && (
+
+
+            {isLessonChallenge ? (
+
+                     <Button
+              title="Next"
+              onPress={handleWordCheck}
+              style={styles.checkButton}
+            />
+            ):
+            (
+              <>
+
+                {currentChallenge.type !== 'family-matching' && (
               <Button
                 title="Reset"
                 onPress={handleResetLevel}
@@ -260,12 +296,18 @@ export default function GamePage() {
                 style={styles.resetButton}
               />
             )}
-            <Button
+                      <Button
               title="Check"
               onPress={handleWordCheck}
               disabled={showCheck}
               style={styles.checkButton}
             />
+              </>
+            )
+
+            }
+
+
           </View>
         </View>
 
@@ -354,6 +396,10 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   checkButton: {
+    flex: 2,
+    marginLeft: 8,
+  },
+    nextButton: {
     flex: 2,
     marginLeft: 8,
   },

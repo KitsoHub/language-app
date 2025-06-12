@@ -17,6 +17,7 @@ export interface User{
     fillBlankCompleted?: number;
     multipleChoiceCompleted?: number;
     sentenceBuilderCompleted?: number;
+    lessonNumbersCompleted?: number;
 }
 
 export interface Language{

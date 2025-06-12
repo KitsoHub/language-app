@@ -1,7 +1,6 @@
-import { Challenge } from "@/types";
-import { Dumela } from "@/utils/audio";
-import { Number1,Number2 } from "@/utils/images";
-
+import { Challenge } from '@/types';
+import { Dumela } from '@/utils/audio';
+import { Number1, Number2, Number3 } from '@/utils/images';
 
 export const numberLesson: Challenge[] = [
   {
@@ -9,24 +8,42 @@ export const numberLesson: Challenge[] = [
     type: 'lesson-numbers',
     image: Number1,
     languageId: 'st',
+    instruction: 'Listen',
     isLocked: false,
+    correctAnswer: 'Ngwe',
     points: 5,
     difficulty: 'easy',
     translationOption: Dumela,
+    hint: 'Means One',
   },
   {
     id: 'nl-2',
     type: 'lesson-numbers',
     image: Number2,
     languageId: 'st',
+    instruction: 'Listen',
+    correctAnswer: 'Pedi',
     isLocked: false,
     points: 5,
     difficulty: 'easy',
     translationOption: Dumela,
-
+    hint: 'Means Two',
+  },
+  {
+    id: 'nl-3',
+    type: 'lesson-numbers',
+    image: Number3,
+    languageId: 'st',
+    instruction: 'Listen',
+    correctAnswer: 'Tharo',
+    isLocked: false,
+    points: 5,
+    difficulty: 'easy',
+    translationOption: Dumela,
+    hint: 'Means Three',
   },
   //   {
-  //   id: 'nl-3',
+  //   id: 'nl-4',
   //   type: 'lesson-numbers',
   //   instruction: "Choose",
   //   options: ['Mama', 'Mme', 'Mosetsana', 'Rre'],
@@ -39,6 +56,4 @@ export const numberLesson: Challenge[] = [
   //   translationOption: Dumela,
   //   hint: "Means Daughter",
   // },
-
-
-]
+];

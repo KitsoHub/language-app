@@ -11,6 +11,9 @@ import { Challenge } from '@/types';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
+  withSequence,
+  withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 import { Pressable } from 'react-native';
 import { useNewGameStore } from '@/store/game/new-game-store';
@@ -19,6 +22,7 @@ import { FONT_SIZES, FONT_WEIGHTS } from '@/utils/constants/typography';
 import { BORDER_RADIUS } from '@/utils/constants/layout';
 import { Check, HelpCircle } from 'lucide-react-native';
 import { useHaptics } from '@/utils/hooks/useHaptics';
+import { useAudioPlayer } from '@/utils/hooks/useAudioPlayer';
 
 type LessonNumbersProps = {
   challenge: Challenge;
@@ -26,40 +30,38 @@ type LessonNumbersProps = {
 
 const { width } = Dimensions.get('window');
 export default function LessonNumbersGame({ challenge }: LessonNumbersProps) {
-
-
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-    const [showHint, setShowHint] = useState(false);
+  const [showHint, setShowHint] = useState(false);
   const { triggerHaptic } = useHaptics();
+  const { play } = useAudioPlayer();
 
+  const scale = useSharedValue(1);
 
-      const scale = useSharedValue(1);
+  const animatedStyleImage = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+    };
+  });
 
-    const animatedStyle = useAnimatedStyle(() => {
-      if (Platform.OS === 'web') {
-        return {};
-      }
+  const animatedStyle = useAnimatedStyle(() => {
+    if (Platform.OS === 'web') {
+      return {};
+    }
 
-      return {
-        transform: [{ scale: scale.value }],
-      };
-    });
-      const handleToggleHint = () => {
+    return {
+      transform: [{ scale: scale.value }],
+    };
+  });
+  const handleToggleHint = () => {
     triggerHaptic('light');
     setShowHint(!showHint);
   };
-  const {
-
-    setSelectedChoice,
-
-  } = useNewGameStore();
+  const { setSelectedChoice } = useNewGameStore();
   const handleSelectOption = (option: string) => {
     setSelectedChoice(option);
     setSelectedOption(option);
-
   };
   const renderOptions = (option: string, index: number) => {
-
     const OptionComponent = Platform.OS === 'web' ? View : Animated.View;
 
     return (
@@ -96,25 +98,40 @@ export default function LessonNumbersGame({ challenge }: LessonNumbersProps) {
       </OptionComponent>
     );
   };
+  const handleImageSelect = () => {
+    triggerHaptic('light');
+
+    play(challenge.translationOption || '');
+  };
+  const handlePressIn = () => {
+    scale.value = withTiming(0.95, { duration: 100 });
+  };
+  const handlePressOut = () => {
+    scale.value = withSequence(
+      withTiming(1.05, { duration: 150 }),
+      withSpring(1, { damping: 12 }),
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image
-          source={
-            typeof challenge.image === 'string'
-              ? { uri: challenge.image }
-              : challenge.image
-          }
-          style={styles.familyImage}
-          resizeMode="contain"
-        />
-
-                <Pressable
-          style={styles.hintButton}
-          onPress={handleToggleHint}
+        <Pressable
+          onPress={handleImageSelect}
+          onPressIn={Platform.OS !== 'web' ? handlePressIn : undefined}
+          onPressOut={Platform.OS !== 'web' ? handlePressOut : undefined}
         >
-          <HelpCircle size={24} color={COLORS.white} />
+          <Animated.Image
+            source={
+              typeof challenge.image === 'string'
+                ? { uri: challenge.image }
+                : challenge.image
+            }
+            style={[styles.familyImage, animatedStyleImage]}
+            resizeMode="contain"
+          />
         </Pressable>
+
 
         {showHint && (
           <View style={styles.hintContainer}>
@@ -122,6 +139,14 @@ export default function LessonNumbersGame({ challenge }: LessonNumbersProps) {
           </View>
         )}
       </View>
+        <Text
+          style={[
+            challenge.correctAnswer && styles.correctText,
+            styles.correctTextDefault,
+          ]}
+        >
+          {challenge.correctAnswer}
+        </Text>
 
       <View style={styles.optionsGrid}>
         {challenge.options?.map((option, index) =>
@@ -134,15 +159,16 @@ export default function LessonNumbersGame({ challenge }: LessonNumbersProps) {
 
 const styles = StyleSheet.create({
   container: {
+    justifyContent: 'center',
+    alignItems: 'center',
     marginVertical: 16,
   },
   imageContainer: {
     position: 'relative',
     alignItems: 'center',
     marginBottom: 20,
-     borderRadius: BORDER_RADIUS.lg,
+    borderRadius: BORDER_RADIUS.lg,
     borderColor: COLORS.black,
-
   },
 
   familyImage: {
@@ -159,7 +185,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 4 },
-
   },
   optionsGrid: {
     flexDirection: 'row',
@@ -245,5 +270,19 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
+  },
+
+  correctText: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.text,
+  },
+  correctTextDefault: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.text,
+    padding: 8,
   },
 });

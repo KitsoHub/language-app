@@ -32,7 +32,7 @@ export const useCategoriesStore = create(
         }),
 
         {
-        name: 'categories-storage-a2',
+        name: 'categories-storage-a9',
         storage: createJSONStorage(() => AsyncStorage),
         })
 )

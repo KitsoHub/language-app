@@ -40,15 +40,15 @@ export const useAuthStore = create(
           if (email && password) {
 
 
-            await auth().createUserWithEmailAndPassword(email, password);
-            await auth().signInWithEmailAndPassword(email, password);
-            const userCredential = auth().currentUser;
+            // await auth().createUserWithEmailAndPassword(email, password);
+            // await auth().signInWithEmailAndPassword(email, password);
+            // const userCredential = auth().currentUser;
             //set default user
 
             // update user details
 
             const mockUser: User = {
-              id: userCredential?.uid || `mock-id-${Date.now()}-email-${email}`,
+              id: `mock-id-${Date.now()}-email-${email}`,
               name: usernname,
               email,
               streak: 1,

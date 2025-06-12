@@ -14,7 +14,7 @@ import { useAuthStore } from '@/store/auth-store';
 import { Stack, useRouter } from 'expo-router';
 import { useLanguageStore } from '@/store/language-store';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ROUTES } from '@/utils/constants/routes';
 import { useNewGameStore } from '@/store/game/new-game-store';
 import type { Game } from '@/types';
@@ -24,6 +24,7 @@ import Header from '@/components/shared/Header';
 import Section from '@/components/shared/Section';
 import { useCategoriesStore } from '@/store/game/categories-store';
 import auth from '@react-native-firebase/auth'
+import EmptyState from '@/components/shared/EmptyState';
 
 // Expanded Fall Guys inspired color palette
 const COLORS = {
@@ -93,9 +94,10 @@ export default function App() {
   const router = useRouter();
   const { games, selectGame } = useNewGameStore();
   const { selectedLanguage } = useLanguageStore();
-  const auth_user = auth().currentUser;
-console.log("User object:", auth_user);
-  // Add state to toggle view mode
+
+      const { appLanguages } = useLanguageStore();
+        const currentLanguage = appLanguages.find(lang => user?.currentLanguage === lang.id);
+
   const [isGridView, setIsGridView] = useState(false);
 
   const handleSelectGame = (gameId: string) => {
@@ -140,6 +142,9 @@ console.log("User object:", auth_user);
       { transform: [{ translateY: isGridView ? 0 : index % 2 === 0 ? 0 : 8 }] }, // disable offset in grid mode
       isGridView && styles.gridGameCard,
     ];
+
+
+
 
     return (
       <Pressable style={cardStyles} onPress={() => handleSelectGame(item.id)}>
@@ -218,13 +223,24 @@ console.log("User object:", auth_user);
 
  const { categories } = useCategoriesStore();
 
+      const filteredCategories = useMemo(() => {
+
+        const filtered = categories.filter(category =>
+    category.games.some(game => game.languageId === user?.currentLanguage)
+  );
+  return filtered
+      }, [user?.currentLanguage,categories]);
+
+  // const filteredCategories = categories.filter(category =>
+  //   category.games.some(game => game.languageId === user?.currentLanguage)
+  // );
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
       <Stack.Screen options={{ headerShown: false }} />
       <LinearGradient colors={['#E0F7FA', '#E8F5E9', '#FFF8E1']}>
         <ScrollView style={styles.scrollContent}>
-          {/* Header */}
           <Header />
 
 
@@ -234,11 +250,27 @@ console.log("User object:", auth_user);
             </View>
 
           </View>
-  {/* Section */}
 
-			          {categories.map((category) => (
-            <Section key={category.id} category={category} />
-          ))}
+			          {filteredCategories.length > 0?(
+
+                  filteredCategories.map((category) => (
+                   <Section key={category.id} category={category} />
+
+
+
+          ))
+        )
+          :
+
+        (
+
+      <EmptyState
+           title={`${currentLanguage?.name} Games`}
+           description="No Games available. Try another language."
+           animationSource={require('@/assets/lotties/empty_scroll.json')}
+         />
+        )
+        }
 
 		   <View style={{ height: 80}} />
 

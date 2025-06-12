@@ -1,24 +1,29 @@
-import { Challenge } from "@/types";
-import { COLORS } from "./colors";
-import { wordMatchingChallenges } from "@/mocks/challenges/word-matching-challenge";
-import { multipleChoiceChallenges } from "@/mocks/challenges/multi-choice-challenge";
-import { sentenceBuilderChallenges } from "@/mocks/challenges/sentence-builder-challenge";
-import { familyChallenges } from "@/mocks/challenges/family-challenge";
-import { fillBlankChallenges } from "@/mocks/challenges/fill-blank-challenge";
-import { numberLesson } from "@/mocks/challenges/lesson-numbers";
-
-
+import { Challenge } from '@/types';
+import { COLORS } from './colors';
+import { wordMatchingChallenges, wordMatchingChallengesKalanga } from '@/mocks/challenges/word-matching-challenge';
+import { multipleChoiceChallenges } from '@/mocks/challenges/multi-choice-challenge';
+import { sentenceBuilderChallenges } from '@/mocks/challenges/sentence-builder-challenge';
+import { familyChallenges } from '@/mocks/challenges/family-challenge';
+import { fillBlankChallenges } from '@/mocks/challenges/fill-blank-challenge';
+import { numberLesson } from '@/mocks/challenges/lesson-numbers';
 
 export interface LessonGame {
   id: string;
   title: string;
   description: string;
   icon: string;
-  type: 'word-matching' | 'multiple-choice' | 'fill-blank' | 'sentence-builder' | 'family-matching' | 'lesson-numbers';
+  type:
+    | 'word-matching'
+    | 'multiple-choice'
+    | 'fill-blank'
+    | 'sentence-builder'
+    | 'family-matching'
+    | 'lesson-numbers';
   challenges: Challenge[];
   progress: number;
   isLocked: boolean;
   requiresSubscription: boolean;
+  languageId?: string;
 }
 export interface LessonCategory {
   id: string;
@@ -31,7 +36,7 @@ export interface LessonCategory {
 }
 
 export const lessonCategories: LessonCategory[] = [
-    {
+  {
     id: 'greetings',
     title: 'Greetings',
     icon: '👋',
@@ -39,42 +44,57 @@ export const lessonCategories: LessonCategory[] = [
     isLocked: false,
     requiresSubscription: false,
     games: [
-              {
+      {
         id: 'wm-st',
         title: 'Word Matching',
         description: 'Arrange words in the correct order to form greetings.',
         icon: '🔤',
         type: 'word-matching',
         challenges: wordMatchingChallenges.filter(
-          (challenge) => challenge.languageId === 'st' && !challenge.isLocked
+          (challenge) => !challenge.isLocked,
         ),
         progress: 0,
         isLocked: false,
         requiresSubscription: false,
+        languageId: 'st',
       },
-            {
+      {
+        id: 'wm-kl',
+        title: 'Word Matching',
+        description: 'Arrange words in the correct order to form greetings.',
+        icon: '🔤',
+        type: 'word-matching',
+        challenges: wordMatchingChallengesKalanga.filter(
+          (challenge) => !challenge.isLocked,
+        ),
+        progress: 0,
+        isLocked: false,
+        requiresSubscription: false,
+        languageId: 'kl',
+      },
+      {
         id: 'mc-st',
         title: 'Multiple Choice',
         description: 'Choose the correct translation for each greeting.',
         icon: '✅',
         type: 'multiple-choice',
         challenges: multipleChoiceChallenges.filter(
-          (challenge) => challenge.languageId === 'st' && !challenge.isLocked
+          (challenge) => !challenge.isLocked,
         ),
         progress: 0,
         isLocked: false,
         requiresSubscription: false,
-      }
-    ]
-
-    },
-      {
+        languageId: 'kl',
+      },
+    ],
+  },
+  {
     id: 'numbers',
     title: 'Numbers',
     icon: '🔢',
     color: '#FFDE00', // Bright yellow
     isLocked: false,
-    requiresSubscription: true,
+    requiresSubscription: false,
     games: [
       {
         id: 'nl-st',
@@ -83,15 +103,16 @@ export const lessonCategories: LessonCategory[] = [
         icon: '📝',
         type: 'lesson-numbers',
         challenges: numberLesson.filter(
-          (challenge) => challenge.languageId === 'st' && !challenge.isLocked
+          (challenge) => !challenge.isLocked,
         ),
         progress: 0,
         isLocked: false,
         requiresSubscription: false,
-      }
-    ]
+        languageId: 'st',
+      },
+    ],
   },
-      {
+  {
     id: 'family',
     title: 'Family',
     icon: '👪',
@@ -102,15 +123,17 @@ export const lessonCategories: LessonCategory[] = [
       {
         id: 'fc-st',
         title: 'Family Matching',
-        description: 'Match family member images with their correct translations.',
+        description:
+          'Match family member images with their correct translations.',
         icon: '👪',
         type: 'family-matching',
         challenges: familyChallenges.filter(
-          (challenge) => challenge.languageId === 'st' && !challenge.isLocked
+          (challenge) => !challenge.isLocked,
         ),
         progress: 0,
         isLocked: false,
         requiresSubscription: false,
+        languageId: 'kl',
       },
       {
         id: 'sentence-builder',
@@ -119,12 +142,13 @@ export const lessonCategories: LessonCategory[] = [
         icon: '📚',
         type: 'sentence-builder',
         challenges: sentenceBuilderChallenges.filter(
-          (challenge) => challenge.languageId === 'st' && !challenge.isLocked
+          (challenge) => !challenge.isLocked,
         ),
         progress: 0,
         isLocked: true,
         requiresSubscription: true,
-      }
-    ]
+        languageId: 'st',
+      },
+    ],
   },
-]
+];

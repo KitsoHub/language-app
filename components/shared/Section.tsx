@@ -2,6 +2,10 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { LessonCategory, LessonGame } from '@/utils/constants/categories';
 import { COLORS } from '@/utils/constants/colors';
 import GameTile from './GameTile';
+import { useLanguageStore } from '@/store/language-store';
+import { useMemo } from 'react';
+import { useAuthStore } from '@/store/auth-store';
+import EmptyState from './EmptyState';
 
 
 interface SectionProps {
@@ -9,10 +13,34 @@ interface SectionProps {
 }
 export default function Section({category}: SectionProps) {
 
+  const user = useAuthStore(state=> state.user);
+  // console.log("Language selected:", user?.currentLanguage);
+
     const handleSelectGame = (game: LessonGame) => {
     if (game.isLocked || category.isLocked) {
         return};
   };
+
+  // const filteredGames = useMemo(()=>
+  // category.games.filter(game => game.languageId === user?.currentLanguage), [category.games, user?.currentLanguage]);
+  const filteredGames = useMemo(() => {
+    // Debug logging
+    //console.log("All games:", category.games);
+    // console.log("User current language:", user?.currentLanguage);
+    //     console.log("All challenges or lesson ID:", category.games.map(g => g.challenges.filter(c=> c.id === user?.currentLanguage).length));
+    //     console.log("Filtered Challenges:", category.games.map(g => g.challenges.filter(c=> c.id === user?.currentLanguage).length));
+
+
+
+    const filtered = category.games.filter(game => {
+      //  console.log(`Game ${game.id}: languageId=${game.languageId}, matches=${game.languageId === user?.currentLanguage}`);
+      return game.languageId === user?.currentLanguage;
+    });
+
+    // console.log("Filtered games count:", filtered.length);
+    return filtered;
+  }, [category.games, user?.currentLanguage]);
+
 
 
   return (
@@ -28,7 +56,7 @@ export default function Section({category}: SectionProps) {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.tilesContainer}
       >
-        {category.games.map((game) => (
+        {filteredGames && filteredGames.map((game) => (
           <GameTile
             key={game.id}
             game={game}

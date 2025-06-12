@@ -76,6 +76,7 @@ export default function SignInScreen() {
         let demoEmail = '';
         demoEmail = "testuser@example.com"
         triggerHaptic('success')
+        setUsername("Tswa Lingo")
         setEmail(demoEmail);
         setPassword('password');
     }
