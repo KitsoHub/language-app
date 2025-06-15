@@ -1,4 +1,5 @@
 import { ScrollView, StyleSheet, View, Modal, Text } from 'react-native';
+
 import { useAuthStore } from '@/store/auth-store'; // Import the auth store
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -56,8 +57,7 @@ export default function ProfilePage() {
           streak={user?.streak || 0}
           level={user?.level || 1}
           icon="user"
-          onPress={handleProfileEdit}
-          // onPress={() => setModalVisible(true)}
+          onPress={handleProfileEdit} avatar={''}          // onPress={() => setModalVisible(true)}
         />
         <Text style={styles.sectionTitle}>Achievements</Text>
 

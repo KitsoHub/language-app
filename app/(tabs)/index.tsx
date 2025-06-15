@@ -29,13 +29,8 @@ import {
 import { useAuthStore } from '@/store/auth-store';
 import { Stack, useRouter } from 'expo-router';
 import { useLanguageStore } from '@/store/language-store';
-<<<<<<< HEAD
-import { useProgressStore } from '@/store/progress-store';
-import { useEffect, useState } from 'react';
-=======
 
 import { useEffect, useMemo, useState } from 'react';
->>>>>>> 334e32d587ce41d084647f7ec15074671e804b72
 import { ROUTES } from '@/utils/constants/routes';
 import { useNewGameStore } from '@/store/game/new-game-store';
 import type { Game } from '@/types';
@@ -45,11 +40,8 @@ import { Button } from '@/components/ui/Button';
 import Header from '@/components/shared/Header';
 import Section from '@/components/shared/Section';
 import { useCategoriesStore } from '@/store/game/categories-store';
-<<<<<<< HEAD
-=======
-import auth from '@react-native-firebase/auth'
+
 import EmptyState from '@/components/shared/EmptyState';
->>>>>>> 334e32d587ce41d084647f7ec15074671e804b72
 
 // Expanded Fall Guys inspired color palette
 const COLORS = {
@@ -120,13 +112,9 @@ export default function App() {
   const { games, selectGame } = useNewGameStore();
   const { selectedLanguage } = useLanguageStore();
 
-<<<<<<< HEAD
-  // Add state to toggle view mode
-=======
       const { appLanguages } = useLanguageStore();
         const currentLanguage = appLanguages.find(lang => user?.currentLanguage === lang.id);
 
->>>>>>> 334e32d587ce41d084647f7ec15074671e804b72
   const [isGridView, setIsGridView] = useState(false);
 
   const handleSelectGame = (gameId: string) => {
@@ -139,7 +127,6 @@ export default function App() {
     return DIFFICULTY_COLORS[difficulty] || DIFFICULTY_COLORS.beginner;
   };
 
-  const { dailyGoal, dailyProgress } = useProgressStore();
 
   // Filter games based on selected language
   const appGames = games?.filter((game) =>

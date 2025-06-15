@@ -49,7 +49,7 @@ export const useAuthStore = create(
 
             const mockUser: User = {
               id: `mock-id-${Date.now()}-email-${email}`,
-              name: usernname,
+              name: username,
               email,
               currentLanguage: 'st',
               streak: 1,

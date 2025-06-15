@@ -32,6 +32,11 @@ export default function SignInScreen() {
         const newErrors = { username: '', email: '', password: '' };
 
         
+        if (!username) {
+            newErrors.username = 'Username is required';
+            isValid = false;
+        }
+
         if (!email) {
             newErrors.email = 'Email is required';
             isValid = false;
@@ -53,33 +58,44 @@ export default function SignInScreen() {
     };
 
 
-    const handleSignIn = async () => {
-        // validate form
-       setLoading(true)
-       try{
-        triggerHaptic('success');
-        await login(email,password);
-        router.replace(ROUTES.TABS)
-       }
-       catch (error: any) {Alert.alert('sign in failed',error.message)
+   const handleSignIn = async () => {
+    setLoading(true);
+    try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+        if (error) {
+            Alert.alert('Sign in failed', error.message);
+        } else {
+            triggerHaptic('success');
+            router.replace(ROUTES.TABS);
+        }
+    } catch (error: any) {
+        Alert.alert('Sign in failed', error.message);
+    } finally {
+        setLoading(false);
+    }
+};
 
-       }
-  
+const handleSignUp = async () => {
+    setLoading(true);
+    try {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+        });
+        if (error) {
+            Alert.alert('Sign up failed', error.message);
+        } else {
+            Alert.alert('Check your inbox for email verification!');
+        }
+    } catch (error: any) {
+        Alert.alert('Sign up failed', error.message);
+    } finally {
+        setLoading(false);
     }
-    async function handleSignUp() {
-        setLoading(true)
-        const{
-            data: {session},
-            error,
-        } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-        })
-        if (error) Alert.alert(error.message)
-            if(!session) Alert.alert('please check your inbox for email verfication!')
-                setLoading(false)
-        
-    }
+};
 
 
     // TODO: Remove on production branch
@@ -112,40 +128,49 @@ export default function SignInScreen() {
                     </View>
 
                     <View style={styles.form}>
-           
-            <Input
-              label="Email Address"
-              placeholder="Enter your email address"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              leftIcon={<Mail size={20} color={COLORS.gray500} />}
-              value={email}
-              onChangeText={setEmail}
-              error={errors.email}
-            />
+                        <Input
+                            label="Username"
+                            placeholder="Enter your username"
+                            autoCapitalize="none"
+                            leftIcon={<User size={20} color={COLORS.gray500} />}
+                            value={username}
+                            onChangeText={setUsername}
+                            error={errors.username}
+                        />
 
-            <Input
-              label="Password"
-              placeholder="Enter your password"
-              secureTextEntry
-              leftIcon={<Lock size={20} color={COLORS.gray500} />}
-              value={password}
-              onChangeText={setPassword}
-              error={errors.password}
-            />
+                        <Input
+                            label="Email Address"
+                            placeholder="Enter your email address"
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            leftIcon={<Mail size={20} color={COLORS.gray500} />}
+                            value={email}
+                            onChangeText={setEmail}
+                            error={errors.email}
+                        />
 
-            <TouchableOpacity style={styles.forgotPassword}>
-              <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-            </TouchableOpacity>
+                        <Input
+                            label="Password"
+                            placeholder="Enter your password"
+                            secureTextEntry
+                            leftIcon={<Lock size={20} color={COLORS.gray500} />}
+                            value={password}
+                            onChangeText={setPassword}
+                            error={errors.password}
+                        />
 
-            {/* sign in */}
-            <Button
-              title="Sign In"
-              onPress={handleSignIn}
-              isLoading={isLoading}
-              style={styles.signInButton}
-            />
-          </View>
+                        <TouchableOpacity style={styles.forgotPassword}>
+                            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+                        </TouchableOpacity>
+
+                        {/* sign in */}
+                        <Button
+                            title="Sign In"
+                            onPress={handleSignIn}
+                            isLoading={isLoading}
+                            style={styles.signInButton}
+                        />
+                    </View>
 
           {/* sign up */}
 
