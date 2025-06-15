@@ -107,3 +107,20 @@ export const wordMatchingChallenges: Challenge[] = [
     difficulty: 'hard'
   },
 ];
+
+
+export const wordMatchingChallengesKalanga: Challenge[] = [
+
+  {
+    id: 'wm-5',
+    type: 'word-matching',
+    instruction: "Form the greeting 'dumilani'",
+    correctOrder: ['du', 'mi', 'la', 'ni'],
+    wordBank: ['mi', 'du', 'la', 'ni'],
+    languageId: 'kl',
+    isLocked: false,
+    points: 10,
+    difficulty: 'easy'
+  },
+
+];

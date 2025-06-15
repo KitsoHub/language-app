@@ -83,14 +83,15 @@ export default function SignInScreen() {
 
 
     // TODO: Remove on production branch
-    // const handleDemoLogin = () =>{
-    //     console.log(" >> Activating Demo ACC >> ")
-    //     let demoEmail = '';
-    //     demoEmail = "testuser@example.com"
-    //     triggerHaptic('success')
-    //     setEmail(demoEmail);
-    //     setPassword('password');
-    // }
+    const handleDemoLogin = () =>{
+        console.log(" >> Activating Demo ACC >> ")
+        let demoEmail = '';
+        demoEmail = "testuser@example.com"
+        triggerHaptic('success')
+        setUsername("Tswa Lingo")
+        setEmail(demoEmail);
+        setPassword('password');
+    }
     return (
         <SafeAreaView style={styles.container}>
             <Stack.Screen options={{ headerShown: false }} />
@@ -166,7 +167,7 @@ export default function SignInScreen() {
               </TouchableOpacity>
 
               {/* TODO: Remove on production */}
-              <TouchableOpacity style={styles.socialButton} >
+              <TouchableOpacity style={styles.socialButton} onPress={handleDemoLogin}>
                 <Text style={styles.demoButtonText}>Demo</Text>
               </TouchableOpacity>
             </View>

@@ -38,10 +38,18 @@ export const useAuthStore = create(
         await new Promise((resolve) => setTimeout(resolve, 1000));
         try {
           if (email && password) {
-            //set mock
+
+
+            // await auth().createUserWithEmailAndPassword(email, password);
+            // await auth().signInWithEmailAndPassword(email, password);
+            // const userCredential = auth().currentUser;
+            //set default user
+
+            // update user details
+
             const mockUser: User = {
-              id: '1',
-              name: 'Paul Doe',
+              id: `mock-id-${Date.now()}-email-${email}`,
+              name: usernname,
               email,
               currentLanguage: 'st',
               streak: 1,

@@ -3,11 +3,12 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { Challenge, Game } from '@/types';
 import { multipleChoiceChallenges } from '@/mocks/challenges/multi-choice-challenge';
-import { wordMatchingChallenges } from '@/mocks/challenges/word-matching-challenge';
+import { wordMatchingChallenges, wordMatchingChallengesKalanga } from '@/mocks/challenges/word-matching-challenge';
 import { fillBlankChallenges } from '@/mocks/challenges/fill-blank-challenge';
 import { sentenceBuilderChallenges } from '@/mocks/challenges/sentence-builder-challenge';
 import { useAuthStore } from '../auth-store';
 import { familyChallenges } from '@/mocks/challenges/family-challenge';
+import { numberLesson } from '@/mocks/challenges/lesson-numbers';
 
 interface NewGameState {
   games: Game[];
@@ -57,12 +58,13 @@ export const useNewGameStore = create(
           gameIcon: '🔤',
           type: 'word-matching',
         },
+
         {
           id: 'mc-st',
           title: 'Multiple Choice',
           description:
             'Choose the correct translation for each word or phrase.',
-          languageId: 'st',
+          languageId: 'kl',
           challenges: multipleChoiceChallenges.filter(
             (challenge) =>
               challenge.languageId === 'st' && challenge.isLocked === false,
@@ -100,9 +102,8 @@ export const useNewGameStore = create(
         {
           id: 'fc-st',
           title: 'Family',
-          description:
-            'Choose the correct translation for each image.',
-          languageId: 'st',
+          description: 'Choose the correct translation for each image.',
+          languageId: 'kl',
           challenges: familyChallenges.filter(
             (challenge) =>
               challenge.languageId === 'st' && challenge.isLocked === false,
@@ -111,6 +112,20 @@ export const useNewGameStore = create(
           gameIcon: '✅',
           type: 'family-matching',
         },
+        // numbers
+        {
+          id: 'nl-st',
+          title: 'Learn Numbers',
+          description: 'Complete the lesson',
+          languageId: 'st',
+          challenges: numberLesson.filter(
+            (challenge) => challenge.languageId === 'st' && !challenge.isLocked,
+          ),
+          gameBadge: 'Beginner',
+          gameIcon: '📝',
+          type: 'lesson-numbers',
+        },
+
         // sekgalagari
         {
           id: 'word-matching-kr',
@@ -164,6 +179,20 @@ export const useNewGameStore = create(
           gameBadge: 'Hard',
           gameIcon: '📚',
           type: 'sentence-builder',
+        },
+
+        // kalanga
+        {
+          id: 'wm-kl',
+          title: 'Word Matching',
+          description: 'Arrange words in the correct order to form phrases.',
+          languageId: 'kl',
+          challenges: wordMatchingChallengesKalanga.filter(
+            (challenge) => challenge.isLocked === false,
+          ),
+          gameBadge: 'Beginner',
+          gameIcon: '🔤',
+          type: 'word-matching',
         },
       ],
       currentGameId: null,
@@ -285,6 +314,24 @@ export const useNewGameStore = create(
             authStore.addXp(currentChallenge.points || 10);
 
             get().submitAnswer(currentChallenge.id, arrangedWords);
+            get().updateAchievements(currentGame.type);
+          }
+          return isCorrect;
+        }
+
+              // current lesson-numbers
+        if (currentGame?.type === 'lesson-numbers') {
+
+          const isCorrect = true
+
+          set({ isCorrect, showFeedback: false });
+
+          if (isCorrect) {
+            const authStore = useAuthStore.getState();
+            if (!authStore.user) return false;
+
+            authStore.addCompletedChallenge(currentChallenge.id);
+            authStore.addXp(currentChallenge.points || 10);
             get().updateAchievements(currentGame.type);
           }
           return isCorrect;
@@ -423,14 +470,22 @@ export const useNewGameStore = create(
 
             break;
           }
-            case 'family-matching': {
+          case 'family-matching': {
             const count = user.familyMatchingCompleted || 0;
             authStore.updateUser({
               familyMatchingCompleted: count + 1,
             });
+break;
+          }
+
+          case 'lesson-numbers': {
+            const count = user.lessonNumbersCompleted || 0;
+            authStore.updateUser({
+              lessonNumbersCompleted: count + 1,
+            });
 
             break;
-            }
+          }
           default:
             break;
         }
@@ -486,8 +541,7 @@ export const useNewGameStore = create(
     }),
 
     {
-
-      name: 'new-game-storage-a25',
+      name: 'new-game-storage-a33',
       version: 1,
       storage: createJSONStorage(() => AsyncStorage),
     },
