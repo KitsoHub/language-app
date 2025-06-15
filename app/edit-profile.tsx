@@ -26,28 +26,15 @@ export default function EditProfile() {
     useEffect(() => {
         // Load user from Supabase session
         const loadUser = async () => {
-    const { data, error: sessionError } = await supabase.auth.getSession();
-    const sessionUser = data?.session?.user;
-
-    if (sessionUser) {
-        const { data: profile, error: profileError } = await supabase
-            .from('profiles')
-            .select('username, avatar_url')
-            .eq('id', sessionUser.id)
-            .single();
-
-        if (profileError) {
-            Alert.alert('Error loading profile', profileError.message);
-        } else {
-            setName(profile?.username || '');
-            setEmail(sessionUser.email || '');
-            setAvatar(profile?.avatar_url || '');
-        }
-    } else if (sessionError) {
-        Alert.alert('Error fetching session', sessionError.message);
-    }
-};
-
+            const { data } = await supabase.auth.getSession();
+            const sessionUser = data?.session?.user;
+            if (sessionUser) {
+                setName(sessionUser.user_metadata?.name || sessionUser.email || '');
+                setEmail(sessionUser.email || '');
+                setAvatar(sessionUser.user_metadata?.avatar || '');
+            }
+        };
+        loadUser();
     }, []);
 
     const validateForm = () => {
@@ -88,37 +75,27 @@ export default function EditProfile() {
         }
     }
 
-   const handleSave = async () => {
-    if (!validateForm()) return;
-    setIsLoading(true);
-    try {
-        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-        const user = sessionData?.session?.user;
-        if (!user) throw new Error('No session found');
-
-        const updates = {
-            id: user.id,
-            username: name,
-            website: '', // or keep if you're not using it
-            avatar_url: avatar,
-            updated_at: new Date(),
-        };
-
-        const { error } = await supabase.from('profiles').upsert(updates);
-        if (error) {
-            Alert.alert('Update failed', error.message);
-        } else {
-            updateUser({ name, email, avatar });
-            Alert.alert('Profile updated!');
-            router.back();
+    const handleSave = async () => {
+        if (!validateForm()) return;
+        setIsLoading(true);
+        try {
+            // Update Supabase user metadata
+            const { error } = await supabase.auth.updateUser({
+                data: { name, avatar }
+            });
+            if (error) {
+                Alert.alert('Update failed', error.message);
+            } else {
+                updateUser({ name, email, avatar });
+                Alert.alert('Profile updated!');
+                router.back();
+            }
+        } catch (error) {
+            Alert.alert('Update failed', error instanceof Error ? error.message : 'Unknown error');
+        } finally {
+            setIsLoading(false);
         }
-    } catch (error) {
-        Alert.alert('Update failed', error instanceof Error ? error.message : 'Unknown error');
-    } finally {
-        setIsLoading(false);
     }
-};
-
 
     const handleAvatarPicker = async (image: string) => {
         setAvatar(image)
