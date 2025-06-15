@@ -3,12 +3,22 @@ import { useAuthStore } from "@/store/auth-store";
 import { colors, COLORS } from "@/utils/constants/colors";
 import { ROUTES } from "@/utils/constants/routes";
 import { Stack, useRouter } from "expo-router";
-import { useState } from "react";
-import { Alert, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity, } from "react-native";
+import React, { useState } from "react";
+import { Alert, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity, AppState, } from "react-native";
 import { Mail, Lock, ArrowRight, User } from 'lucide-react-native';
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useHaptics } from "@/utils/hooks/useHaptics";
+import { supabase } from "@/utils/supabase";
+
+
+AppState.addEventListener('change', (state) => {
+  if (state === 'active') {
+    supabase.auth.startAutoRefresh()
+  } else {
+    supabase.auth.stopAutoRefresh()
+  }
+})
 
 export default function SignInScreen() {
     const router = useRouter();
@@ -55,28 +65,52 @@ export default function SignInScreen() {
 
 
     const handleSignIn = async () => {
-        // validate form
-        if (!validateForm()) {
-            triggerHaptic('error');
-            return};
-        try {
-             triggerHaptic('success');
-            await login(username, email, password);
-            router.replace(ROUTES.TABS)
-        } catch (error: any) {
-            Alert.alert('Sign in failed...', error.message)
-
+    setLoading(true);
+    try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+        if (error) {
+            Alert.alert('Sign in failed', error.message);
+        } else {
+            triggerHaptic('success');
+            router.replace(ROUTES.TABS);
         }
+    } catch (error: any) {
+        Alert.alert('Sign in failed', error.message);
+    } finally {
+        setLoading(false);
     }
+};
+
+const handleSignUp = async () => {
+    setLoading(true);
+    try {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+        });
+        if (error) {
+            Alert.alert('Sign up failed', error.message);
+        } else {
+            Alert.alert('Check your inbox for email verification!');
+        }
+    } catch (error: any) {
+        Alert.alert('Sign up failed', error.message);
+    } finally {
+        setLoading(false);
+    }
+};
 
 
     // TODO: Remove on production branch
     const handleDemoLogin = () =>{
         console.log(" >> Activating Demo ACC >> ")
         let demoEmail = '';
-        demoEmail = "testuser@example.com"
+        demoEmail = "ogaufimokopakgosi4@gmail.com"
         triggerHaptic('success')
-        setUsername("Tswa Lingo")
+        setUsername("")
         setEmail(demoEmail);
         setPassword('password');
     }
@@ -149,7 +183,7 @@ export default function SignInScreen() {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Don't have an account?</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleSignUp}>
               <Text style={styles.signUpText}>Sign Up</Text>
             </TouchableOpacity>
           </View>

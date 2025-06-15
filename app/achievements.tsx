@@ -68,7 +68,9 @@ export default function AchievementsPage() {
               style={styles.horizontalScroll}
             >
               {unlockedAchievements.map((item) => (
-                <AchievementCard key={item.id} achievement={item} />
+                <AchievementCard key={item.id} achievement={item} status={false} onPress={function (): void {
+                  throw new Error('Function not implemented.');
+                } } />
               ))}
             </ScrollView>
           </>
@@ -83,7 +85,9 @@ export default function AchievementsPage() {
               style={styles.horizontalScroll}
             >
               {lockedAchievements.map((item) => (
-                <AchievementCard key={item.id} achievement={item} />
+                <AchievementCard key={item.id} achievement={item} status={false} onPress={function (): void {
+                  throw new Error('Function not implemented.');
+                } } />
               ))}
             </ScrollView>
           </>

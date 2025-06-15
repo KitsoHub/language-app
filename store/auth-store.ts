@@ -2,24 +2,20 @@ import type { User } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import auth from '@react-native-firebase/auth'
+import { supabase } from '@/utils/supabase';
+
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isSubscribed: boolean;
   isLoading: boolean;
   error: string | null;
-  // selectedRole: UserRole | null;
-
-  //actions
+  // actions
   logout: () => void;
   clearError: () => void;
-  login: (username:string,email: string, password: string) => Promise<void>;
-  // register: (userData: Partial<User>, password: string) => Promise<void>;
+  login: (username: string, email: string, password: string) => Promise<void>;
+  restoreSession: () => Promise<void>;
   updateUser: (userData: Partial<User>) => void;
-  // setSelectedRole: (role: UserRole | null) => void;
-  // setUserRole: (role: UserRole | null) => void;
-  // setUser: (user: User | null) => void;
   addCompletedChallenge: (challengeId: string | number) => void;
   addXp: (points: number) => void;
   resetGameProgress: () => void;
@@ -34,27 +30,32 @@ export const useAuthStore = create(
       isLoading: false,
       error: null,
       isSubscribed: false,
-      login: async (usernname, email, password) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Login with Supabase and store user details
+      login: async (username, email, password) => {
+        set({ isLoading: true, error: null });
         try {
-          if (email && password) {
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
 
+          if (error || !data.user) {
+            set({ isLoading: false, error: error?.message || 'Login failed' });
+            throw new Error(error?.message || 'Login failed');
+          }
 
-            // await auth().createUserWithEmailAndPassword(email, password);
-            // await auth().signInWithEmailAndPassword(email, password);
-            // const userCredential = auth().currentUser;
-            //set default user
+          const user = data.user;
 
-            // update user details
-
-            const mockUser: User = {
-              id: `mock-id-${Date.now()}-email-${email}`,
-              name: usernname,
-              email,
+          set({
+            user: {
+              id: user.id,
+              name: username || user.user_metadata?.name || user.email,
+              email: user.email,
               streak: 1,
               xp: 0,
               level: 1,
-              joinedAt: new Date().toISOString(),
+              joinedAt: user.created_at,
               completedChallenges: [],
               unlockedAchievements: ['sign-in'],
               wordMatchingCompleted: 0,
@@ -62,39 +63,70 @@ export const useAuthStore = create(
               fillBlankCompleted: 0,
               multipleChoiceCompleted: 0,
               familyMatchingCompleted: 0,
-            };
-
-
-
-          // get user details
-
-            set({ user: mockUser, isAuthenticated: true, isLoading: false });
-          } else {
-            set({ isLoading: false });
-            throw new Error('Invalid credentials');
-          }
-          // set mock
-        } catch (error) {
+            },
+            isAuthenticated: true,
+            isLoading: false,
+            error: null,
+          });
+        } catch (error: any) {
           set({
             error: error instanceof Error ? error.message : 'Login error',
             isLoading: false,
           });
         }
       },
-      logout: () => {
-        // auth().signOut();
-        set({ user: null, isAuthenticated: false });
+
+      // Restore user from Supabase session (call on app start)
+      restoreSession: async () => {
+        set({ isLoading: true });
+        try {
+          const { data } = await supabase.auth.getSession();
+          const sessionUser = data?.session?.user;
+          if (sessionUser) {
+            set({
+              user: {
+                id: sessionUser.id,
+                name: sessionUser.user_metadata?.name || sessionUser.email,
+                email: sessionUser.email,
+                streak: 1,
+                xp: 0,
+                level: 1,
+                joinedAt: sessionUser.created_at,
+                completedChallenges: [],
+                unlockedAchievements: ['sign-in'],
+                wordMatchingCompleted: 0,
+                sentenceBuilderCompleted: 0,
+                fillBlankCompleted: 0,
+                multipleChoiceCompleted: 0,
+                familyMatchingCompleted: 0,
+              },
+              isAuthenticated: true,
+              isLoading: false,
+              error: null,
+            });
+          } else {
+            set({ user: null, isAuthenticated: false, isLoading: false });
+          }
+        } catch (error: any) {
+          set({ user: null, isAuthenticated: false, isLoading: false });
+        }
       },
+
+      logout: () => {
+        set({ user: null, isAuthenticated: false });
+        supabase.auth.signOut();
+      },
+
       updateUser: (userData) => {
         set((state) => ({
           user: state.user ? { ...state.user, ...userData } : null,
         }));
       },
+
       clearError: () => {
         set({ error: null });
       },
 
-      // challenge actions
       addCompletedChallenge: (challengeId) =>
         set((state) => {
           if (!state.user) return state;
@@ -104,21 +136,21 @@ export const useAuthStore = create(
           if (!completedChallenges.includes(String(challengeId))) {
             completedChallenges.push(String(challengeId));
           }
-
           return {
             user: { ...state.user, completedChallenges },
           };
         }),
+
       addXp: (points) =>
         set((state) => {
           if (!state.user) return state;
           const newXp = state.user.xp + points;
           const level = Math.floor(newXp / 100) + 1;
-
           return {
             user: { ...state.user, xp: newXp, level: level },
           };
         }),
+
       resetGameProgress: () =>
         set((state) => {
           if (!state.user) return state;
@@ -130,13 +162,10 @@ export const useAuthStore = create(
       unlockAchievement: (achievementId) =>
         set((state) => {
           if (!state.user) return state;
-
           const unlockedAchievements = state.user.unlockedAchievements || [];
-
           if (unlockedAchievements.includes(achievementId)) {
             return state;
           }
-
           return {
             user: {
               ...state.user,
@@ -145,6 +174,6 @@ export const useAuthStore = create(
           };
         }),
     }),
-    { name: 'auth-storage-a5', storage: createJSONStorage(() => AsyncStorage) },
+    { name: 'auth-storage-a7', storage: createJSONStorage(() => AsyncStorage) },
   ),
 );

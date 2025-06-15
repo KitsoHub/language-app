@@ -35,7 +35,7 @@ export const useAchievementsStore = create(
             }
         }),
         {
-            name:'achivements-store-a2',
+            name:'achivements-store-a4',
             storage: createJSONStorage(()=>AsyncStorage)
         }
     )

@@ -1,11 +1,11 @@
 import { ScrollView, StyleSheet, View, Modal, Text } from 'react-native';
-import { useAuthStore } from '@/store/auth-store'; // Import the auth store
-import React, { useState } from 'react';
+import { useAuthStore } from '@/store/auth-store';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, colors } from '@/utils/constants/colors';
 import ProfileStateCard from '@/components/shared/ProfileStateCard';
-import { Button } from '@/components/ui/Button'; // Import Button component
-import { Input } from '@/components/ui/Input'; // Import InputForm component
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { router } from 'expo-router';
 import { ROUTES } from '@/utils/constants/routes';
 import { useProgressStore } from '@/store/progress-store';
@@ -15,31 +15,38 @@ import { achievements } from '@/mocks/achievements';
 import EmptyState from '@/components/shared/EmptyState';
 import { LinearGradient } from 'expo-linear-gradient';
 import AchivementList from '@/components/shared/AchivementList';
+import { supabase } from '@/utils/supabase';
 
 export default function ProfilePage() {
   const { updateUser } = useAuthStore();
-          const authStore = useAuthStore.getState();
-        const { user } = authStore;
-
-        if (!user) return;
-
+  const [user, setUser] = useState<any>(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [name, setName] = useState(user?.name || '');
+  const [name, setName] = useState(user?.user_metadata?.name || user?.email || '');
   const [email, setEmail] = useState(user?.email || '');
   const [password, setPassword] = useState('');
 
-  // const handleSave = () => {
-  //   updateUser({ name, email });
-  //   setModalVisible(false);
-  // };
+  useEffect(() => {
+    // Get user from Supabase session
+    const getSessionUser = async () => {
+      const { data } = await supabase.auth.getSession();
+      const sessionUser = data?.session?.user || null;
+      setUser(sessionUser);
+      if (sessionUser) {
+        updateUser({
+          email: sessionUser.email,
+          name: sessionUser.user_metadata?.name || sessionUser.email,
+          avatar
+        });
+      }
+    };
+    getSessionUser();
+  }, []);
+
+  if (!user) return null;
 
   const handleProfileEdit = () => {
     router.push(ROUTES.EDITPROFILE);
   };
-
-  //filter achievement -> unlocked & locked
-  // const unlockedAchievements = achievements.filter((item) => item.unlocked);
-  // const lockedAchievements = achievements.filter((item) => !item.unlocked);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,7 +55,7 @@ export default function ProfilePage() {
         style={styles.scrollView}
       >
         <ProfileStatsCard
-          name={user?.name || 'Guest User'}
+          name={user?.user_metadata?.name || user?.email || 'Guest User'}
           email={user?.email || ''}
           title="Profile Details"
           currentLanguage={user?.currentLanguage || 'st'}
@@ -56,13 +63,9 @@ export default function ProfilePage() {
           streak={user?.streak || 0}
           level={user?.level || 1}
           icon="user"
-          onPress={handleProfileEdit}
-          // onPress={() => setModalVisible(true)}
-        />
+          onPress={handleProfileEdit} avatar={''}        />
         <Text style={styles.sectionTitle}>Achievements</Text>
-
-		<AchivementList/>
-
+        <AchivementList />
       </ScrollView>
     </SafeAreaView>
   );
@@ -89,7 +92,6 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     position: 'absolute',
     bottom: 0,
-
     shadowOffset: {
       width: 0,
       height: 2,
@@ -99,9 +101,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buttonSpacer: {
-    height: 10, // Adjust the height as needed
+    height: 10,
   },
-
   statsContainer: {
     flexDirection: 'row',
   },
@@ -139,19 +140,16 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 1,
   },
-
   sectionTitle: {
     fontSize: 18,
     color: colors.text,
-    fontWeight: 600,
+    fontWeight: '600',
     marginBottom: 16,
   },
   subsectionTitle: {
     fontSize: 15,
     color: colors.textLight,
-    fontWeight: 500,
+    fontWeight: '500',
     marginBottom: 16,
   },
-
-
 });

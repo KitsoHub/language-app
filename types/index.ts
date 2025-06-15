@@ -95,6 +95,7 @@ export interface translationOption {
 }
 
 export interface Achievement{
+    unlocked: unknown;
     id:string;
     title: string;
     description: string;

@@ -541,7 +541,7 @@ break;
     }),
 
     {
-      name: 'new-game-storage-a33',
+      name: 'new-game-storage-a36',
       version: 1,
       storage: createJSONStorage(() => AsyncStorage),
     },

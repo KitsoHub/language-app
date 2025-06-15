@@ -23,7 +23,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Header from '@/components/shared/Header';
 import Section from '@/components/shared/Section';
 import { useCategoriesStore } from '@/store/game/categories-store';
-import auth from '@react-native-firebase/auth'
+
 import EmptyState from '@/components/shared/EmptyState';
 
 // Expanded Fall Guys inspired color palette

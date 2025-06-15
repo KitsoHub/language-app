@@ -8,12 +8,12 @@ export default function Header() {
 
     const { user} = useAuthStore()
     const { appLanguages } = useLanguageStore();
-      const currentLanguage = appLanguages.find(lang => user?.currentLanguage === lang.id);
+    const currentLanguage = appLanguages.find(lang => user?.currentLanguage === lang.id);
   return (
     <View style={styles.container}>
       <View style={styles.languageContainer}>
         <Text style={styles.languageLabel}>Language</Text>
-        <Text style={styles.languageName}>{currentLanguage?.name || 'Kalanga'}</Text>
+        <Text style={styles.languageName}>{currentLanguage?.name || 'Setswana'}</Text>
       </View>
 
                   {/* Stats Cards */}

@@ -1,5 +1,5 @@
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Stack, useRouter } from 'expo-router'
 import { useAuthStore } from '@/store/auth-store';
@@ -10,22 +10,45 @@ import { Button } from '@/components/ui/Button';
 import WrapperContainer from '@/components/shared/WrapperContainer';
 import Avatar from '@/components/shared/Avatar';
 import * as ImagePicker from "expo-image-picker";
+import { supabase } from '@/utils/supabase';
 
 export default function EditProfile() {
     const router = useRouter();
-    const { user, updateUser } = useAuthStore();
+    const { updateUser } = useAuthStore();
 
-    //user details
-    const [name, setName] = useState(user?.name || '');
-    const [email, setEmail] = useState(user?.email || '');
-    const [avatar, setAvatar] = useState(user?.avatar || '');
-
-    //app submission state
+    // user details from Supabase session
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [avatar, setAvatar] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [errors, setErrors] = useState({
-        name: '',
-        email: '',
-    })
+    const [errors, setErrors] = useState({ name: '', email: '' });
+
+    useEffect(() => {
+        // Load user from Supabase session
+        const loadUser = async () => {
+    const { data, error: sessionError } = await supabase.auth.getSession();
+    const sessionUser = data?.session?.user;
+
+    if (sessionUser) {
+        const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('username, avatar_url')
+            .eq('id', sessionUser.id)
+            .single();
+
+        if (profileError) {
+            Alert.alert('Error loading profile', profileError.message);
+        } else {
+            setName(profile?.username || '');
+            setEmail(sessionUser.email || '');
+            setAvatar(profile?.avatar_url || '');
+        }
+    } else if (sessionError) {
+        Alert.alert('Error fetching session', sessionError.message);
+    }
+};
+
+    }, []);
 
     const validateForm = () => {
         let isValid = true;
@@ -49,59 +72,55 @@ export default function EditProfile() {
     }
 
     const handleImagePicker = async () => {
-        console.log(" Handling Image Picker")
-        //request image library
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-
         if (status === 'granted') {
-
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [1, 1],
                 quality: 0.5
             });
-            console.log(JSON.stringify(result, null, ' '))
             if (!result.canceled) {
-                //console.log(result.assets[0].uri)
                 setAvatar(result.assets[0].uri)
             }
-
         } else {
-            let alert_title = "Permission Denied";
-            let alert_message = "We need to camera roll permission to update the avatar";
-            Alert.alert(alert_title, alert_message);
+            Alert.alert("Permission Denied", "We need camera roll permission to update the avatar");
         }
     }
-    const handleSave = async () => {
-        // form validate
-        if (!validateForm()) return;
 
-        setIsLoading(true);
-        try {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            console.log('>> Handling Save >>', avatar, name, email)
-            updateUser(
-                {
-                    name,
-                    email,
-                    avatar
-                }
-            )
+   const handleSave = async () => {
+    if (!validateForm()) return;
+    setIsLoading(true);
+    try {
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        const user = sessionData?.session?.user;
+        if (!user) throw new Error('No session found');
 
+        const updates = {
+            id: user.id,
+            username: name,
+            website: '', // or keep if you're not using it
+            avatar_url: avatar,
+            updated_at: new Date(),
+        };
 
-        } catch (error) {
-            console.log("<<< Image update error >>>", error);
-
-        } finally {
-            console.log("<<< Finished updating >>>");
-            setIsLoading(false)
+        const { error } = await supabase.from('profiles').upsert(updates);
+        if (error) {
+            Alert.alert('Update failed', error.message);
+        } else {
+            updateUser({ name, email, avatar });
+            Alert.alert('Profile updated!');
+            router.back();
         }
+    } catch (error) {
+        Alert.alert('Update failed', error instanceof Error ? error.message : 'Unknown error');
+    } finally {
+        setIsLoading(false);
     }
+};
+
 
     const handleAvatarPicker = async (image: string) => {
-        console.log(" >> Avatar Picker >> ",image)
-        await new Promise(resolve => setTimeout(resolve, 1000))
         setAvatar(image)
     }
 
@@ -112,8 +131,6 @@ export default function EditProfile() {
                 <KeyboardAvoidingView
                     behavior={Platform.OS === 'ios' ? "padding" : "height"}
                 >
-
-
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewContent}>
                         {/* avatar*/}
                         <View style={styles.avatarContainer}>
@@ -126,40 +143,30 @@ export default function EditProfile() {
                                 onPress={handleImagePicker}>
                                 <Camera size={20} color={colors.white} />
                             </TouchableOpacity>
-
                         </View>
-
                         <View style={styles.avatarSelectContainer}>
-                        {/* list of avatars */}
-
+                            {/* list of avatars */}
                             <TouchableOpacity style={styles.avatarSubContainer}
-                                onPress={()=>handleAvatarPicker("0")}>
+                                onPress={() => handleAvatarPicker("0")}>
                                 <Image source={require("@/assets/avatars/boy.png")} style={styles.avatarImage} />
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.avatarSubContainer}
-                                onPress={()=>handleAvatarPicker("1")}>
+                                onPress={() => handleAvatarPicker("1")}>
                                 <Image source={require("@/assets/avatars/women.png")} style={styles.avatarImage} />
                             </TouchableOpacity>
-
-
                         </View>
-
                         {/* inputs */}
                         <View style={styles.form}>
                             <Input label="Full Name" placeholder=' Enter your full name' value={name} onChangeText={setName} error={errors.name} leftIcon={<User size={20} color={colors.gray500} />} />
                             <Input keyboardType='email-address' autoCapitalize="words" label="Email Address" placeholder='Enter your email address' value={email} onChangeText={setEmail} error={errors.email} leftIcon={<Mail size={20} color={colors.gray500} />} />
-
                             <Button style={styles.saveButton} title='Save Changes'
                                 onPress={handleSave}
                                 isLoading={isLoading}
                             />
                         </View>
-
-
                     </ScrollView>
                 </KeyboardAvoidingView>
             </WrapperContainer>
-
         </>
     )
 }
@@ -171,10 +178,10 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     avatarSelectContainer: {
-        flex:1,
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
-gap:20,
+        gap: 20,
     },
     avatarSubContainer: {
         backgroundColor: colors.gray300,
@@ -213,9 +220,8 @@ gap:20,
         width: '100%',
         height: '100%',
     },
-
     avatarImage: {
         width: '100%',
         height: '100%',
     },
-})
+});
