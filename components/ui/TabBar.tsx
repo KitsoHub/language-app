@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 20,
         paddingVertical: 20,
-        backgroundColor: '#fff',
+        backgroundColor: '#f3f3f3',
         borderRadius: 25,
         elevation: 5, // Android shadow
         shadowColor: '#000',
