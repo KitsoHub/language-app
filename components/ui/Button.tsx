@@ -125,6 +125,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    borderColor: '#c4c4c4',
+    borderBottomWidth: 4,
   },
   primaryButton: {
     backgroundColor: COLORS.primary,
@@ -136,8 +138,7 @@ const styles = StyleSheet.create({
   outlineButton: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: COLORS.primary,
-    borderBottomWidth: 4,
+    
   },
   textButton: {
     backgroundColor: 'transparent',
