@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { Feather, House, Gamepad2, User, Settings } from 'lucide-react-native';
+import { Feather, House, Gamepad2, User, Settings, UserCircle, SettingsIcon, HousePlugIcon, LucideHouse, Flame } from 'lucide-react-native';
 import { JSX } from 'react/jsx-runtime';
 
 const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
@@ -19,10 +19,10 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     const secondarycolor = 'black'; // You can change this to your desired secondary color
 
     const icons = {
-        index: (props) => <House {...props} size={27} />,
-        games: (props) => <Gamepad2 {...props} size={27} />,
-        profile: (props) => <User {...props} size={27} />,
-        settings: (props) => <Settings {...props} size={27} />,
+        index: (props) => <LucideHouse {...props} size={27} />,
+        games: (props) => <Flame {...props} size={27} />,
+        profile: (props) => <UserCircle {...props} size={27} />,
+        settings: (props) => <SettingsIcon {...props} size={27} />,
     };
 
     return (
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     focusedTabBarItem: {
-        transform: [{ scale: 1.1 }], // Slightly enlarge the item when focused
+        transform: [{ scale: 1 }], // Slightly enlarge the item when focused
     },
     iconContainer: {
         justifyContent: 'center',
