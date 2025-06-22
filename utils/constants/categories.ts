@@ -71,6 +71,19 @@ export const lessonCategories: LessonCategory[] = [
         isLocked: false,
         requiresSubscription: false,
         languageId: 'kl',
+      },{
+        id: 'word-matching-kr',
+        title: 'Word Matching',
+        description: 'Arrange words in the correct order to form greetings.',
+        icon: '🔤',
+        type: 'word-matching',
+        challenges: wordMatchingChallengesKalanga.filter(
+          (challenge) => !challenge.isLocked,
+        ),
+        progress: 0,
+        isLocked: false,
+        requiresSubscription: false,
+        languageId: 'kr',
       },
       {
         id: 'mc-st',
@@ -148,6 +161,21 @@ export const lessonCategories: LessonCategory[] = [
         isLocked: true,
         requiresSubscription: true,
         languageId: 'st',
+      },
+  
+      {
+        id: 'sb-kr',
+        title: 'Sentence Builder',
+        description: 'Build sentences about family members.',
+        icon: '📚',
+        type: 'sentence-builder',
+        challenges: sentenceBuilderChallenges.filter(
+          (challenge) => !challenge.isLocked,
+        ),
+        progress: 0,
+        isLocked: true,
+        requiresSubscription: true,
+        languageId: 'kr',
       },
     ],
   },

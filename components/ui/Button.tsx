@@ -125,17 +125,20 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    borderColor: '#c4c4c4',
+    borderBottomWidth: 4,
   },
   primaryButton: {
     backgroundColor: COLORS.primary,
   },
   secondaryButton: {
     backgroundColor: COLORS.secondary,
+    
   },
   outlineButton: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: COLORS.primary,
+    
   },
   textButton: {
     backgroundColor: 'transparent',

@@ -475,7 +475,7 @@ export const useNewGameStore = create(
             authStore.updateUser({
               familyMatchingCompleted: count + 1,
             });
-break;
+         break;
           }
 
           case 'lesson-numbers': {
