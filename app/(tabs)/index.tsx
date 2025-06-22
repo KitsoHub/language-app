@@ -284,15 +284,18 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 40,
+    paddingBottom: 0,  
   },
   gradient: {
     flex: 1,
-  },
+    padding: 0,
+    paddingBottom: 0,
 
+  },
     scrollContent: {
-    paddingTop: 16,
-    paddingBottom: 100,
+    paddingTop: 20,
+    paddingBottom: 500,
+    paddingHorizontal: 16,
   },
 
   backgroundPatterns: {
