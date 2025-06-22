@@ -83,7 +83,7 @@ export const colors = {
   text: '#333333',
   textLight: '#666666',
   textMuted: '#999999',
-  background: '#FFFFFF',
+  background: '#F9FEFF',
   backgroundLight: '#F8F9FA',
   border: '#E5E7EB',
   error: '#FF5252',
