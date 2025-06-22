@@ -131,11 +131,13 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     backgroundColor: COLORS.secondary,
+    
   },
   outlineButton: {
     backgroundColor: 'transparent',
     borderWidth: 1,
     borderColor: COLORS.primary,
+    borderBottomWidth: 4,
   },
   textButton: {
     backgroundColor: 'transparent',
