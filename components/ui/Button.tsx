@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderColor: '#c4c4c4',
     borderBottomWidth: 4,
+    borderRightWidth: 4,
   },
   primaryButton: {
     backgroundColor: COLORS.primary,

@@ -10,7 +10,8 @@ export const fillBlankChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 5,
-    difficulty: 'easy'
+    difficulty: 'easy',
+    hint: "Means Hello",
   },
   {
     id: 'fb-2',
@@ -21,7 +22,8 @@ export const fillBlankChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 15,
-    difficulty: 'medium'
+    difficulty: 'medium',
+    hint: "Means I want to eat",
   },
   {
     id: 'fb-3',
@@ -32,7 +34,8 @@ export const fillBlankChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 15,
-    difficulty: 'medium'
+    difficulty: 'medium',
+    hint: "Means How are you?",
   },
   {
     id: 'fb-4',
@@ -43,7 +46,8 @@ export const fillBlankChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 15,
-    difficulty: 'medium'
+    difficulty: 'medium',
+    hint: "Means Thank you",
   },
   {
     id: 'fb-5',
@@ -54,7 +58,8 @@ export const fillBlankChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 15,
-    difficulty: 'medium'
+    difficulty: 'medium',
+    hint: "Means Go well",
   },
   // sekgalagari
   {
@@ -125,7 +130,7 @@ export const fillBlankChallenges: Challenge[] = [
   },
   // kalanga
   {
-    id: 'fb-1',
+    id: 'fb-kl-1',
     type: 'fill-blank',
     instruction: "Fill in the blank for greeting",
     sentence: "Du_",
@@ -135,5 +140,48 @@ export const fillBlankChallenges: Challenge[] = [
     points: 5,
     difficulty: 'easy'
   },
-  
+  {
+    id: 'fb-kl-2',
+    type: 'fill-blank',
+    instruction: "Fill in the blank",
+    sentence: "Ke_go ja",
+    correctAnswer: "bona",
+    languageId: 'kl',
+    isLocked: false,
+    points: 15,
+    difficulty: 'medium'
+  },
+  {
+    id: 'fb-kl-3',
+    type: 'fill-blank',
+    instruction: "Fill in the blank",
+    sentence: "O tshogile_?",
+    correctAnswer: "jani",
+    languageId: 'kl',
+    isLocked: false,
+    points: 15,
+    difficulty: 'medium'
+  },
+  {
+    id: 'fb-kl-4',
+    type: 'fill-blank',
+    instruction: "Fill in the blank",
+    sentence: "_leboga",
+    correctAnswer: "Nda",
+    languageId: 'kl',
+    isLocked: false,
+    points: 15,
+    difficulty: 'medium'
+  },
+  {
+    id: 'fb-kl-5',
+    type: 'fill-blank',
+    instruction: "Fill in the blank",
+    sentence: "Tsamaya_",
+    correctAnswer: "bwino",
+    languageId: 'kl',
+    isLocked: false,
+    points: 15,
+    difficulty: 'medium'
+  }
 ];

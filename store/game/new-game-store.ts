@@ -180,31 +180,109 @@ export const useNewGameStore = create(
           gameIcon: '📚',
           type: 'sentence-builder',
         },
+        {
+          id: 'nl-kr',
+          title: 'Learn Numbers',
+          description: 'Complete the lesson',
+          languageId: 'kr',
+          challenges: numberLesson.filter(
+            (challenge) => challenge.languageId === 'kr' && !challenge.isLocked,
+          ),
+          gameBadge: 'Beginner',
+          gameIcon: '📝',
+          type: 'lesson-numbers',
+        },
 
         // kalanga
         {
-          id: 'wm-kl',
+          id: 'fc-kl',
+          title: 'Family',
+          description: 'Choose the correct translation for each image.',
+          languageId: 'kl',
+          challenges: familyChallenges.filter(
+            (challenge) =>
+              challenge.languageId === 'kl' && challenge.isLocked === false,
+          ),
+          gameBadge: 'Easy',
+          gameIcon: '✅',
+          type: 'family-matching',
+        },
+        {
+          id: 'word-matching-kl',
           title: 'Word Matching',
           description: 'Arrange words in the correct order to form phrases.',
           languageId: 'kl',
-          challenges: wordMatchingChallengesKalanga.filter(
-            (challenge) => challenge.isLocked === false,
+          challenges: wordMatchingChallenges.filter(
+            (challenge) =>
+              challenge.languageId === 'kl' && challenge.isLocked === false,
           ),
           gameBadge: 'Beginner',
           gameIcon: '🔤',
           type: 'word-matching',
         },
-      ],
-      currentGameId: null,
-      currentChallengeIndex: 0,
-      arrangedWords: [],
-      isCorrect: null,
-      showFeedback: false,
-      userAnswers: {},
-      gameCompleted: false,
-      selectedChoice: null,
+        {
+          id: 'mc-kl',
+          title: 'Multiple Choice',
+          description:
+            'Choose the correct translation for each word or phrase.',
+          languageId: 'kl',
+          challenges: multipleChoiceChallenges.filter(
+            (challenge) =>
+              challenge.languageId === 'kl' && challenge.isLocked === false,
+          ),
+          gameBadge: 'Easy',
+          gameIcon: '✅',
+          type: 'multiple-choice',
+        },
+        {
+          id: 'fb-kl',
+          title: 'Fill in the Blank',
+          description: 'Complete sentences by filling in the missing words.',
+          languageId: 'kl',
+          challenges: fillBlankChallenges.filter(
+            (challenge) =>
+              challenge.languageId === 'kl' && challenge.isLocked === false,
+          ),
+          gameBadge: 'Medium',
+          gameIcon: '📝',
+          type: 'fill-blank',
+        },
+        {
+          id: 'sb-kl',
+          title: 'Sentence Builder',
+          description: 'Build complete sentences from individual words.',
+          languageId: 'kl',
+          challenges: sentenceBuilderChallenges.filter(
+            (challenge) =>
+              challenge.languageId === 'kl' && challenge.isLocked === false,
+          ),
+          gameBadge: 'Hard',
+          gameIcon: '📚',
+          type: 'sentence-builder',
+        },
+        {
+          id: 'nl-kl',
+          title: 'Learn Numbers',
+          description: 'Complete the lesson',
+          languageId: 'kl',
+          challenges: numberLesson.filter(
+            (challenge) => challenge.languageId === 'kl' && !challenge.isLocked,
+          ),
+          gameBadge: 'Beginner',
+          gameIcon: '📝',
+          type: 'lesson-numbers',
+        },
+            ],
+            currentGameId: null,
+            currentChallengeIndex: 0,
+            arrangedWords: [],
+            isCorrect: null,
+            showFeedback: false,
+            userAnswers: {},
+            gameCompleted: false,
+            selectedChoice: null,
 
-      selectGame: (gameId) =>
+            selectGame: (gameId) =>
         set({
           currentGameId: gameId,
           currentChallengeIndex: 0,
@@ -214,7 +292,7 @@ export const useNewGameStore = create(
           gameCompleted: false,
         }),
 
-      getCurrentGame: () => {
+            getCurrentGame: () => {
         const state = get();
         if (!state.currentGameId) return null;
         return (
@@ -541,7 +619,7 @@ export const useNewGameStore = create(
     }),
 
     {
-      name: 'new-game-storage-a33',
+      name: 'new-game-storage-a37',
       version: 1,
       storage: createJSONStorage(() => AsyncStorage),
     },
