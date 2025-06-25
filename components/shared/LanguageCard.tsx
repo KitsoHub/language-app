@@ -29,7 +29,7 @@ export default function LanguageCard({
             </View>
             <View style={styles.content}>
             <Text style={styles.name}>{language.name}</Text>
-            <Text style={styles.nativeName}>{language.nativeName}</Text>
+            {/* <Text style={styles.nativeName}>{language.nativeName}</Text> */}
 
         </View>
             {selected && <View style={styles.selectedIndicator} />}
