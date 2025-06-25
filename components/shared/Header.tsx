@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: 16,
+    position: 'sticky',
   },
     languageContainer: {
     alignItems: 'flex-start',

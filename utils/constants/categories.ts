@@ -99,6 +99,20 @@ export const lessonCategories: LessonCategory[] = [
         requiresSubscription: false,
         languageId: 'kl',
       },
+      {
+        id: 'fb-st',
+        title: 'Fill in the Blank',
+        description: 'Complete sentences by filling in the blanks.',
+        icon: '✏️',
+        type: 'fill-blank',
+        challenges: fillBlankChallenges.filter(
+          (challenge) => !challenge.isLocked,
+        ),
+        progress: 0,
+        isLocked: false,
+        requiresSubscription: false,
+        languageId: 'st',
+      },
     ],
   },
   {
@@ -122,6 +136,20 @@ export const lessonCategories: LessonCategory[] = [
         isLocked: false,
         requiresSubscription: false,
         languageId: 'st',
+      },
+      {
+        id: 'nl-kr',
+        title: 'Learn Numbers',
+        description: 'Complete the lesson',
+        icon: '📝',
+        type: 'lesson-numbers',
+        challenges: numberLesson.filter(
+          (challenge) => !challenge.isLocked,
+        ),
+        progress: 0,
+        isLocked: false,
+        requiresSubscription: false,
+        languageId: 'kr',
       },
     ],
   },
@@ -173,9 +201,77 @@ export const lessonCategories: LessonCategory[] = [
           (challenge) => !challenge.isLocked,
         ),
         progress: 0,
-        isLocked: true,
+        isLocked: false,
         requiresSubscription: true,
         languageId: 'kr',
+      },
+      {
+          id: 'fc-kl',
+          title: 'Family Matching',
+          description:
+            'Match family member images with their correct translations.',
+          icon: '👪',
+          type: 'family-matching',
+          challenges: familyChallenges.filter(
+            (challenge) =>
+              challenge.languageId === 'kl' && challenge.isLocked === false,
+          ),
+          progress: 0,
+          isLocked: false,
+          requiresSubscription: false,
+        },
+    ],
+  },
+ 
+  {
+    id: 'fill-blank',
+    title: 'Fill in the Blank',
+    icon: '✏️',
+    color: '#00BFFF', // Deep sky blue
+    isLocked: false,
+    requiresSubscription: false,
+    games: [
+      {
+        id: 'fb-st',
+        title: 'Fill in the Blank',
+        description: 'Complete sentences by filling in the blanks.',
+        icon: '✏️',
+        type: 'fill-blank',
+        challenges: fillBlankChallenges.filter(
+          (challenge) => !challenge.isLocked,
+        ),
+        progress: 0,
+        isLocked: false,
+        requiresSubscription: false,
+        languageId: 'st',
+      },
+      {
+        id: 'fb-kl',
+        title: 'Fill in the Blank',
+        description: 'Complete sentences by filling in the blanks.',
+        icon: '✏️',
+        type: 'fill-blank',
+        challenges: fillBlankChallenges.filter(
+          (challenge) => !challenge.isLocked,
+        ),
+        progress: 0,
+        isLocked: false,
+        requiresSubscription: false,
+        languageId: 'kl',
+      },
+      {
+          id: 'fb-kr',
+          title: 'Fill in the Blank',
+          description: 'Complete sentences by filling in the blanks.',
+          icon: '✏️',
+          type: 'fill-blank',
+          challenges: fillBlankChallenges.filter(
+            (challenge) => !challenge.isLocked && challenge.languageId === 'kr'
+          ),
+          progress: 0,
+          isLocked: false,
+          requiresSubscription: false,
+          languageId:'kr'
       },
     ],
   },
