@@ -242,8 +242,6 @@ export default function App() {
       <LinearGradient colors={['#E0F7FA', '#E8F5E9', '#FFF8E1']}>
         <ScrollView style={styles.scrollContent}>
           <Header />
-
-
           <View style={styles.sectionHeader}>
             <View style={styles.sectionTitleContainer}>
               <Text style={styles.sectionTitle}>Let's Learn</Text>
@@ -284,7 +282,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 0,  
+    paddingBottom: 0,
   },
   gradient: {
     flex: 1,
@@ -459,7 +457,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 16,
     marginBottom: 10,
-    marginTop: 10,
   },
   sectionTitleContainer: {
     shadowColor: 'rgba(149, 145, 145, 0.58)',
