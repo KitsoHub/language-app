@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { useHaptics } from "@/utils/hooks/useHaptics";
 import Avatar from "@/components/shared/Avatar";
 import * as ImagePicker from "expo-image-picker";
-
+//import { v4 as uuidv4 } from 'uuid'
 
 export default function EditProfile() {
     const router = useRouter();
@@ -55,16 +55,16 @@ export default function EditProfile() {
 
   const handleSave = async () => {
     // form validate
-    console.log('>> Handling Save >>',  name, email);
+    console.log('>> Handling Save >>',  name, email, avatar);
     if (!validateForm()) return;
 
     setIsLoading(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log('>> Handling Save >>', name, email);
+      console.log('>> Handling Save >>', name, email, avatar);
       updateUserProfile({
         name,
-        email,
+        email, avatar
       });
     } catch (error) {
       console.log('<<< Update error >>>', error);
@@ -78,9 +78,10 @@ export default function EditProfile() {
   useEffect(() => {
     const hasUserChanges =
       name !== (user?.name || '') ||
-      email !== (user?.email || '');
+      email !== (user?.email || '') ||
+      avatar !== (user?.avatar || '')
     setHasChanges(hasUserChanges);
-  }, [name, email, user]);
+  }, [name, email, user, avatar]);
 
 
   // const handleCancel = () => {
@@ -126,16 +127,21 @@ export default function EditProfile() {
 
                 if (!result.canceled && result.assets && result.assets[0]) {
                     const selectedImageUri = result.assets[0].uri;
-                    console.log("Selected image URI:", selectedImageUri);
+
+//                     const uniqueSuffix = uuidv4();
+//                     // result.assets[0].assetId = uniqueSuffix
+//  const uniqueUri = `${selectedImageUri}?id=${uniqueSuffix}`;
+ const uniqueUri = `${selectedImageUri}?t=${Date.now()}`;
+                    console.log("Selected image URI:", uniqueUri);
 
                     // Update local state immediately for UI feedback
                     setAvatar(selectedImageUri);
 
                     // Update the store immediately
                     if (updateUserAvatar) {
-                        updateUserAvatar(selectedImageUri);
+                        updateUserAvatar(uniqueUri);
                     } else if (updateUserProfile) {
-                        updateUserProfile({ avatar: selectedImageUri });
+                        updateUserProfile({ avatar: uniqueUri });
                     }
                 }
             } else {

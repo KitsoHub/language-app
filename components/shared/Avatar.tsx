@@ -1,10 +1,15 @@
 
 
 import { StyleSheet, Text, View, ViewStyle, Image } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { colors } from '@/utils/constants/colors';
 import { avatars } from '@/mocks/vowels';
 
+const presetAvatars = {
+    "0": require("@/assets/avatars/boy.png"),
+    "1": require("@/assets/avatars/women.png"),
+    // Add more preset avatars as needed
+};
 
 type AvatarProps ={
     uri?: string | number;
@@ -19,19 +24,35 @@ export default function Avatar({
 console.log(" >> Image from store >>",uri)
 const [imgIndex, setImgIndex] = useState<number | null >(-1);
 
-    const getInitials =() =>{
-        if(!name)return '';
-        const nameParts = name.split(' ');
+    // const getInitials =() =>{
+    //     if(!name)return '';
+    //     const nameParts = name.split(' ');
 
-        if(nameParts.length === 1){
-            return nameParts[0].charAt(0).toLocaleUpperCase();
+    //     if(nameParts.length === 1){
+    //         return nameParts[0].charAt(0).toLocaleUpperCase();
+    //     }
+
+    //     return(
+    //         nameParts[0].charAt(0).toLocaleUpperCase() +
+    //         nameParts[nameParts.length -1].charAt(0).toLocaleUpperCase()
+    //     );
+    // }
+
+        // Memoize initials calculation
+    const initials = useMemo(() => {
+        if (!name) return '';
+        const nameParts = name.trim().split(' ').filter(Boolean);
+
+        if (nameParts.length === 0) return '';
+        if (nameParts.length === 1) {
+            return nameParts[0].charAt(0).toUpperCase();
         }
 
-        return(
-            nameParts[0].charAt(0).toLocaleUpperCase() +
-            nameParts[nameParts.length -1].charAt(0).toLocaleUpperCase()
+        return (
+            nameParts[0].charAt(0).toUpperCase() +
+            nameParts[nameParts.length - 1].charAt(0).toUpperCase()
         );
-    }
+    }, [name]);
     useEffect(() => {
       if (typeof uri === 'string') {
         if (uri.includes("ImagePicker")) {
@@ -68,7 +89,7 @@ const [imgIndex, setImgIndex] = useState<number | null >(-1);
         />
       ) : (
         <Text style={[styles.initials, {fontSize: size*0.4}]}>
-          {getInitials()}
+          {initials}
         </Text>
       ))
 
