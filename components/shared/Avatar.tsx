@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ViewStyle, Image } from 'react-native';
-import React, { useEffect, useMemo, useState } from 'react';
+import  { useMemo, useState } from 'react';
 import { colors } from '@/utils/constants/colors';
-import { avatars } from '@/mocks/vowels';
+
 
 const presetAvatars = {
   '0': require('@/assets/avatars/boy.png'),
