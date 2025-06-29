@@ -11,7 +11,7 @@ export enum ROUTES {
     GAMES="/games",
     GAMESLIST="/games-list",
     GAME="/game/",
-    EDITPROFILE="/edit-profile",
+    EDITPROFILE="/profile/edit-profile",
     SUBSCRIPTION="/subscription",
     SETTINGS="/settings"
   }
