@@ -14,13 +14,13 @@ import {
   Alert,
   Image,
 } from 'react-native';
-import { Camera, Check, Mail, User } from 'lucide-react-native';
+import { Camera, Mail, User } from 'lucide-react-native';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { useHaptics } from '@/utils/hooks/useHaptics';
 import Avatar from '@/components/shared/Avatar';
 import * as ImagePicker from 'expo-image-picker';
-//import { v4 as uuidv4 } from 'uuid'
+
 
 export default function EditProfile() {
   const router = useRouter();
@@ -111,10 +111,8 @@ export default function EditProfile() {
   //   }
   // };
   const handleImagePicker = async () => {
-    console.log('Handling Image Picker');
-
     try {
-      // Request image library permission
+
       const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -123,21 +121,16 @@ export default function EditProfile() {
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
           aspect: [1, 1],
-          quality: 0.8, // Increased quality for better images
+          quality: 0.8,
         });
 
-        console.log('ImagePicker result:', JSON.stringify(result, null, 2));
+        // console.log('ImagePicker result:', JSON.stringify(result, null, 2));
 
         if (!result.canceled && result.assets && result.assets[0]) {
           const selectedImageUri = result.assets[0].uri;
 
-          //                     const uniqueSuffix = uuidv4();
-          //                     // result.assets[0].assetId = uniqueSuffix
-          //  const uniqueUri = `${selectedImageUri}?id=${uniqueSuffix}`;
           const uniqueUri = `${selectedImageUri}?t=${Date.now()}`;
-          console.log('Selected image URI:', uniqueUri);
 
-          // Update local state immediately for UI feedback
           setAvatar(uniqueUri);
 
           // Update the store immediately
@@ -165,32 +158,17 @@ export default function EditProfile() {
       // Show loading state briefly
       await new Promise((resolve) => setTimeout(resolve, 300));
 
-      // Update local state immediately
       setAvatar(avatarId);
-
-      // Update the store immediately
-      // if (updateUserAvatar) {
-      //   updateUserAvatar(avatarId);
-      // } else if (updateUserProfile) {
-      //   updateUserProfile({ avatar: avatarId });
-      // }
-
-      console.log('Avatar updated to:', avatarId);
     } catch (error) {
-      console.error('Error updating avatar:', error);
       Alert.alert('Error', 'Failed to update avatar. Please try again.');
     }
   };
     useEffect(() => {
-        console.log(
-    '[DEBUG] local avatar:', avatar,
-    'store avatar:', user?.avatar,
-  );
+
     const hasUserChanges =
       name !== (user?.name || '') ||
       email !== (user?.email || '') ||
       avatar !== (user?.avatar || '');
-        console.log('[DEBUG] hasChanges:', hasUserChanges);
     setHasChanges(hasUserChanges);
   }, [name, email, avatar,user]);
 

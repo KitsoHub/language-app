@@ -37,14 +37,14 @@ import {
 	Star,
 	Trash2,
 } from "lucide-react-native";
-import { avatars } from "@/mocks/vowels";
-import { useNewGameStore } from "@/store/game/new-game-store";
+
 import { useLanguageStore } from "@/store/language-store";
 import { FONT_SIZES, MARGIN, PADDING } from "@/utils/constants";
 import { ROUTES } from "@/utils/constants/routes";
 import { useHapticStore } from "@/store/haptic-store";
 import { useHaptics } from "@/utils/hooks/useHaptics";
-import auth from '@react-native-firebase/auth';
+import { useCategoriesStore } from "@/store/game/categories-store";
+
 
 interface ProfileProps {
 	name: string;
@@ -92,6 +92,7 @@ export default function SettingsContainer({
 	avatar,
 }: ProfileProps) {
 	const { logout, resetGameProgress, user } = useAuthStore();
+	const {resetCategoryProgress} = useCategoriesStore();
 	const router = useRouter();
 	const [modalVisible, setModalVisible] = useState(false);
 	const [modalContent, setModalContent] = useState("");
@@ -132,7 +133,7 @@ export default function SettingsContainer({
 				},
 				{
 					text: "OK",
-					onPress: () => resetGameProgress(),
+					onPress: () => {resetGameProgress(); resetCategoryProgress();},
 					style: "destructive",
 				},
 			],
