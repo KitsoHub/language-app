@@ -17,6 +17,8 @@ interface AuthState {
   login: (username:string,email: string, password: string) => Promise<void>;
   // register: (userData: Partial<User>, password: string) => Promise<void>;
   updateUser: (userData: Partial<User>) => void;
+  updateUserAvatar:(avatar: string) => void;
+  updateUserProfile:(updates: Partial<User>)=>void;
   // setSelectedRole: (role: UserRole | null) => void;
   // setUserRole: (role: UserRole | null) => void;
   // setUser: (user: User | null) => void;
@@ -90,6 +92,26 @@ export const useAuthStore = create(
           user: state.user ? { ...state.user, ...userData } : null,
         }));
       },
+          updateUserAvatar: (avatar) => {
+        set((state) => ({
+          user: state.user ? { ...state.user, avatar } : null,
+        }));
+      },
+
+      updateUserProfile: (updates) =>
+                set((state) => {
+                    const updatedUser = state.user ? {
+                        ...state.user,
+                        ...updates
+                    } : null;
+
+                    console.log('Updating user profile:', updates);
+                    console.log('Updated user:', updatedUser);
+
+                    return {
+                        user: updatedUser
+                    };
+                }),
       clearError: () => {
         set({ error: null });
       },
@@ -145,6 +167,14 @@ export const useAuthStore = create(
           };
         }),
     }),
-    { name: 'auth-storage-a5', storage: createJSONStorage(() => AsyncStorage) },
+    { name: 'auth-storage-a7',
+       storage: createJSONStorage(() => AsyncStorage),
+                  // Only persist essential data
+      // partialize: (state:AuthState) => ({
+      //           user: state.user,
+      //           isAuthenticated: state.isAuthenticated
+      //       }),
+
+      },
   ),
 );

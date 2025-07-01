@@ -1,14 +1,7 @@
 'use client';
 
 import { StatusBar } from 'expo-status-bar';
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-} from 'react-native';
-
+import { Pressable, StyleSheet, Text, View, ScrollView } from 'react-native';
 
 import { useAuthStore } from '@/store/auth-store';
 import { Stack, useRouter } from 'expo-router';
@@ -23,7 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Header from '@/components/shared/Header';
 import Section from '@/components/shared/Section';
 import { useCategoriesStore } from '@/store/game/categories-store';
-import auth from '@react-native-firebase/auth'
+import auth from '@react-native-firebase/auth';
 import EmptyState from '@/components/shared/EmptyState';
 
 // Expanded Fall Guys inspired color palette
@@ -95,8 +88,10 @@ export default function App() {
   const { games, selectGame } = useNewGameStore();
   const { selectedLanguage } = useLanguageStore();
 
-      const { appLanguages } = useLanguageStore();
-        const currentLanguage = appLanguages.find(lang => user?.currentLanguage === lang.id);
+  const { appLanguages } = useLanguageStore();
+  const currentLanguage = appLanguages.find(
+    (lang) => user?.currentLanguage === lang.id,
+  );
 
   const [isGridView, setIsGridView] = useState(false);
 
@@ -142,9 +137,6 @@ export default function App() {
       { transform: [{ translateY: isGridView ? 0 : index % 2 === 0 ? 0 : 8 }] }, // disable offset in grid mode
       isGridView && styles.gridGameCard,
     ];
-
-
-
 
     return (
       <Pressable style={cardStyles} onPress={() => handleSelectGame(item.id)}>
@@ -221,19 +213,14 @@ export default function App() {
     );
   };
 
- const { categories } = useCategoriesStore();
+  const { categories } = useCategoriesStore();
 
-      const filteredCategories = useMemo(() => {
-
-        const filtered = categories.filter(category =>
-    category.games.some(game => game.languageId === user?.currentLanguage)
-  );
-  return filtered
-      }, [user?.currentLanguage,categories]);
-
-  // const filteredCategories = categories.filter(category =>
-  //   category.games.some(game => game.languageId === user?.currentLanguage)
-  // );
+  const filteredCategories = useMemo(() => {
+    const filtered = categories.filter((category) =>
+      category.games.some((game) => game.languageId === user?.currentLanguage),
+    );
+    return filtered;
+  }, [user?.currentLanguage, categories]);
 
   return (
     <View style={styles.container}>
@@ -242,39 +229,25 @@ export default function App() {
       <LinearGradient colors={['#E0F7FA', '#E8F5E9', '#FFF8E1']}>
         <ScrollView style={styles.scrollContent}>
           <Header />
-
-
           <View style={styles.sectionHeader}>
             <View style={styles.sectionTitleContainer}>
               <Text style={styles.sectionTitle}>Let's Learn</Text>
             </View>
-
           </View>
 
-			          {filteredCategories.length > 0?(
+          {filteredCategories.length > 0 ? (
+            filteredCategories.map((category) => (
+              <Section key={category.id} category={category} />
+            ))
+          ) : (
+            <EmptyState
+              title={`${currentLanguage?.name} Games`}
+              description="No Games available. Try another language."
+              animationSource={require('@/assets/lotties/empty_scroll.json')}
+            />
+          )}
 
-                  filteredCategories.map((category) => (
-                   <Section key={category.id} category={category} />
-
-
-
-          ))
-        )
-          :
-
-        (
-
-      <EmptyState
-           title={`${currentLanguage?.name} Games`}
-           description="No Games available. Try another language."
-           animationSource={require('@/assets/lotties/empty_scroll.json')}
-         />
-        )
-        }
-
-		   <View style={{ height: 80}} />
-
-
+          <View style={{ height: 80 }} />
         </ScrollView>
       </LinearGradient>
     </View>
@@ -284,15 +257,14 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 0,  
+    paddingBottom: 0,
   },
   gradient: {
     flex: 1,
     padding: 0,
     paddingBottom: 0,
-
   },
-    scrollContent: {
+  scrollContent: {
     paddingTop: 20,
     paddingBottom: 500,
     paddingHorizontal: 16,
@@ -459,7 +431,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 16,
     marginBottom: 10,
-    marginTop: 10,
   },
   sectionTitleContainer: {
     shadowColor: 'rgba(149, 145, 145, 0.58)',
@@ -521,8 +492,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: COLORS.white,
   },
-    gridGameCard: {
-
+  gridGameCard: {
     flex: 1,
     flexDirection: 'column',
     margin: 5,
@@ -549,7 +519,6 @@ const styles = StyleSheet.create({
     height: 64,
     justifyContent: 'center',
     alignItems: 'center',
-
   },
   gameIcon: {
     fontSize: 32,

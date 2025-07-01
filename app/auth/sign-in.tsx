@@ -62,7 +62,8 @@ export default function SignInScreen() {
         try {
              triggerHaptic('success');
             await login(username, email, password);
-            router.replace(ROUTES.TABS)
+            // router.replace(ROUTES.TABS)
+            router.replace(ROUTES.LANGUAGESELECT)
         } catch (error: any) {
             Alert.alert('Sign in failed...', error.message)
 

@@ -1,5 +1,5 @@
 import type { Challenge } from '@/types';
-import { Dumela, WinSound } from '@/utils/audio';
+import { Dumela, Pula, WinSound } from '@/utils/audio';
 
 export const wordMatchingChallenges: Challenge[] = [
   {
@@ -24,7 +24,7 @@ export const wordMatchingChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 10,
-    translationOption: WinSound,
+    translationOption: Pula,
     difficulty: 'easy'
   },
   {
@@ -41,9 +41,9 @@ export const wordMatchingChallenges: Challenge[] = [
   {
     id: 'wm-4',
     type: 'word-matching',
-    instruction: "Form the phrase 'dumela mosadi'",
-    correctOrder: ['du', 'me', 'la', 'mo', 'sa', 'di'],
-    wordBank: ['mo', 'du', 'sa', 'me', 'di', 'la'],
+    instruction: "Form the phrase 'dumela mma'",
+    correctOrder: ['du', 'me', 'la', 'mma'],
+    wordBank: [ 'du', 'mma', 'me', 'la'],
     languageId: 'st',
     isLocked: false,
     points: 20,
@@ -61,9 +61,43 @@ export const wordMatchingChallenges: Challenge[] = [
     points: 10,
     difficulty: 'easy'
   },
-  // sekgalagari
   {
     id: 'wm-6',
+    type: 'word-matching',
+    instruction: "Form the word 'pula'",
+    correctOrder: ['pu', 'la'],
+    wordBank: ['la', 'pu'],
+    languageId: 'kl',
+    isLocked: false,
+    points: 10,
+    translationOption: WinSound,
+    difficulty: 'easy'
+  },
+  {
+    id: 'wm-7',
+    type: 'word-matching',
+    instruction: "Form the word 'mosadi'",
+    correctOrder: ['mo', 'sa', 'di'],
+    wordBank: ['di', 'mo', 'sa'],
+    languageId: 'kl',
+    isLocked: false,
+    points: 15,
+    difficulty: 'medium'
+  },
+  {
+    id: 'wm-8',
+    type: 'word-matching',
+    instruction: "Form the phrase 'dumela mosadi'",
+    correctOrder: ['du', 'me', 'la', 'mma', ],
+    wordBank: [ 'du', 'me', 'mma', 'la'],
+    languageId: 'kl',
+    isLocked: false,
+    points: 20,
+    difficulty: 'hard'
+  },
+  // sekgalagari
+  {
+    id: 'wm-9',
     type: 'word-matching',
     instruction: "Form the greeting 'rumela'",
     correctOrder: ['ru', 'me', 'la'],
@@ -111,16 +145,5 @@ export const wordMatchingChallenges: Challenge[] = [
 
 export const wordMatchingChallengesKalanga: Challenge[] = [
 
-  {
-    id: 'wm-5',
-    type: 'word-matching',
-    instruction: "Form the greeting 'dumilani'",
-    correctOrder: ['du', 'mi', 'la', 'ni'],
-    wordBank: ['mi', 'du', 'la', 'ni'],
-    languageId: 'kl',
-    isLocked: false,
-    points: 10,
-    difficulty: 'easy'
-  },
-
+  
 ];

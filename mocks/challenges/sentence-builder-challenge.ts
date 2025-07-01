@@ -10,7 +10,8 @@ export const sentenceBuilderChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 20,
-    difficulty: 'hard'
+    difficulty: 'hard',
+    hint: "Means I am learning Setswana",
   },
   {
     id: 'sb-2',
@@ -21,7 +22,9 @@ export const sentenceBuilderChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 20,
-    difficulty: 'hard'
+    difficulty: 'hard',
+
+    hint: "Means I want to eat food",
   },
   {
     id: 'sb-3',
@@ -32,7 +35,9 @@ export const sentenceBuilderChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 20,
-    difficulty: 'hard'
+    difficulty: 'hard',
+  
+    hint: "Means How are you today?",
   },
   {
     id: 'sb-4',
@@ -43,7 +48,10 @@ export const sentenceBuilderChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 20,
-    difficulty: 'hard'
+    difficulty: 'hard',
+   
+    hint: "Means Thank you very much",
+
   },
   {
     id: 'sb-5',
@@ -54,7 +62,9 @@ export const sentenceBuilderChallenges: Challenge[] = [
     languageId: 'st',
     isLocked: false,
     points: 25,
-    difficulty: 'hard'
+    difficulty: 'hard',
+
+    hint: "Means I like to speak Setswana",
   },
   //kalanga
   {
@@ -66,6 +76,50 @@ export const sentenceBuilderChallenges: Challenge[] = [
     languageId: 'kl',
     isLocked: false,
     points: 20,
+    difficulty: 'hard'
+  },
+  {
+    id: 'sb-7',
+    type: 'sentence-builder',
+    instruction: "Build the sentence: 'I want to eat food'",
+    correctOrder: ['Ke', 'batla', 'go', 'ja', 'dijo'],
+    wordBank: ['dijo', 'Ke', 'batla', 'go', 'ja', 'nwa'],
+    languageId: 'kl',
+    isLocked: false,
+    points: 20,
+    difficulty: 'hard'
+  },
+  {
+    id: 'sb-8',
+    type: 'sentence-builder',
+    instruction: "Build the sentence: 'How are you today?'",
+    correctOrder: ['O', 'tshogile', 'jang', 'Gompieno'],
+    wordBank: ['jang', 'O', 'tshogile', 'Gompieno', 'sentle', 'Kamoso'],
+    languageId: 'kl',
+    isLocked: false,
+    points: 20,
+    difficulty: 'hard'
+  },
+  {
+    id: 'sb-9',
+    type: 'sentence-builder',
+    instruction: "Build the sentence: 'Thank you very much'",
+    correctOrder: ['Ke', 'lebogile', 'thata'],
+    wordBank: ['thata', 'Ke', 'lebogile', 'sentle', 'jang'],
+    languageId: 'kl',
+    isLocked: false,
+    points: 20,
+    difficulty: 'hard'
+  },
+  {
+    id: 'sb-10',
+    type: 'sentence-builder',
+    instruction: "Build the sentence: 'I like to speak Setswana'",
+    correctOrder: ['Ke', 'rata', 'go', 'bua', 'Setswana'],
+    wordBank: ['Setswana', 'Ke', 'rata', 'go', 'bua', 'ithuta'],
+    languageId: 'kl',
+    isLocked: false,
+    points: 25,
     difficulty: 'hard'
   },
   // sekgalagari

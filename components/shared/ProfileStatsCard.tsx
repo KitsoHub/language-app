@@ -5,6 +5,8 @@ import { colors, COLORS } from '@/utils/constants/colors';
 import { useAuthStore } from '@/store/auth-store';
 
 import Avatar from './Avatar';
+import { memo } from 'react';
+import React from 'react';
 interface ProfileProps {
   name: string,
   avatar: string,
@@ -21,8 +23,16 @@ interface ProfileProps {
   style?: ViewStyle;
 }
 
+// Memoized stat card component
+const StatCard = memo(({ value, label }: { value: number; label: string }) => (
+    <View style={styles.statCard}>
+        <Text style={styles.statValue}>{value}</Text>
+        <Text style={styles.statLabel}>{label}</Text>
+    </View>
+));
 
-export default function ProfileStatsCard({
+
+function ProfileStatsCardX ({
   name,
   email,
   xp,
@@ -40,7 +50,7 @@ export default function ProfileStatsCard({
       <View style={styles.profileHeader}>
 
         <Avatar
-          uri={user?.avatar !== null ? user?.avatar: ''}
+          uri={user?.avatar}
           name={name}
           size={80}
 
@@ -56,7 +66,12 @@ export default function ProfileStatsCard({
         </TouchableOpacity>
 
       </View>
-      <View style={styles.statsContainer}>
+            <View style={styles.statsContainer}>
+                <StatCard value={level} label="Level" />
+                <StatCard value={xp} label="Total XP" />
+                <StatCard value={streak} label="Day Streak" />
+            </View>
+      {/* <View style={styles.statsContainer}>
         <View style={styles.statCard}>
           <Text style={styles.statValue}>{level}</Text>
           <Text style={styles.statLabel}>Level</Text>
@@ -69,7 +84,7 @@ export default function ProfileStatsCard({
           <Text style={styles.statValue}>{streak}</Text>
           <Text style={styles.statLabel}>Day Streak</Text>
         </View>
-      </View>
+      </View> */}
 
 
     </>
@@ -311,3 +326,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 })
+const ProfileStatsCard = React.memo(ProfileStatsCardX);
+
+export default ProfileStatsCard;
