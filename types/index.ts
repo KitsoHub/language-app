@@ -1,6 +1,6 @@
 
 export interface User{
-    familyMatchingCompleted: number;
+
     id:string;
     name:string;
     email:string;
@@ -18,6 +18,7 @@ export interface User{
     multipleChoiceCompleted?: number;
     sentenceBuilderCompleted?: number;
     lessonNumbersCompleted?: number;
+    familyMatchingCompleted: number;
 }
 
 export interface Language{
@@ -140,6 +141,26 @@ export interface Challenge {
     hint?: string;
   }
 
+  export interface NewChallenge {
+    id: number | string;
+    languageId: string,
+    isLocked?: boolean;
+    instruction?: string;
+    correctOrder?: string[];
+    wordBank?: string[];
+    options?: string[];
+    image?: string;
+    correctAnswer?: string;
+    sentence?: string;
+    blanks?: number[];
+    points: number;
+    difficulty: Difficulty;
+    badge?: string;
+    translationOption?: string,
+    hint?: string;
+  }
+
+
   export interface Game {
     id: string;
     title: string;
@@ -150,7 +171,18 @@ export interface Challenge {
     type: 'word-matching' | 'multiple-choice' | 'listening' | 'speaking' | 'sentence-builder'| 'fill-blank'| 'family-matching'|'lesson-numbers';
     languageId?: string;
   }
-
+export interface NewGame {
+  id: string;
+  type: GameType;
+  title: string;
+  description: string;
+  icon: string;
+  difficulty:  Difficulty
+  languageId: string;
+  categoryId: string;
+  isLocked: boolean;
+  requiresSubscription: boolean;
+}
 
   export interface HapticStore {
     hapticEnabled: boolean,
@@ -160,3 +192,21 @@ export interface Challenge {
 
 //   TODO: add selection types
   export type HapticPresets = 'light'| 'medium' | 'heavy' | 'success' | 'error' | 'warning';
+
+//   Game type
+
+export type GameType =
+  | 'word-matching'
+  | 'multiple-choice'
+  | 'fill-blank'
+  | 'sentence-builder'
+  | 'family-matching'
+  | 'lesson-numbers';
+
+
+export type Difficulty = 'easy' | 'medium' | 'hard';
+export interface NewLessonGame extends NewGame {
+  //challenges: Challenge[];
+ challenges: NewChallenge[];
+  progress: number;
+}

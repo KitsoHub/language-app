@@ -1,10 +1,24 @@
-import { Platform, Pressable, StyleSheet, Text, View, Image, ViewStyle } from 'react-native'
+import {
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ViewStyle,
+} from 'react-native';
 import { LessonGame } from '@/utils/constants/categories';
 import { useHaptics } from '@/utils/hooks/useHaptics';
 import { COLORS } from '@/utils/constants/colors';
 import CircularProgress from './games/CircularProgress';
-import { Star,Lock } from 'lucide-react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
+import { Star, Lock } from 'lucide-react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { useNewGameStore } from '@/store/game/new-game-store';
 import { router } from 'expo-router';
 import { ROUTES } from '@/utils/constants/routes';
@@ -17,143 +31,142 @@ interface GameTileProps {
   progress: number;
   onPress: () => void;
 }
-export default function GameTile({  game,categoryColor, isLocked, requiresSubscription, progress, onPress}: GameTileProps) {
+export default function GameTile({
+  game,
+  categoryColor,
+  isLocked,
+  requiresSubscription,
+  progress,
+  onPress,
+}: GameTileProps) {
+  const { triggerHaptic } = useHaptics();
 
-        const { triggerHaptic } = useHaptics();
+  const scale = useSharedValue(1);
+  const rotate = useSharedValue(0);
 
-    const scale = useSharedValue(1);
-    const rotate = useSharedValue(0);
+  // store
+  const { selectGame } = useNewGameStore();
 
-    // store
-      const {
-selectGame
-      } = useNewGameStore();
+  const handlePressOut = () => {
+    if (isLocked || requiresSubscription) return;
+    scale.value = withSequence(
+      withTiming(1.05, { duration: 150 }),
+      withSpring(1, { damping: 12 }),
+    );
+    rotate.value = withSequence(
+      withTiming(-5, { duration: 50 }),
+      withTiming(5, { duration: 100 }),
+      withTiming(0, { duration: 50 }),
+    );
+  };
 
-    const handlePressOut = () => {
-      if (isLocked || requiresSubscription) return;
-      scale.value = withSequence(
-        withTiming(1.05, { duration: 150 }),
-        withSpring(1, { damping: 12 })
-      );
-      rotate.value = withSequence(
-        withTiming(-5, { duration: 50 }),
-        withTiming(5, { duration: 100 }),
-        withTiming(0, { duration: 50 })
-      );
-    };
+  const handlePressIn = () => {
+    if (isLocked) return;
+    scale.value = withTiming(0.95, { duration: 100 });
+  };
 
-      const handlePressIn = () => {
-      if (isLocked) return;
-      scale.value = withTiming(0.95, { duration: 100 });
-    };
+  const handlePress = () => {
+    if (isLocked || requiresSubscription) {
+      triggerHaptic('error');
+      return;
+    }
 
-
-    const handlePress =()=>{
-      if(isLocked || requiresSubscription){
-          triggerHaptic('error'); return;
-      }
-
-        triggerHaptic('success');
-        selectGame(game.id);
+    triggerHaptic('success');
+    selectGame(game.id);
     router.push(ROUTES.GAMES);
 
-        onPress()
+    onPress();
+  };
+  const animatedStyle = useAnimatedStyle(() => {
+    if (Platform.OS === 'web') {
+      return {};
     }
-   const animatedStyle = useAnimatedStyle(() => {
-      if (Platform.OS === 'web') {
-        return {};
-      }
 
-      return {
-        transform: [
-          { scale: scale.value },
-          { rotate: `${rotate.value}deg` }
-        ],
-      };
-    });
+    return {
+      transform: [{ scale: scale.value }, { rotate: `${rotate.value}deg` }],
+    };
+  });
 
-      const TileComponent = Platform.OS === 'web' ? View : Animated.View;
+  const TileComponent = Platform.OS === 'web' ? View : Animated.View;
 
-       const renderIcon = () => {
-      if (isLocked) {
-        return <Lock size={24} color="#999" />;
-      }
+  const renderIcon = () => {
+    if (isLocked) {
+      return <Lock size={24} color="#999" />;
+    }
 
-      if (progress > 0) {
-        return <Star size={24} color="#FFF" />;
-      }
+    if (progress > 0) {
+      return <Star size={24} color="#FFF" />;
+    }
 
-      return  <Image
+    return (
+      <Image
         source={require('@/assets/avatars/book_avatar.png')}
         resizeMode="contain"
       />
-    };
+    );
+  };
   const getContainerStyle = (): ViewStyle => {
-      if (isLocked) {
-        return styles.lockedContainer;
-      }
+    if (isLocked) {
+      return styles.lockedContainer;
+    }
 
-      if (progress > 0) {
-        return {
-          ...styles.activeContainer,
-          backgroundColor: categoryColor,
-        };
-      }
+    if (progress > 0) {
+      return {
+        ...styles.activeContainer,
+        backgroundColor: categoryColor,
+      };
+    }
 
-      return styles.availableContainer;
-    };
-
-
+    return styles.availableContainer;
+  };
 
   return (
-<View style={styles.wrapper}>
+    <View style={styles.wrapper}>
       <TileComponent style={[animatedStyle]}>
-<Pressable
- onPress={handlePress}
-onPressIn={Platform.OS !== 'web' ? handlePressIn : undefined}
- onPressOut={Platform.OS !== 'web' ? handlePressOut : undefined}
-       style={({ pressed }) => [
+        <Pressable
+          onPress={handlePress}
+          onPressIn={Platform.OS !== 'web' ? handlePressIn : undefined}
+          onPressOut={Platform.OS !== 'web' ? handlePressOut : undefined}
+          style={({ pressed }) => [
             styles.tileContainer,
             getContainerStyle(),
-            Platform.OS === 'web' && pressed && !isLocked && { transform: [{ scale: 0.95 }] }
+            Platform.OS === 'web' &&
+              pressed &&
+              !isLocked && { transform: [{ scale: 0.95 }] },
           ]}
-          disabled={isLocked}>
-
-        {progress > 0 && !isLocked && (
+          disabled={isLocked}
+        >
+          {progress > 0 && !isLocked && (
             <CircularProgress
-            progress={progress}
+              progress={progress}
               size={80}
               strokeWidth={5}
               color="#4A90E2"
               bgColor="rgba(255,255,255,0.3)"
-
             />
           )}
 
-<View style={styles.iconContainer}>
-            {renderIcon()}
-          </View>
-         {progress === 0 && !isLocked && (
+          <View style={styles.iconContainer}>{renderIcon()}</View>
+          {progress === 0 && !isLocked && (
             <View style={styles.startBadge}>
               <Text style={styles.startText}>START</Text>
             </View>
           )}
-</Pressable>
-
-  </TileComponent>
+        </Pressable>
+      </TileComponent>
       {game.isLocked && game.requiresSubscription && (
         <Text style={styles.subscriptionText}>Subscribe to unlock</Text>
       )}
-</View>
-  )
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    wrapper: {
+  wrapper: {
     alignItems: 'center',
     marginHorizontal: 12,
   },
-    subscriptionText: {
+  subscriptionText: {
     fontSize: 12,
     color: '#4A90E2',
     marginTop: 4,
@@ -181,7 +194,7 @@ const styles = StyleSheet.create({
   },
 
   //Tile component container
-    tileContainer: {
+  tileContainer: {
     width: 80,
     height: 80,
     borderRadius: 40,
@@ -205,4 +218,4 @@ const styles = StyleSheet.create({
   activeContainer: {
     borderWidth: 0,
   },
-})
+});

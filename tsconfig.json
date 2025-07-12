@@ -8,7 +8,14 @@
       ]
     },
     "types": ["jest","react-native"],
-     "jsx": "react-jsx"
+     "jsx": "react-jsx",
+         // --- START: Added/Updated for Dynamic Imports with Metro ---
+    "module": "esnext", // Metro understands ES Modules (import/export)
+    "moduleResolution": "node", // Metro uses Node.js-style module resolution by default
+    "esModuleInterop": true, // Recommended for better compatibility with CommonJS modules
+    "allowSyntheticDefaultImports": true, // Allows default imports from modules with no default export
+    "resolveJsonModule": true // If you're importing JSON files
+    // --- END:---
   },
   "include": [
     "**/*.ts",
